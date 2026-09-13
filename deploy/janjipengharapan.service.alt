@@ -1,0 +1,38 @@
+# ALTERNATIF systemd — hanya dipakai kalau TIDAK memakai PM2.
+# Jalur utama proyek ini adalah PM2 (lihat ecosystem.config.js + deploy.sh).
+# Jangan aktifkan keduanya sekaligus: dua proses akan berebut port 3000.
+#
+# Unit systemd untuk situs Janji Pengharapan (build standalone Next.js).
+#
+# Pasang:
+#   sudo cp deploy/janjipengharapan.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now janjipengharapan
+
+[Unit]
+Description=Janji Pengharapan — situs komunitas
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/janjipengharapan/current
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+# Rahasia dibaca dari berkas terpisah, bukan ditulis di unit ini.
+EnvironmentFile=/var/www/janjipengharapan/.env.production
+
+# Pengetatan dasar
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/janjipengharapan
+
+[Install]
+WantedBy=multi-user.target
