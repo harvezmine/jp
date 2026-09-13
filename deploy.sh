@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
-# deploy.sh — tarik kode terbaru Janji Pengharapan dari GitHub lalu deploy.
+# deploy.sh — tarik kode terbaru Janji Pengharapan dari GitHub lalu deploy
+# semuanya: database dan aplikasi.
 #
 # Pakai (di server, dari mana saja, setelah push ke GitHub):
 #   ./deploy.sh           # deploy kalau ada commit baru
-#   ./deploy.sh --force   # build & deploy ulang walau tidak ada commit baru
+#   ./deploy.sh --force   # migrasi + build & deploy ulang walau tidak ada commit baru
 #
 # Alurnya:
 #   1. git fetch. Kalau origin tidak punya commit baru DAN commit sekarang
 #      sudah pernah sukses di-deploy, keluar tanpa build.
 #   2. git merge --ff-only.
-#   3. deploy/deploy.sh — npm ci, build, rakit rilis baru, tukar symlink
+#   3. deploy/migrate.sh — pastikan Supabase jalan, lalu terapkan migrasi
+#      supabase/migrations/*.sql yang belum jalan (per file satu transaksi).
+#   4. deploy/deploy.sh — npm ci, build, rakit rilis baru, tukar symlink
 #      `current`, pm2 reload (worker diganti satu per satu, tanpa downtime).
-#   4. Cek kesehatan: situs menjawab 200 dan semua worker PM2 online.
-#   5. Catat commit yang sukses ke $APP_DIR/.deployed-rev.
+#   5. Cek kesehatan: situs menjawab 200 dan semua worker PM2 online.
+#   6. Catat commit yang sukses ke $APP_DIR/.deployed-rev.
 #
-# Kalau build gagal, symlink `current` belum ditukar, jadi rilis lama tetap
-# melayani pengunjung. Commit yang gagal tidak dicatat, sehingga menjalankan
-# skrip ini lagi (setelah perbaikan di-push, atau dengan --force) akan mencoba
-# ulang — bukan menganggap "sudah paling baru" hanya karena git pull-nya sudah
-# terjadi.
-#
-# Perubahan supabase/*.sql TIDAK diterapkan otomatis: schema.sql bukan migrasi
-# bertahap dan tidak aman dijalankan dua kali. Skrip hanya memperingatkan.
+# Kalau migrasi atau build gagal, symlink `current` belum ditukar, jadi rilis
+# lama tetap melayani pengunjung. Commit yang gagal tidak dicatat, sehingga
+# menjalankan skrip ini lagi (setelah perbaikan di-push, atau dengan --force)
+# akan mencoba ulang — bukan menganggap "sudah paling baru" hanya karena git
+# pull-nya sudah terjadi.
 #
 # Semua state disimpan di luar repo supaya working tree tetap bersih:
 #   $APP_DIR/.env.production   env aplikasi (dibaca saat build & runtime)
@@ -84,10 +84,9 @@ main() {
 
   # --- preflight -----------------------------------------------------------
   local cmd
-  for cmd in git node npm pm2 curl flock; do
+  for cmd in git node npm pm2 curl flock docker sha256sum; do
     command -v "$cmd" >/dev/null || fail "$cmd tidak ditemukan"
   done
-  [[ -x deploy/deploy.sh ]] || fail "deploy/deploy.sh tidak ada atau tidak executable"
   [[ -f "$ENV_FILE" ]] || fail "$ENV_FILE tidak ada — lihat README bagian Deploy."
 
   GIT_TOKEN=""
@@ -123,10 +122,8 @@ $(git status --porcelain --untracked-files=no)"
       fail "local HEAD ($local_rev) menyimpang dari origin/$branch ($remote_rev) — tidak bisa fast-forward, perlu penanganan manual."
     else
       log "Update ditemukan: $local_rev -> $remote_rev"
-      local changed
-      changed="$(git diff --name-only "$local_rev" "$remote_rev")"
       log "File berubah:
-$changed"
+$(git diff --name-only "$local_rev" "$remote_rev")"
 
       # File yang dulu dibuat langsung di server lalu di-commit dari tempat
       # lain (misalnya deploy.sh ini) membuat merge menolak "untracked working
@@ -140,11 +137,6 @@ $changed"
       done < <(git ls-files --others --exclude-standard)
 
       git merge --ff-only "origin/$branch" 2>&1 | tee -a "$LOG_FILE" || fail "git merge --ff-only gagal"
-
-      if grep -q '^supabase/.*\.sql$' <<<"$changed"; then
-        log "PERHATIAN: file SQL di supabase/ berubah. Tidak diterapkan otomatis —"
-        log "  terapkan manual: cd /opt/supabase-jp && docker compose exec -T db psql -U supabase_admin -d postgres -1 -v ON_ERROR_STOP=1 < <file>"
-      fi
     fi
   fi
 
@@ -155,6 +147,18 @@ $changed"
     log "Sudah paling baru dan sudah ter-deploy ($target_rev). Tidak ada yang di-deploy."
     exit 0
   fi
+
+  # Dicek setelah merge: commit yang baru di-pull bisa membawa versi baru
+  # (atau pertama kali membawa) kedua skrip ini.
+  [[ -x deploy/migrate.sh ]] || fail "deploy/migrate.sh tidak ada atau tidak executable"
+  [[ -x deploy/deploy.sh ]] || fail "deploy/deploy.sh tidak ada atau tidak executable"
+
+  # --- migrasi database ----------------------------------------------------
+  # Sebelum build: halaman statis di-render saat build dan membaca database,
+  # jadi kode baru butuh skema barunya sudah ada.
+  log "Migrasi database ($target_rev)..."
+  deploy/migrate.sh apply 2>&1 | tee -a "$LOG_FILE" \
+    || fail "migrasi gagal — build dibatalkan, rilis lama tetap melayani. Commit $target_rev belum dicatat, jalankan ulang setelah diperbaiki."
 
   # --- build & rilis -------------------------------------------------------
   log "Build & rilis $target_rev (npm ci, next build, tukar symlink, pm2 reload)..."

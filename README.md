@@ -169,15 +169,46 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ### Setiap kali memperbarui
 
+Push ke GitHub, lalu di server cukup satu perintah:
+
 ```bash
-git pull
-./deploy/deploy.sh
+/home/jp/deploy.sh           # pull + migrasi database + build + reload
+/home/jp/deploy.sh --force   # ulangi walau tidak ada commit baru
 ```
 
-Skrip itu build, merakit bundel ke folder rilis baru, menukar symlink
-`current`, lalu `pm2 startOrReload --update-env`. Rilis lama tetap melayani
-selama build berjalan, dan reload mengganti worker satu per satu — pengunjung
-tidak kena downtime. Lima rilis terakhir disimpan untuk jaga-jaga.
+Urutannya: `git pull --ff-only` → `deploy/migrate.sh` (migrasi Supabase yang
+belum jalan) → `deploy/deploy.sh` (build, rakit bundel ke folder rilis baru,
+tukar symlink `current`, `pm2 startOrReload --update-env`) → cek situs
+menjawab 200 dan semua worker online. Rilis lama tetap melayani selama build
+berjalan, dan reload mengganti worker satu per satu — pengunjung tidak kena
+downtime. Lima rilis terakhir disimpan untuk jaga-jaga.
+
+Kalau migrasi atau build gagal, rilis lama tetap jalan dan commit itu tidak
+dicatat sebagai ter-deploy, jadi menjalankan `deploy.sh` lagi akan mencobanya
+ulang. Log: `/var/www/janjipengharapan/logs/deploy.log`.
+
+### Mengubah skema database (migrasi)
+
+`supabase/schema.sql` dan `seed.sql` adalah **baseline** — jangan diubah lagi.
+Setiap perubahan skema sesudahnya ditulis sebagai file migrasi:
+
+```bash
+deploy/migrate.sh new tambah_lokasi_event   # buat supabase/migrations/<timestamp>_tambah_lokasi_event.sql
+deploy/migrate.sh status                    # mana yang sudah & belum diterapkan
+```
+
+Isi file dengan SQL-nya, commit, push, lalu `deploy.sh` menerapkannya.
+
+- Setiap file dijalankan dalam **satu transaksi** — gagal di tengah, database
+  tidak berubah. Jangan tulis `BEGIN`/`COMMIT` sendiri, dan hindari perintah
+  yang tidak bisa di dalam transaksi (`CREATE INDEX CONCURRENTLY`, `VACUUM`).
+- **Jangan edit migrasi yang sudah ter-deploy** (checksum-nya dicek dan deploy
+  akan berhenti). Koreksi = migrasi baru.
+- Migrasi jalan **sebelum** build, saat kode lama masih melayani: tambah kolom
+  atau tabel dulu, hapus yang lama di deploy berikutnya.
+- Tabel baru di `public` otomatis terbuka lewat API — selalu
+  `enable row level security` dan tulis policy-nya.
+- Catatan migrasi ada di tabel `jp_migrations.applied`.
 
 ### Perintah PM2 harian
 
