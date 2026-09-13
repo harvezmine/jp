@@ -40,29 +40,28 @@ export const ruang: Ruang[] = [
   {
     slug: "ruang-pengharapan",
     name: "Pengharapan",
-    short: "Pesan singkat, podcast, dan live",
-    tagline: "Pesan singkat, podcast, dan acara langsung untuk menguatkan harimu.",
+    short: "Renungan, podcast, dan live",
+    tagline: "Renungan, podcast, dan acara untuk menguatkan harimu.",
     summary:
-      "Kebanyakan orang mengenal kami lewat ruang ini. Isinya renungan pendek dan obrolan jujur soal hidup, dibagikan di TikTok, YouTube, dan lewat acara tatap muka.",
-    forWho: "Untuk kamu yang sedang butuh dikuatkan, atau baru mulai mencari tahu tentang Tuhan.",
+      "Renungan pendek dan obrolan jujur soal hidup. Bisa ditonton online, bisa juga didatangi langsung.",
+    forWho: "Untuk kamu yang butuh dikuatkan, atau baru mulai mengenal Tuhan.",
     programs: [
       {
         title: "Insight Message",
-        summary: "Pesan pendek berisi satu ayat dan satu hal sederhana yang bisa kamu lakukan hari itu.",
+        summary: "Satu ayat dan satu langkah kecil untuk hari ini.",
         when: "Setiap hari",
-        format: "TikTok, Instagram, dan YouTube Shorts",
+        format: "TikTok, Instagram, YouTube Shorts",
       },
       {
         title: "Podcast & Live",
-        summary:
-          "Obrolan santai soal iman, keluarga, pekerjaan, dan kesehatan mental. Pertanyaanmu bisa dijawab langsung saat siaran.",
+        summary: "Obrolan santai soal iman, keluarga, kerja, dan kesehatan mental. Kamu bisa bertanya langsung.",
         when: "Senin, 20.00 WIB",
         format: "Live di TikTok dan YouTube",
         weekly: { day: 0, time: "20.00" },
       },
       {
         title: "Live Event",
-        summary: "Malam pujian, seminar, dan pertemuan tatap muka untuk bertemu tim dan teman-teman baru.",
+        summary: "Malam pujian, seminar, dan kesempatan ketemu langsung.",
         when: "Lihat kalender acara",
         format: "Tatap muka di Jakarta",
       },
@@ -78,29 +77,27 @@ export const ruang: Ruang[] = [
     slug: "ruang-doa",
     name: "Doa",
     short: "Doa kesembuhan dan nubuatan",
-    tagline: "Didoakan secara pribadi, termasuk untuk kesembuhan.",
+    tagline: "Ada yang ikut mendoakanmu.",
     summary:
-      "Tim pendoa kami mendoakan setiap permohonan yang masuk. Kamu bisa mengirim pokok doa kapan saja, ikut doa bersama secara online, atau meminta sesi doa khusus.",
-    forWho: "Untuk kamu yang sedang sakit, cemas, menunggu jawaban, atau butuh tuntunan.",
+      "Setiap pokok doa yang masuk kami doakan. Kirim kapan saja, ikut doa online, atau minta sesi doa khusus.",
+    forWho: "Untuk kamu yang sedang sakit, cemas, atau menunggu jawaban.",
     programs: [
       {
         title: "Doa Kesembuhan",
-        summary: "Doa untuk kesembuhan fisik maupun batin, bagi dirimu atau orang yang kamu kasihi.",
+        summary: "Doa untuk kesembuhan tubuh dan hati, untukmu atau orang yang kamu sayangi.",
         when: "Rabu, 19.30 WIB",
-        format: "Online lewat Zoom, kamera boleh mati",
+        format: "Zoom, kamera boleh mati",
         weekly: { day: 2, time: "19.30" },
       },
       {
         title: "Pelayanan Nubuatan",
-        summary:
-          "Sesi doa bersama tim untuk menerima penguatan dan dorongan dari Tuhan. Setiap sesi didampingi pengurus dan diuji dengan firman.",
+        summary: "Sesi doa untuk menerima penguatan dari Tuhan. Selalu didampingi dan diuji dengan firman.",
         when: "Dengan janji temu",
         format: "Tatap muka atau video call",
       },
       {
         title: "Kirim Pokok Doa",
-        summary:
-          "Tulis permohonan doamu lewat formulir, boleh tanpa nama. Tim pendoa akan mendoakannya secara pribadi.",
+        summary: "Tulis lewat formulir, boleh tanpa nama. Tim pendoa akan mendoakannya.",
         when: "Kapan saja",
         format: "Formulir atau WhatsApp",
       },
@@ -119,30 +116,27 @@ export const ruang: Ruang[] = [
     slug: "ruang-cerita",
     name: "Cerita",
     short: "Konseling dan support group",
-    tagline: "Didengarkan dan didampingi, supaya tidak berjalan sendirian.",
+    tagline: "Tempat aman untuk bercerita.",
     summary:
-      "Tempat untuk bercerita dengan aman. Ada konseling empat mata, bimbingan rohani, dan kelompok kecil berisi orang-orang yang sedang melewati hal serupa.",
-    forWho:
-      "Untuk kamu yang sedang bergumul dengan keluarga, relasi, kecemasan, duka, atau pertanyaan tentang iman.",
+      "Ada konseling empat mata, bimbingan rohani, dan kelompok dukungan. Pilih yang paling nyaman untukmu.",
+    forWho: "Untuk kamu yang sedang bergumul soal keluarga, relasi, rasa cemas, atau duka.",
     programs: [
       {
         title: "Pastoral Konseling",
-        summary:
-          "Sesi empat mata dengan konselor pastoral. Gratis, rahasia, dan kamu bisa meminta pendamping perempuan atau laki-laki.",
+        summary: "Bicara empat mata dengan konselor, gratis dan rahasia. Bisa pilih konselor perempuan atau laki-laki.",
         when: "Dengan janji temu",
         format: "Online atau tatap muka",
       },
       {
         title: "Bimbingan Rohani & Pemuridan",
-        summary: "Mengenal Yesus dan bertumbuh dalam iman bersama seorang pembimbing, sesuai kecepatanmu.",
+        summary: "Belajar mengenal Yesus bersama pembimbing, pelan-pelan saja.",
         when: "Kamis, 19.30 WIB",
         format: "Kelompok kecil, online",
         weekly: { day: 3, time: "19.30" },
       },
       {
         title: "Support Group",
-        summary:
-          "Kelompok dukungan untuk yang sedang melewati pergumulan serupa, misalnya duka atau pemulihan dari kecanduan.",
+        summary: "Kelompok kecil untuk yang sedang melewati hal serupa, seperti duka atau pemulihan dari kecanduan.",
         when: "Jumat, 19.30 WIB",
         format: "Tatap muka di Jakarta",
         weekly: { day: 4, time: "19.30" },
@@ -162,14 +156,14 @@ export const ruang: Ruang[] = [
     slug: "ruang-belajar",
     name: "Belajar",
     short: "Kelas pengembangan diri",
-    tagline: "Kelas dan komunitas untuk bertumbuh sebagai pribadi dan profesional.",
+    tagline: "Kelas untuk terus bertumbuh.",
     summary:
-      "Iman juga dijalani di tempat kerja dan di kampus. Ruang ini berisi kelas dan komunitas untuk mengembangkan diri, dari kepemimpinan sampai keterampilan praktis seperti AI dan bahasa Inggris.",
-    forWho: "Untuk pelajar, mahasiswa, profesional, dan pemimpin yang ingin terus bertumbuh.",
+      "Kelas dan komunitas untuk mengembangkan diri. Mulai dari kepemimpinan sampai skill praktis seperti AI dan bahasa Inggris.",
+    forWho: "Untuk pelajar, pekerja, dan pemimpin yang mau terus belajar.",
     programs: [
       {
         title: "ProCon",
-        summary: "Pertemuan dan jejaring untuk para profesional.",
+        summary: "Ketemu dan berjejaring dengan sesama profesional.",
         when: "Sebulan sekali",
         format: "Tatap muka di Jakarta",
       },
@@ -181,8 +175,7 @@ export const ruang: Ruang[] = [
       },
       {
         title: "Kursus Pengembangan Diri",
-        summary:
-          "Kelas praktis yang bisa langsung dipakai, misalnya AI untuk bekerja, bahasa Inggris, dan public speaking.",
+        summary: "Kelas praktis seperti AI untuk kerja, bahasa Inggris, dan public speaking.",
         when: "Sabtu, 10.00 WIB",
         format: "Online dan tatap muka",
         weekly: { day: 5, time: "10.00" },

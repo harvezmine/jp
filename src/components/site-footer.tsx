@@ -12,12 +12,16 @@ export function SiteFooter() {
   return (
     <footer className="bg-maroon-deep relative isolate overflow-hidden text-sand-200">
       <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.08]" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-32 top-10 -z-10 h-96 w-96 rounded-full bg-gold-400/10 blur-[120px]"
+      />
 
-      <Container size="wide" className="pt-20 sm:pt-28">
+      <Container size="wide" className="pt-16 sm:pt-28">
         {/* Penutup */}
-        <div className="grid gap-10 border-b border-sand-50/10 pb-16 sm:pb-20 lg:grid-cols-12 lg:items-end">
+        <div className="grid gap-8 border-b border-sand-50/10 pb-14 sm:pb-20 lg:grid-cols-12 lg:items-end lg:gap-10">
           <h2 className="text-display text-sand-50 lg:col-span-8">
-            Kalau hari ini terasa berat, <span className="italic text-gold-400">cerita saja.</span>
+            Kalau hari ini berat, <span className="italic text-gold-400">cerita saja.</span>
           </h2>
           <div className="flex flex-col items-start gap-5 lg:col-span-4 lg:items-end">
             <ButtonLink href="/pertolongan" variant="light" size="lg">
@@ -30,12 +34,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="grid gap-12 py-14 sm:grid-cols-2 sm:py-16 lg:grid-cols-12 lg:gap-8">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-14 sm:py-16 lg:grid-cols-12 lg:gap-8">
           {/* Identitas */}
-          <div className="lg:col-span-4">
+          <div className="col-span-2 lg:col-span-4">
             <Logo variant="light" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-sand-300/80">
-              Pelayanan doa dan pendampingan untuk siapa saja yang sedang bergumul.
+              Tempat bercerita, didoakan, dan ditolong.
             </p>
             <div className="mt-6 flex gap-2">
               {[
@@ -76,7 +80,7 @@ export function SiteFooter() {
 
           {/* Ruang pelayanan */}
           <div className="lg:col-span-3">
-            <h3 className="font-display text-base font-semibold text-sand-50">Ruang pelayanan</h3>
+            <h3 className="font-display text-base font-semibold text-sand-50">Ruang</h3>
             <ul className="mt-4 space-y-3.5">
               {ruang.map((r) => (
                 <li key={r.slug} className="text-sm">
@@ -92,7 +96,7 @@ export function SiteFooter() {
           </div>
 
           {/* Kontak */}
-          <div className="lg:col-span-3">
+          <div className="col-span-2 sm:col-span-1 lg:col-span-3">
             <h3 className="font-display text-base font-semibold text-sand-50">Hubungi kami</h3>
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex gap-3">
@@ -108,7 +112,7 @@ export function SiteFooter() {
               </li>
               <li className="flex gap-3">
                 <Icon.mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <a href={`mailto:${site.email}`} className="text-sand-300/80 hover:text-gold-400">
+                <a href={`mailto:${site.email}`} className="break-all text-sand-300/80 hover:text-gold-400">
                   {site.email}
                 </a>
               </li>
@@ -132,14 +136,22 @@ export function SiteFooter() {
             </ul>
           </div>
         </div>
+      </Container>
 
+      {/* Wordmark besar yang terpotong di tepi bawah */}
+      <div aria-hidden className="pointer-events-none hidden select-none overflow-hidden sm:block">
+        <p className="font-display translate-y-[18%] whitespace-nowrap px-4 text-center text-[clamp(3rem,0.6rem+10.4vw,11.5rem)] font-semibold italic leading-[0.85] tracking-[-0.045em] text-sand-50/[0.06]">
+          Janji Pengharapan
+        </p>
+      </div>
+
+      <Container size="wide">
         <div className="flex flex-col gap-3 border-t border-sand-50/10 py-7 text-xs text-sand-300/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.name}
           </p>
           <p className="font-display italic text-sand-300/70">
-            &ldquo;Rancangan damai sejahtera, untuk memberikan kepadamu hari depan yang penuh
-            harapan.&rdquo; <span className="not-italic">Yeremia 29:11</span>
+            &ldquo;Hari depan yang penuh harapan.&rdquo; <span className="not-italic">Yeremia 29:11</span>
           </p>
         </div>
       </Container>

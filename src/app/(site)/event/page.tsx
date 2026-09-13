@@ -12,8 +12,7 @@ import { waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Event",
-  description:
-    "Live event, malam doa, dan kelas dari Janji Pengharapan. Terbuka untuk siapa saja.",
+  description: "Live event, malam doa, dan kelas dari Janji Pengharapan. Terbuka untuk siapa saja.",
 };
 
 export const revalidate = 300;
@@ -37,17 +36,15 @@ export default async function EventPage() {
         image={photos.heroEvents}
         imageAlt="Banyak orang berkumpul di bawah lampu gantung"
         title="Acara untuk ketemu langsung."
-        description="Live event, malam doa, dan kelas. Semuanya terbuka, dan kamu boleh datang sendiri."
+        description="Live event, malam doa, dan kelas. Datang sendiri juga boleh."
       />
 
-      <section className="bg-cream py-24 sm:py-32">
+      <section className="bg-cream pb-20 pt-14 sm:pb-28 sm:pt-20">
         <Container size="wide">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
             <Reveal className="lg:col-span-4">
               <h2 className="text-headline text-ink">Yang akan datang</h2>
-              <p className="text-lead mt-4 text-sand-700">
-                Pilih salah satu acara untuk melihat detail dan cara mendaftar.
-              </p>
+              <p className="text-lead mt-4 max-w-xs text-sand-700">Klik acara untuk lihat detail dan cara daftar.</p>
             </Reveal>
 
             <div className="lg:col-span-8">
@@ -62,7 +59,7 @@ export default async function EventPage() {
               ) : (
                 <EmptyState
                   title="Belum ada acara terjadwal"
-                  description="Sementara ini, podcast, doa kesembuhan online, dan kelas rutin tetap berjalan setiap minggu."
+                  description="Podcast, doa online, dan kelas rutin tetap jalan setiap minggu."
                   action={
                     <ButtonLink href="/kontak" variant="outline">
                       Tanya acara terdekat
@@ -79,16 +76,16 @@ export default async function EventPage() {
         linkPrefix="/"
         className="bg-paper"
         title="Setiap minggu juga ada ini"
-        description="Tidak perlu menunggu acara khusus. Program rutin di setiap ruang berjalan sepanjang tahun."
+        description="Tidak perlu menunggu acara khusus. Program rutin ini jalan terus."
       />
 
       {past.length > 0 && (
-        <section className="bg-cream py-24 sm:py-32">
+        <section className="bg-cream py-20 sm:py-28">
           <Container size="wide">
             <Reveal>
               <h2 className="text-headline text-ink">Yang sudah berlangsung</h2>
             </Reveal>
-            <div className="mt-12 grid gap-4 lg:grid-cols-2">
+            <div className="mt-10 grid gap-4 sm:mt-12 lg:grid-cols-2">
               {past.map((e, i) => (
                 <Reveal key={e.id} delay={(i % 2) * 80}>
                   <EventCard event={e} past />
@@ -99,14 +96,18 @@ export default async function EventPage() {
         </section>
       )}
 
-      <section className="bg-maroon-deep relative isolate overflow-hidden py-24 text-sand-50 sm:py-32">
+      <section className="bg-maroon-deep relative isolate overflow-hidden py-20 text-sand-50 sm:py-28">
         <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.08]" />
+        <div
+          aria-hidden
+          className="animate-breathe pointer-events-none absolute -right-20 -top-20 -z-10 h-80 w-80 rounded-full bg-gold-400/15 blur-[100px]"
+        />
         <Container size="wide">
-          <Reveal className="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
             <div className="lg:col-span-7">
               <h2 className="text-display">Mau datang tapi masih ragu?</h2>
-              <p className="text-lead mt-5 max-w-xl text-sand-200/80">
-                Kirim pesan dulu. Kami akan menyambutmu waktu kamu datang pertama kali.
+              <p className="text-lead mt-4 max-w-md text-sand-200/80 sm:mt-5">
+                Chat kami dulu. Nanti kami sambut waktu kamu datang.
               </p>
             </div>
             <div className="flex flex-col items-start gap-5 lg:col-span-5 lg:items-end">

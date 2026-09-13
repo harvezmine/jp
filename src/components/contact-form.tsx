@@ -22,7 +22,7 @@ export function ContactForm() {
         </div>
         <h3 className="font-display mt-5 text-xl font-semibold text-ink">Pesanmu sudah terkirim</h3>
         <p className="mt-2 leading-relaxed text-sand-700">
-          Terima kasih sudah menyapa. Kami akan membalas lewat email atau WhatsApp secepatnya.
+          Terima kasih sudah menyapa. Kami akan segera membalas.
         </p>
       </div>
     );

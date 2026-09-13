@@ -8,6 +8,7 @@ import { RichText } from "@/components/rich-text";
 import { ShareButtons } from "@/components/share-buttons";
 import { EventCard } from "@/components/content-cards";
 import { Icon } from "@/components/icons";
+import { HeroLip } from "@/components/page-hero";
 import { ArrowLink, ButtonLink, Container, Rise } from "@/components/ui";
 import { mockPhoto } from "@/lib/mock";
 import { getEventBySlug, getEventSlugs, getEvents } from "@/lib/queries";
@@ -130,6 +131,7 @@ export default async function EventDetailPage({
             </dl>
           </Rise>
         </Container>
+        <HeroLip />
       </section>
 
       <section className="bg-cream pb-24 sm:pb-32">

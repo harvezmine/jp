@@ -9,7 +9,7 @@ export const site = {
   shortName: "JP",
   tagline: "Tempat bercerita dan didoakan",
   description:
-    "Janji Pengharapan adalah pelayanan doa dan pendampingan untuk siapa saja yang sedang bergumul. Ceritakan yang sedang kamu hadapi, dan tim kami akan mendoakan, mendengarkan, dan membantu sebisa kami.",
+    "Tempat untuk bercerita, didoakan, dan ditolong. Gratis untuk siapa saja yang sedang bergumul.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://janjipengharapan.com",
   email: "halo@janjipengharapan.com",
   phone: "+62 812-0000-0000",
@@ -55,14 +55,14 @@ export function waLink(text?: string) {
 export const values = [
   {
     title: "Mendengar dulu",
-    body: "Sebelum memberi nasihat, kami dengarkan ceritamu sampai selesai. Kamu tidak akan dihakimi karena apa pun yang sedang kamu alami.",
+    body: "Kami dengarkan ceritamu sampai selesai, tanpa menghakimi.",
   },
   {
     title: "Rahasiamu aman",
-    body: "Yang kamu ceritakan hanya diketahui orang yang menangani permohonanmu. Kamu juga boleh bercerita tanpa menyebut nama.",
+    body: "Ceritamu hanya dibaca tim yang menanganinya. Mau tanpa nama juga boleh.",
   },
   {
-    title: "Menolong dengan nyata",
-    body: "Selain mendoakan, kami bantu mencarikan konselor, sembako, atau pendamping sesuai yang kamu butuhkan.",
+    title: "Bantuan yang nyata",
+    body: "Selain mendoakan, kami bantu carikan konselor, sembako, atau teman pendamping.",
   },
 ] as const;

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Icon } from "@/components/icons";
 import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
+import { TodayMarker } from "@/components/today-marker";
 import { ArrowLink, ButtonLink, Container } from "@/components/ui";
 import { ruang as allRuang, weekDays, weeklyPrograms, type Ruang } from "@/lib/ruang";
 import { site, waLink } from "@/lib/site";
@@ -107,7 +108,7 @@ export function RuangIntro({
       Pilih <span className="italic text-maroon-700">ruang</span> yang kamu butuhkan.
     </>
   ),
-  description = "Setiap pelayanan kami ada di salah satu dari empat ruang ini. Semuanya gratis dan terbuka, termasuk untuk kamu yang belum pernah ke gereja.",
+  description = "Semua ruang gratis dan terbuka untuk siapa saja, termasuk yang belum pernah ke gereja.",
   className = "bg-cream",
 }: {
   title?: ReactNode;
@@ -115,32 +116,35 @@ export function RuangIntro({
   className?: string;
 }) {
   return (
-    <section id="ruang" className={cn("relative overflow-hidden pb-16 pt-24 sm:pb-24 sm:pt-32 lg:pt-40", className)}>
+    <section id="ruang" className={cn("relative overflow-hidden pb-16 pt-20 sm:pb-24 sm:pt-28 lg:pt-36", className)}>
       <Container size="wide">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-12">
           <Reveal className="lg:col-span-7">
             <h2 className="text-display text-ink">{title}</h2>
           </Reveal>
           <Reveal delay={100} className="lg:col-span-5">
-            <p className="text-lead text-sand-700">{description}</p>
+            <p className="text-lead max-w-md text-sand-700">{description}</p>
           </Reveal>
         </div>
 
         {/* Di HP bisa digeser; di layar lebar kolomnya berundak */}
-        <div className="-mx-5 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-6 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 lg:mt-20 lg:grid-cols-4 lg:pb-16">
+        <div className="-mx-5 mt-12 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-6 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:mt-14 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 lg:mt-20 lg:grid-cols-4 lg:pb-16">
           {allRuang.map((r, i) => (
             <Reveal
               key={r.slug}
               delay={i * 100}
-              className={cn("w-[70vw] shrink-0 snap-start sm:w-auto", i % 2 === 1 && "lg:translate-y-16")}
+              className={cn(
+                "w-[68vw] max-w-72 shrink-0 snap-start sm:w-auto sm:max-w-none",
+                i % 2 === 1 && "lg:translate-y-16",
+              )}
             >
               <a href={`#${r.slug}`} className="group block">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-b-2xl rounded-t-[20rem] bg-sand-200">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-b-2xl rounded-t-[20rem] bg-sand-200 shadow-warm transition-shadow duration-500 group-hover:shadow-warm-lg">
                   <Image
                     src={r.image}
                     alt=""
                     fill
-                    sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 70vw"
+                    sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 68vw"
                     className="object-cover transition duration-[1400ms] ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/75 via-maroon-950/10 to-transparent" />
@@ -151,7 +155,7 @@ export function RuangIntro({
                     <Icon.arrowRight className="h-4 w-4" />
                   </span>
                 </div>
-                <h3 className="font-display mt-6 text-4xl font-semibold leading-none text-ink transition-colors duration-300 group-hover:text-maroon-700">
+                <h3 className="font-display mt-6 text-3xl font-semibold leading-none text-ink transition-colors duration-300 group-hover:text-maroon-700 sm:text-4xl">
                   <RuangName name={r.name} prefixClassName="mb-1.5 text-lg text-maroon-600" />
                 </h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-sand-700">{r.tagline}</p>
@@ -175,7 +179,7 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
     <section
       id={r.slug}
       aria-labelledby={headingId}
-      className={cn("relative isolate overflow-hidden pb-24 pt-16 sm:pb-32 sm:pt-20 lg:pb-40", t.section)}
+      className={cn("relative isolate overflow-hidden pb-20 pt-12 sm:pb-28 sm:pt-20 lg:pb-40", t.section)}
     >
       {t.dark && (
         <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.07]" />
@@ -201,16 +205,30 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
       </Parallax>
 
       <Container size="wide" className="relative">
-        <div className="grid items-center gap-14 pt-24 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
+        <div className="grid items-center gap-12 pt-20 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
           {/* Foto berbentuk lengkung pintu */}
-          <div className={cn("relative lg:col-span-5", flip && "lg:order-2 lg:col-start-8")}>
-            <Reveal variant="curtain" duration={1200}>
+          <div
+            className={cn(
+              "relative mx-auto w-full max-w-md sm:max-w-lg lg:col-span-5 lg:max-w-none",
+              flip && "lg:order-2 lg:col-start-8",
+            )}
+          >
+            {/* Bingkai tipis di belakang foto, bergerak dengan kecepatan berbeda */}
+            <Parallax
+              speed={-3}
+              className={cn(
+                "absolute inset-0 hidden translate-y-5 rounded-b-[2rem] rounded-t-[24rem] border sm:block",
+                flip ? "-translate-x-5" : "translate-x-5",
+                t.dark ? "border-sand-50/15" : "border-maroon-200",
+              )}
+            />
+            <Reveal variant="curtain" duration={1200} className="relative">
               <ParallaxImage
                 src={r.image}
                 alt={r.imageAlt}
-                sizes="(min-width: 1024px) 40vw, 100vw"
+                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 512px, 100vw"
                 strength={7}
-                className={cn("aspect-[4/5] rounded-b-[2rem] rounded-t-[24rem]", t.placeholder)}
+                className={cn("aspect-[4/5] rounded-b-[2rem] rounded-t-[24rem] shadow-deep", t.placeholder)}
               />
             </Reveal>
 
@@ -241,7 +259,7 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
               <h2
                 id={headingId}
                 className={cn(
-                  "font-display text-[clamp(3rem,1.5rem+5vw,5.25rem)] font-semibold leading-[0.9] tracking-[-0.04em]",
+                  "font-display text-[clamp(2.75rem,1.4rem+5vw,5.25rem)] font-semibold leading-[0.9] tracking-[-0.04em]",
                   t.title,
                 )}
               >
@@ -252,20 +270,25 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
               </h2>
             </Reveal>
             <Reveal delay={80}>
-              <p className={cn("text-lead mt-7 max-w-xl", t.body)}>{r.summary}</p>
+              <p className={cn("text-lead mt-6 max-w-lg sm:mt-7", t.body)}>{r.summary}</p>
             </Reveal>
             <Reveal delay={120}>
-              <p className={cn("font-display mt-5 max-w-xl text-lg italic leading-snug", t.accent)}>
+              <p className={cn("font-display mt-4 max-w-lg text-lg italic leading-snug", t.accent)}>
                 {r.forWho}
               </p>
             </Reveal>
 
-            <ol className={cn("mt-10 border-t", t.rule)}>
+            <ol className={cn("mt-9 border-t sm:mt-10", t.rule)}>
               {r.programs.map((p, i) => (
-                <Reveal as="li" key={p.title} delay={150 + i * 80} className={cn("border-b py-6", t.rule)}>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <h3 className={cn("font-display text-2xl font-semibold", t.title)}>{p.title}</h3>
-                    <p className={cn("text-sm font-semibold tabular-nums", t.accent)}>{p.when}</p>
+                <Reveal
+                  as="li"
+                  key={p.title}
+                  delay={150 + i * 80}
+                  className={cn("group/program border-b py-5 sm:py-6", t.rule)}
+                >
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                    <h3 className={cn("font-display text-xl font-semibold sm:text-2xl", t.title)}>{p.title}</h3>
+                    <p className={cn("shrink-0 text-sm font-semibold tabular-nums", t.accent)}>{p.when}</p>
                   </div>
                   <p className={cn("mt-2 max-w-xl leading-relaxed", t.body)}>{p.summary}</p>
                   <p className={cn("mt-2 text-xs font-medium", t.muted)}>{p.format}</p>
@@ -274,7 +297,7 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
             </ol>
 
             <Reveal delay={200}>
-              <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <div className="mt-9 flex flex-col items-start gap-5 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7">
                 <ButtonLink
                   href={r.cta.href}
                   external={isExternal(r.cta.href)}
@@ -313,8 +336,8 @@ export function RuangSections() {
 /* ── Rangkuman di akhir rangkaian ─────────────────────────────────────────── */
 
 export function RuangSummary({
-  title = "Semua ruang dalam satu tampilan",
-  description = "Ringkasan program di setiap ruang, lengkap dengan jadwal rutinnya setiap minggu.",
+  title = "Sekilas tentang empat ruang",
+  description = "Program dan jadwal rutin di setiap ruang.",
   className = "bg-cream",
   linkPrefix = "",
 }: {
@@ -328,14 +351,15 @@ export function RuangSummary({
 
   return (
     <section id="ringkasan-ruang" className={cn("relative overflow-hidden py-20 sm:py-28 lg:py-32", className)}>
+      <TodayMarker />
       <Container size="wide">
         <Reveal>
           <h2 className="text-headline max-w-3xl text-ink">{title}</h2>
-          <p className="text-lead mt-4 max-w-2xl text-sand-700">{description}</p>
+          <p className="text-lead mt-4 max-w-xl text-sand-700">{description}</p>
         </Reveal>
 
         {/* Ruang dan programnya */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
           {allRuang.map((r, i) => {
             const t = tones[r.tone];
             return (
@@ -343,13 +367,24 @@ export function RuangSummary({
                 <a
                   href={`${linkPrefix}#${r.slug}`}
                   className={cn(
-                    "group flex h-full flex-col rounded-[1.75rem] p-6 transition duration-500 hover:-translate-y-1 hover:shadow-warm-lg sm:p-7",
+                    "group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-6 shadow-warm transition duration-500 hover:-translate-y-1 hover:shadow-warm-lg sm:p-7",
                     t.card,
                   )}
                 >
-                  <h3 className="font-display text-3xl font-semibold leading-none">
-                    <RuangName name={r.name} prefixClassName={cn("mb-1.5 text-base", t.accent)} />
-                  </h3>
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="font-display text-3xl font-semibold leading-none">
+                      <RuangName name={r.name} prefixClassName={cn("mb-1.5 text-base", t.accent)} />
+                    </h3>
+                    <span className="relative h-16 w-12 shrink-0 overflow-hidden rounded-b-lg rounded-t-full">
+                      <Image
+                        src={r.image}
+                        alt=""
+                        fill
+                        sizes="48px"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </span>
+                  </div>
                   <ul className="mt-7 flex-1 space-y-4">
                     {r.programs.map((p) => (
                       <li key={p.title} className={cn("border-t pt-3", t.cardRule)}>
@@ -369,16 +404,24 @@ export function RuangSummary({
         </div>
 
         {/* Kalender mingguan */}
-        <Reveal className="mt-20 lg:mt-24">
-          <h3 className="text-title text-ink">Jadwal rutin setiap minggu</h3>
+        <Reveal className="mt-16 sm:mt-20 lg:mt-24">
+          <h3 className="text-title text-ink">Jadwal mingguan</h3>
         </Reveal>
-        <ol className="mt-8 grid grid-cols-7 gap-1.5 sm:gap-3" aria-label="Kalender mingguan">
+        <ol className="mt-6 grid grid-cols-7 gap-1 sm:mt-8 sm:gap-2 lg:gap-3" aria-label="Kalender mingguan">
           {weekDays.map((day, i) => {
             const items = weekly.filter((w) => w.weekly.day === i);
             const label = (
-              <span className="text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-xs">
-                <span className="sm:hidden">{day.slice(0, 3)}</span>
-                <span className="hidden sm:inline">{day}</span>
+              <span className="flex items-center justify-center gap-2 sm:justify-between">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-xs">
+                  <span className="xl:hidden">{day.slice(0, 3)}</span>
+                  <span className="hidden xl:inline">{day}</span>
+                </span>
+                <span
+                  data-today-label
+                  className="hidden rounded-full bg-gold-400 px-2 py-0.5 text-[10px] font-semibold normal-case tracking-normal text-maroon-950"
+                >
+                  Hari ini
+                </span>
               </span>
             );
             return (
@@ -386,16 +429,19 @@ export function RuangSummary({
                 {items.length ? (
                   <a
                     href={`${linkPrefix}#${items[0].ruang.slug}`}
-                    className="flex h-full min-h-28 flex-col justify-between rounded-xl bg-maroon-700 p-2 text-sand-50 transition-colors duration-300 hover:bg-maroon-800 sm:min-h-44 sm:rounded-2xl sm:p-4"
+                    data-weekday={i}
+                    aria-label={`${day}: ${items.map((it) => `${it.title} ${it.weekly.time} WIB`).join(", ")}`}
+                    className="flex h-full min-h-20 flex-col justify-between rounded-lg bg-maroon-700 p-1.5 text-sand-50 shadow-warm transition-colors duration-300 hover:bg-maroon-800 sm:min-h-32 sm:rounded-2xl sm:p-3 lg:min-h-44 lg:p-4"
                   >
                     <span className="text-sand-200/80">{label}</span>
-                    <span>
+                    <span className="block">
+                      <span className="mx-auto block h-1.5 w-1.5 rounded-full bg-gold-400 sm:hidden" />
                       {items.map((it) => (
-                        <span key={it.title} className="block">
-                          <span className="font-display hidden text-base leading-tight sm:block lg:text-lg">
+                        <span key={it.title} className="hidden sm:block">
+                          <span className="font-display hidden text-base leading-tight [overflow-wrap:anywhere] lg:block xl:text-lg">
                             {it.title}
                           </span>
-                          <span className="mt-1 block text-[10px] font-semibold tabular-nums text-gold-400 sm:text-sm">
+                          <span className="mt-1 block text-xs font-semibold tabular-nums text-gold-400 lg:text-sm">
                             {it.weekly.time}
                           </span>
                         </span>
@@ -403,7 +449,10 @@ export function RuangSummary({
                     </span>
                   </a>
                 ) : (
-                  <div className="flex h-full min-h-28 flex-col rounded-xl border border-dashed border-sand-300 p-2 text-sand-500 sm:min-h-44 sm:rounded-2xl sm:p-4">
+                  <div
+                    data-weekday={i}
+                    className="flex h-full min-h-20 flex-col rounded-lg border border-dashed border-sand-300 p-1.5 text-sand-500 sm:min-h-32 sm:rounded-2xl sm:p-3 lg:min-h-44 lg:p-4"
+                  >
                     {label}
                   </div>
                 )}
@@ -412,22 +461,20 @@ export function RuangSummary({
           })}
         </ol>
 
-        <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="mt-10 grid gap-10 sm:mt-12 lg:grid-cols-12 lg:gap-16">
           <ol className="border-t border-sand-300/70 lg:col-span-7">
             {weekly.map((w, i) => (
               <Reveal as="li" key={w.title} delay={i * 70} className="border-b border-sand-300/70">
                 <a
                   href={`${linkPrefix}#${w.ruang.slug}`}
-                  className="group grid grid-cols-[4.5rem_1fr] gap-x-4 gap-y-2 py-5 sm:grid-cols-[6.5rem_1fr_auto] sm:items-baseline sm:gap-x-6"
+                  className="group grid grid-cols-[4rem_1fr] gap-x-4 gap-y-1 py-5 sm:grid-cols-[6.5rem_1fr_auto] sm:items-baseline sm:gap-x-6"
                 >
                   <span className="font-display text-lg italic text-maroon-700">{weekDays[w.weekly.day]}</span>
                   <span className="min-w-0">
-                    <span className="font-display block text-xl font-semibold text-ink transition-colors duration-300 group-hover:text-maroon-700">
+                    <span className="font-display block text-lg font-semibold leading-snug text-ink transition-colors duration-300 group-hover:text-maroon-700 sm:text-xl">
                       {w.title}
                     </span>
-                    <span className="mt-1 block text-sm text-sand-600">
-                      Ruang {w.ruang.name} · {w.format}
-                    </span>
+                    <span className="mt-1 block text-sm text-sand-600">Ruang {w.ruang.name}</span>
                   </span>
                   <span className="col-start-2 text-sm font-semibold tabular-nums text-sand-800 sm:col-start-auto sm:text-base">
                     {w.weekly.time} WIB
@@ -438,16 +485,20 @@ export function RuangSummary({
           </ol>
 
           <Reveal variant="right" className="lg:col-span-5">
-            <div className="h-full rounded-[1.75rem] bg-sand-100 p-7 sm:p-9">
-              <Icon.clock className="h-8 w-8 text-maroon-600" />
-              <h3 className="font-display mt-6 text-2xl font-semibold leading-snug text-ink sm:text-3xl">
-                Butuh bicara di luar jadwal ini?
+            <div className="relative h-full overflow-hidden rounded-[1.75rem] bg-sand-100 p-7 shadow-warm sm:p-9">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-maroon-200/40 blur-3xl"
+              />
+              <Icon.clock className="relative h-8 w-8 text-maroon-600" />
+              <h3 className="font-display relative mt-6 text-2xl font-semibold leading-snug text-ink sm:text-3xl">
+                Tidak bisa di jam-jam itu?
               </h3>
-              <p className="mt-3 leading-relaxed text-sand-700">
-                Formulir pertolongan bisa diisi kapan saja, dan WhatsApp kami dibalas setiap hari.
-                Kalau keadaannya darurat, tulis di awal pesan supaya kami dahulukan.
+              <p className="relative mt-3 leading-relaxed text-sand-700">
+                Formulir bisa diisi kapan saja, dan WhatsApp kami balas setiap hari. Kalau darurat,
+                tulis di awal pesan.
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <div className="relative mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <ButtonLink href="/pertolongan">Isi formulir</ButtonLink>
                 <ArrowLink href={waLink()}>Chat WhatsApp</ArrowLink>
               </div>
@@ -456,18 +507,22 @@ export function RuangSummary({
         </div>
 
         {/* Jembatan ke gereja lokal */}
-        <Reveal className="mt-16 lg:mt-20">
+        <Reveal className="mt-14 lg:mt-20">
           <a
             href={site.church.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-maroon-deep group relative isolate flex flex-col gap-8 overflow-hidden rounded-[2rem] p-8 text-sand-50 sm:p-10 lg:flex-row lg:items-center lg:justify-between lg:p-14"
+            className="bg-maroon-deep group relative isolate flex flex-col gap-7 overflow-hidden rounded-[2rem] p-7 text-sand-50 shadow-deep sm:p-10 lg:flex-row lg:items-center lg:justify-between lg:p-14"
           >
             <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.08]" />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-24 -right-10 -z-10 h-72 w-72 rounded-full bg-gold-400/15 blur-3xl transition-transform duration-700 group-hover:scale-125"
+            />
             <div className="max-w-2xl">
-              <p className="font-display text-lg italic text-gold-400">Mencari gereja untuk ibadah Minggu?</p>
+              <p className="font-display text-lg italic text-gold-400">Cari gereja untuk ibadah Minggu?</p>
               <p className="font-display mt-3 text-2xl font-semibold leading-snug sm:text-3xl">
-                Kami berjemaat di {site.church.name}. Jadwal ibadah dan komselnya ada di situs gereja.
+                Kami berjemaat di {site.church.name}. Jadwal ibadahnya ada di sini.
               </p>
             </div>
             <span className="inline-flex shrink-0 items-center gap-3 self-start rounded-full bg-sand-50 px-6 py-3.5 text-sm font-semibold text-maroon-800 transition-colors duration-300 group-hover:bg-white lg:self-auto">

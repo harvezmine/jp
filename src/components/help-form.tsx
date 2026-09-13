@@ -36,7 +36,7 @@ const urgencyHint: Record<Urgency, string> = {
 };
 
 const steps = [
-  { title: "Kebutuhan", caption: "Bantuan apa yang sedang kamu perlukan?" },
+  { title: "Kebutuhan", caption: "Kamu butuh bantuan apa?" },
   { title: "Cerita", caption: "Ceritakan dengan bahasamu sendiri." },
   { title: "Kontak", caption: "Ke mana kami bisa menghubungimu?" },
 ] as const;
@@ -76,7 +76,7 @@ export function HelpForm() {
   const validateStep = (index: number) => {
     const next: Record<string, string> = {};
     if (index === 1 && message.trim().length < 15) {
-      next.message = "Tulis sedikit lebih banyak supaya kami tahu harus mulai dari mana.";
+      next.message = "Ceritakan sedikit lebih banyak, ya.";
     }
     if (index === 2) {
       if (!isAnonymous && name.trim().length < 2) {
@@ -129,8 +129,8 @@ export function HelpForm() {
           Permohonanmu sudah kami terima.
         </h2>
         <p className="mx-auto mt-3 max-w-md leading-relaxed text-sand-700">
-          Terima kasih sudah mau bercerita. Pengurus akan menghubungimu secepatnya, dan mulai hari
-          ini kamu kami doakan.
+          Terima kasih sudah bercerita. Kami akan segera menghubungimu, dan mulai hari ini kamu
+          kami doakan.
         </p>
 
         {state.refCode && (
@@ -140,7 +140,7 @@ export function HelpForm() {
               {state.refCode}
             </p>
             <p className="mt-2 text-xs leading-relaxed text-sand-600">
-              Simpan kode ini kalau nanti ingin menanyakan perkembangannya.
+              Simpan kode ini untuk menanyakan perkembangannya.
             </p>
           </div>
         )}
@@ -262,7 +262,7 @@ export function HelpForm() {
           <Field
             label="Ceritakan kepada kami"
             htmlFor="message"
-            hint="Tidak perlu rapi atau lengkap. Tulis saja yang sedang kamu hadapi."
+            hint="Tidak perlu rapi. Tulis saja apa adanya."
             error={errors.message}
           >
             <Textarea
@@ -282,14 +282,13 @@ export function HelpForm() {
             checked={isConfidential}
             onChange={setIsConfidential}
             title="Anggap sebagai rahasia"
-            description="Isi cerita tidak ikut dikirim ke notifikasi WhatsApp atau email pengurus. Hanya bisa dibaca lewat panel admin."
+            description="Isi ceritamu tidak ikut terkirim lewat notifikasi WhatsApp atau email tim."
           />
 
           <div className="flex gap-3 rounded-xl bg-paper p-4">
             <Icon.shield className="mt-0.5 h-5 w-5 shrink-0 text-maroon-600" />
             <p className="text-xs leading-relaxed text-sand-700">
-              Cerita ini hanya dibaca pengurus yang menangani permohonanmu. Kami tidak akan
-              membagikannya ke siapa pun tanpa izinmu.
+              Ceritamu hanya dibaca tim yang menanganinya, dan tidak akan dibagikan tanpa izinmu.
             </p>
           </div>
         </fieldset>
@@ -303,7 +302,7 @@ export function HelpForm() {
             checked={isAnonymous}
             onChange={setIsAnonymous}
             title="Kirim tanpa nama"
-            description="Namamu tidak disimpan. Kalau kamu tetap mengisi nomor atau email, kami masih bisa menghubungimu."
+            description="Namamu tidak disimpan. Isi nomor atau email kalau tetap mau kami hubungi."
           />
 
           {!isAnonymous && (

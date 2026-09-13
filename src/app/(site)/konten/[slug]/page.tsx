@@ -8,6 +8,7 @@ import { RichText } from "@/components/rich-text";
 import { ShareButtons } from "@/components/share-buttons";
 import { PostCard } from "@/components/content-cards";
 import { Icon } from "@/components/icons";
+import { HeroLip } from "@/components/page-hero";
 import { ArrowLink, ButtonLink, Container, Rise } from "@/components/ui";
 import { mockPhoto } from "@/lib/mock";
 import { getPostBySlug, getPostSlugs, getPosts } from "@/lib/queries";
@@ -116,6 +117,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             </Rise>
           )}
         </Container>
+        <HeroLip />
       </section>
 
       <section className="bg-cream pb-24 sm:pb-32">
@@ -157,7 +159,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               Sedang menghadapi hal yang berat?
             </h2>
             <p className="mt-3 max-w-lg leading-relaxed text-sand-200/80">
-              Ceritakan saja ke kami, seadanya. Tim kami akan mendoakan dan menghubungimu.
+              Cerita saja ke kami, seadanya. Kami akan mendoakan dan menghubungimu.
             </p>
             <div className="mt-7 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
               <ButtonLink href="/pertolongan" variant="light">

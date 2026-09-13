@@ -239,6 +239,22 @@
   transform: none;
 }
 
+/* Garis pemisah yang tergambar dari kiri */
+[data-aos="draw"] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition-property: transform;
+}
+[data-aos="draw"].aos-animate { transform: scaleX(1); }
+
+/* Penanda hari ini di kalender mingguan (kelasnya dipasang components/today-marker.tsx) */
+[data-weekday].is-today {
+  box-shadow: 0 0 0 2px var(--color-cream), 0 0 0 4px var(--color-gold-500);
+}
+@media (min-width: 80rem) {
+  [data-weekday].is-today [data-today-label] { display: inline-block; }
+}
+
 /* ── Hormati preferensi pengguna ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

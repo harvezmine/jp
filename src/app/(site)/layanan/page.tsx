@@ -1,44 +1,38 @@
 import type { Metadata } from "next";
 
+import { FaqSection, type Faq } from "@/components/faq";
 import { HelpSteps } from "@/components/help-steps";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
-import { Reveal } from "@/components/reveal";
 import { RuangIntro, RuangSections, RuangSummary } from "@/components/ruang";
-import { ArrowLink, ButtonLink, Container } from "@/components/ui";
+import { ArrowLink, ButtonLink } from "@/components/ui";
 import { photos } from "@/lib/photos";
 import { waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Pelayanan",
   description:
-    "Ruang Pengharapan, Ruang Doa, Ruang Cerita, dan Ruang Belajar. Pelayanan Janji Pengharapan yang gratis dan terbuka untuk siapa saja.",
+    "Ruang Pengharapan, Ruang Doa, Ruang Cerita, dan Ruang Belajar. Gratis dan terbuka untuk siapa saja.",
 };
 
-const faqs = [
+const faqs: Faq[] = [
+  { q: "Harus orang Kristen?", a: "Tidak. Siapa pun boleh datang, apa pun agamanya." },
   {
-    q: "Apakah harus orang Kristen?",
-    a: "Tidak. Siapa pun boleh minta didoakan, ditemani, atau ikut kelas, apa pun agama dan latar belakangmu.",
+    q: "Benar-benar gratis?",
+    a: "Ya. Doa, konseling, dan pendampingan gratis. Kalau ada kelas yang butuh biaya materi, kami kabari di awal.",
+  },
+  { q: "Siapa yang membaca ceritaku?", a: "Hanya tim yang menanganinya. Boleh juga tanpa nama." },
+  {
+    q: "Nanti diajak ikut gereja?",
+    a: "Kami akan bercerita tentang Yesus kalau kamu mau. Keputusannya tetap di tanganmu.",
   },
   {
-    q: "Apakah benar-benar gratis?",
-    a: "Ya. Doa, konseling, dan pendampingan tidak dipungut biaya. Beberapa kelas di Ruang Belajar mungkin punya biaya materi, dan akan disampaikan di awal.",
-  },
-  {
-    q: "Siapa yang akan membaca ceritaku?",
-    a: "Hanya pengurus yang menangani permohonanmu. Kamu juga boleh bercerita tanpa menyebut nama.",
-  },
-  {
-    q: "Apakah aku akan diajak ikut gereja?",
-    a: "Kami akan mendoakanmu dan bercerita tentang Yesus kalau kamu mau. Selebihnya, keputusan sepenuhnya ada padamu.",
-  },
-  {
-    q: "Bagaimana kalau keadaanku darurat?",
-    a: "Kalau ada nyawa yang terancam, hubungi 112 sekarang juga. Setelah itu, kabari kami lewat WhatsApp dan tulis \"darurat\" di awal pesan.",
+    q: "Kalau keadaanku darurat?",
+    a: "Kalau ada nyawa yang terancam, hubungi 112 sekarang. Setelah itu, kabari kami lewat WhatsApp.",
   },
   {
     q: "Berapa lama sampai dihubungi?",
-    a: "Permohonan mendesak kami usahakan dibalas di hari yang sama. Yang lain biasanya dalam satu sampai dua hari.",
+    a: "Yang mendesak, kami usahakan hari itu juga. Lainnya biasanya 1 sampai 2 hari.",
   },
 ];
 
@@ -53,7 +47,7 @@ export default function LayananPage() {
             Empat ruang untuk kamu yang <span className="italic text-gold-400">butuh ditolong.</span>
           </>
         }
-        description="Semua pelayanan di Janji Pengharapan terbuka untuk siapa saja, dari mana pun kamu mengenal kami."
+        description="Gratis dan terbuka untuk siapa saja."
       >
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
           <ButtonLink href="/pertolongan" variant="light" size="lg">
@@ -69,38 +63,22 @@ export default function LayananPage() {
       <RuangIntro
         title={
           <>
-            Mulai dari <span className="italic text-maroon-700">ruang</span> yang paling dekat dengan
-            kebutuhanmu.
+            Mulai dari <span className="italic text-maroon-700">ruang</span> yang paling pas.
           </>
         }
-        description="Bingung harus pilih yang mana? Isi formulir saja, nanti tim kami yang membantu menentukan."
+        description="Bingung pilih yang mana? Isi formulir saja, nanti kami bantu."
       />
       <RuangSections />
       <RuangSummary />
 
       <HelpSteps />
 
-      <section className="bg-paper py-24 sm:py-32">
-        <Container size="wide">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <Reveal className="lg:col-span-4">
-              <h2 className="text-headline text-ink">Yang sering ditanyakan</h2>
-              <p className="text-lead mt-4 text-sand-700">Pertanyaan lain? Tanya langsung saja.</p>
-              <div className="mt-6">
-                <ArrowLink href="/kontak">Hubungi kami</ArrowLink>
-              </div>
-            </Reveal>
-            <dl className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:col-span-8">
-              {faqs.map((f, i) => (
-                <Reveal key={f.q} delay={(i % 2) * 90} className="border-t border-sand-300/70 pt-6">
-                  <dt className="font-display text-xl font-semibold leading-snug text-ink">{f.q}</dt>
-                  <dd className="mt-3 leading-relaxed text-sand-700">{f.a}</dd>
-                </Reveal>
-              ))}
-            </dl>
-          </div>
-        </Container>
-      </section>
+      <FaqSection
+        title="Yang sering ditanyakan"
+        description="Pertanyaan lain? Tanya langsung saja."
+        action={{ label: "Hubungi kami", href: "/kontak" }}
+        items={faqs}
+      />
     </>
   );
 }

@@ -62,7 +62,7 @@ export default async function KontenPage({
         image={photos.heroContent}
         imageAlt="Alkitab terbuka di samping cangkir kopi"
         title="Tulisan, ayat, dan video untuk dibaca ulang."
-        description="Semua yang kami bagikan di TikTok, YouTube, dan Instagram, dikumpulkan di sini supaya mudah dicari lagi."
+        description="Semua yang pernah kami bagikan, dikumpulkan di sini."
       />
 
       {/* Navigasi tab, bisa digeser di layar sempit */}

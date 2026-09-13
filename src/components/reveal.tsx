@@ -10,6 +10,8 @@ const animations = {
   zoom: "zoom-out",
   /** Tirai dari bawah, cocok untuk foto. Didefinisikan di globals.css. */
   curtain: "curtain",
+  /** Garis yang tergambar dari kiri ke kanan. Didefinisikan di globals.css. */
+  draw: "draw",
 } as const;
 
 export type RevealVariant = keyof typeof animations;

@@ -33,6 +33,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <main id="konten-utama">{children}</main>
         <SiteFooter />
       </MotionProvider>
+      {/* Butiran halus di atas seluruh halaman, supaya permukaan terasa seperti kertas */}
+      <div
+        aria-hidden
+        className="bg-grain pointer-events-none fixed inset-0 z-[60] opacity-[0.035]"
+      />
     </>
   );
 }

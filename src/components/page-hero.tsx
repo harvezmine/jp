@@ -4,6 +4,20 @@ import { ParallaxImage } from "@/components/parallax";
 import { Container, Rise } from "@/components/ui";
 
 /**
+ * Tepi bawah hero yang melengkung, supaya section berikutnya terlihat seperti
+ * lembaran yang menumpuk di atas hero. Warnanya harus sama dengan latar
+ * section sesudahnya.
+ */
+export function HeroLip({ className = "bg-cream" }: { className?: string }) {
+  return (
+    <div
+      aria-hidden
+      className={`absolute inset-x-0 -bottom-px h-8 rounded-t-[2rem] sm:h-12 sm:rounded-t-[3rem] ${className}`}
+    />
+  );
+}
+
+/**
  * Hero untuk halaman selain beranda. Foto latar bergerak pelan (parallax) dan
  * ditutup gradasi maroon supaya teks tetap terbaca. Tingginya dijaga agar isi
  * halaman sudah mengintip di layar HP.
@@ -22,7 +36,7 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-maroon-950 pb-16 pt-32 sm:pb-24 sm:pt-44 lg:pb-28 lg:pt-52">
+    <section className="relative isolate overflow-hidden bg-maroon-950 pb-20 pt-28 sm:pb-32 sm:pt-44 lg:pb-36 lg:pt-52">
       {image ? (
         <>
           <ParallaxImage
@@ -49,19 +63,21 @@ export function PageHero({
 
       <Container size="wide" className="relative">
         <Rise>
-          <h1 className="text-display max-w-4xl text-sand-50">{title}</h1>
+          <h1 className="text-display max-w-3xl text-sand-50">{title}</h1>
         </Rise>
         {description && (
           <Rise delay={90}>
-            <p className="text-lead mt-6 max-w-2xl text-sand-200/85">{description}</p>
+            <p className="text-lead mt-5 max-w-xl text-sand-200/85 sm:mt-6">{description}</p>
           </Rise>
         )}
         {children && (
           <Rise delay={180}>
-            <div className="mt-9">{children}</div>
+            <div className="mt-8 sm:mt-9">{children}</div>
           </Rise>
         )}
       </Container>
+
+      <HeroLip />
     </section>
   );
 }
