@@ -108,7 +108,7 @@ export function RuangIntro({
       Pilih <span className="italic text-maroon-700">ruang</span> yang kamu butuhkan.
     </>
   ),
-  description = "Ingin didoakan, punya teman cerita, atau menemukan penguatan? Mulai dari yang terasa nyaman untukmu.",
+  description = "Mulai dari ruang yang terasa paling nyaman untukmu. Pindah ruang kapan saja juga boleh.",
   linkPrefix = "",
   className = "bg-cream",
 }: {

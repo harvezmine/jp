@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
 import { ButtonLink } from "@/components/ui";
-import { navigation, site, waLink } from "@/lib/site";
+import { navigation, site, socialLinks, waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
@@ -185,11 +185,7 @@ export function SiteHeader() {
             <div className="mt-auto pt-10">
               <p className="text-xs uppercase tracking-[0.2em] text-sand-600">Ikuti kami</p>
               <div className="mt-3 flex gap-2">
-                {[
-                  { href: site.socials.instagram, icon: Icon.instagram, label: "Instagram" },
-                  { href: site.socials.tiktok, icon: Icon.tiktok, label: "TikTok" },
-                  { href: site.socials.youtube, icon: Icon.youtube, label: "YouTube" },
-                ].map((s) => (
+                {socialLinks.map(({ key, href, label }) => ({ href, label, icon: Icon[key] })).map((s) => (
                   <a
                     key={s.label}
                     href={s.href}

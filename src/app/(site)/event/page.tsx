@@ -59,7 +59,7 @@ export default async function EventPage() {
               ) : (
                 <EmptyState
                   title="Belum ada acara terjadwal"
-                  description="Podcast, doa online, dan kelas rutin tetap jalan setiap minggu."
+                  description="Doa online dan kelas rutin tetap jalan setiap minggu."
                   action={
                     <ButtonLink href="/kontak" variant="outline">
                       Tanya acara terdekat

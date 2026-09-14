@@ -43,7 +43,7 @@ export const ruang: Ruang[] = [
     short: "Saat kamu butuh dikuatkan",
     tagline: "Temukan penguatan, satu hari demi satu hari.",
     summary:
-      "Renungan pendek dan obrolan jujur soal hidup. Bisa ditonton online, bisa juga didatangi langsung.",
+      "Renungan pendek untuk menemani hari-harimu. Bisa ditonton online, bisa juga didatangi langsung.",
     forWho: "Untuk kamu yang butuh dikuatkan, atau baru mulai mengenal Tuhan.",
     programs: [
       {
@@ -53,20 +53,17 @@ export const ruang: Ruang[] = [
         format: "TikTok, Instagram, YouTube Shorts",
       },
       {
-        title: "Podcast & Live",
-        summary: "Obrolan santai soal iman, keluarga, kerja, dan kesehatan mental. Kamu bisa bertanya langsung.",
-        when: "Senin, 20.00 WIB",
-        format: "Live di TikTok dan YouTube",
-        weekly: { day: 0, time: "20.00" },
-      },
-      {
         title: "Live Event",
         summary: "Malam pujian, seminar, dan kesempatan ketemu langsung.",
         when: "Lihat kalender acara",
         format: "Tatap muka di Jakarta",
       },
     ],
-    cta: { label: "Follow di TikTok", href: site.socials.tiktok },
+    cta: site.socials.tiktok
+      ? { label: "Follow di TikTok", href: site.socials.tiktok }
+      : site.socials.instagram
+        ? { label: "Ikuti di Instagram", href: site.socials.instagram }
+        : { label: "Baca renungan", href: "/konten" },
     secondary: { label: "Lihat acara terdekat", href: "/event" },
     image: photos.ruangHope,
     imageAlt: "Orang-orang mengangkat tangan dalam acara pujian yang diterangi lampu hangat",
@@ -80,7 +77,7 @@ export const ruang: Ruang[] = [
     tagline: "Ada yang ikut mendoakanmu.",
     summary:
       "Setiap pokok doa yang masuk kami doakan. Kirim kapan saja, ikut doa online, atau minta sesi doa khusus.",
-    forWho: "Untuk kamu yang sedang sakit, cemas, atau menunggu jawaban.",
+    forWho: "Untuk siapa saja yang ingin didoakan, kapan pun.",
     programs: [
       {
         title: "Doa Kesembuhan",
@@ -119,7 +116,7 @@ export const ruang: Ruang[] = [
     tagline: "Ceritamu layak didengarkan.",
     summary:
       "Kamu tidak perlu merangkai kata dengan sempurna. Ada pendampingan pribadi dan kelompok berbagi untuk saling menguatkan.",
-    forWho: "Untuk saat keluarga, hubungan, rasa khawatir, atau kehilangan terasa berat.",
+    forWho: "Untuk kamu yang ingin bercerita dan didengarkan.",
     programs: [
       {
         title: "Konseling pastoral",

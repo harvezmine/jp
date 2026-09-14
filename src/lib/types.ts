@@ -113,18 +113,18 @@ export const POST_CATEGORY_LABEL: Record<PostCategory, string> = {
 export const HELP_CATEGORY_LABEL: Record<HelpCategory, string> = {
   doa: "Didoakan",
   konseling: "Teman bercerita",
-  kebutuhan: "Kebutuhan pokok",
+  kebutuhan: "Kebutuhan sehari-hari",
   kunjungan: "Ditemani atau dijenguk",
-  keuangan: "Kesulitan keuangan",
+  keuangan: "Pekerjaan atau keuangan",
   lainnya: "Belum tahu / lainnya",
 };
 
 export const HELP_CATEGORY_HINT: Record<HelpCategory, string> = {
   doa: "Ada beban yang ingin dibawa bersama dalam doa",
   konseling: "Ingin berbicara empat mata dengan pendamping",
-  kebutuhan: "Sembako, obat, atau kebutuhan harian",
-  kunjungan: "Sakit, berduka, atau ingin ditemani",
-  keuangan: "Kesulitan biaya sekolah, kontrakan, atau usaha",
+  kebutuhan: "Ada kebutuhan yang ingin dibicarakan",
+  kunjungan: "Ingin ada yang datang menemani",
+  keuangan: "Ada yang sedang berat soal ini, boleh diceritakan",
   lainnya: "Tidak apa-apa, kita cari tahu bersama",
 };
 

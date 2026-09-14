@@ -1,7 +1,7 @@
 /**
  * Foto sementara dari Unsplash (bebas dipakai) supaya desain bisa dinilai.
- * Ganti dengan foto kegiatan JP yang asli: simpan file di public/photos/,
- * lalu ubah nilainya menjadi "/photos/nama-file.jpg".
+ * Ganti dengan foto kegiatan JP yang asli: simpan file di public/images/jp/,
+ * lalu ubah nilainya menjadi "/images/jp/nama-file.jpg".
  */
 const unsplash = (id: string) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=2000&q=80`;
@@ -15,7 +15,8 @@ export const photos = {
   aboutHands: unsplash("1437603568260-1950d3ca6eab"),
 
   ruangHope: unsplash("1438232992991-995b7058bbb3"),
-  ruangHopeDetail: unsplash("1522202176988-66273c2fd55f"),
+  // Frame asli dari reel Instagram JP, dipotong di atas judul yang tertanam di video.
+  ruangHopeDetail: "/images/jp/insight-studio.jpg",
   ruangPrayer: unsplash("1478147427282-58a87a120781"),
   ruangPrayerDetail: unsplash("1602523961358-f9f03dd557db"),
   ruangStory: unsplash("1508963493744-76fce69379c0"),
@@ -24,7 +25,9 @@ export const photos = {
   ruangLearnDetail: unsplash("1531545514256-b1400bc00f31"),
 
   help: unsplash("1544027993-37dbfe43562a"),
-  donation: unsplash("1488521787991-ed7bbaae773c"),
+  // Sengaja simbolis dan tanpa wajah orang: foto anak-anak sebelumnya mengesankan
+  // mereka penerima bantuan JP, dan JP tidak menyalurkan bantuan ekonomi secara khusus.
+  donation: unsplash("1602523961358-f9f03dd557db"),
   quotes: unsplash("1508672019048-805c876b67e2"),
   invite: unsplash("1496275068113-fff8c90750d1"),
 
@@ -35,9 +38,10 @@ export const photos = {
   heroContact: unsplash("1491438590914-bc09fcaaf77a"),
   heroDonation: unsplash("1593113598332-cd288d649433"),
 
-  storyStart: unsplash("1504052434569-70ad5836ab65"),
+  storyStart: "/images/jp/insight-studio-2.jpg",
   storyGrow: unsplash("1473186505569-9c61870c11f9"),
-  storyToday: unsplash("1593113598332-cd288d649433"),
+  // Sengaja bukan foto relawan membagikan bantuan: JP tidak menjanjikan bantuan materi.
+  storyToday: unsplash("1609234656388-0ff363383899"),
 } as const;
 
 export const coverPool = [

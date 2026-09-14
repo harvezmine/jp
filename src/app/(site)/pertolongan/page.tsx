@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CrisisLine } from "@/components/crisis-line";
 import { HelpForm } from "@/components/help-form";
 import { HeroLip } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
@@ -11,7 +12,7 @@ import type { HelpCategory } from "@/lib/types";
 export const metadata: Metadata = {
   title: "Butuh Pertolongan",
   description:
-    "Minta didoakan, konseling, kunjungan, atau bantuan sembako dari Janji Pengharapan. Gratis, rahasia, dan boleh tanpa nama.",
+    "Ceritakan apa yang sedang kamu bawa. Tim Janji Pengharapan mendengar, mendoakan, dan menemani. Gratis dan boleh tanpa nama.",
   alternates: { canonical: "/pertolongan" },
 };
 
@@ -101,13 +102,7 @@ export default async function PertolonganPage({ searchParams }: { searchParams: 
                 </Reveal>
 
                 <Reveal variant="left" delay={200}>
-                  <div className="rounded-2xl border border-sand-300 bg-sand-100 p-6">
-                    <p className="font-semibold text-maroon-900">Jika kamu membutuhkan bantuan segera</p>
-                    <p className="mt-2 text-sm leading-relaxed text-sand-800">
-                      Formulir ini tidak dipantau setiap saat. Jika keselamatanmu atau orang lain terancam, hubungi
-                      layanan darurat setempat dan orang terdekat.
-                    </p>
-                  </div>
+                  <CrisisLine />
                 </Reveal>
               </div>
             </aside>

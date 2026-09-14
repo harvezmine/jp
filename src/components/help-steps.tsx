@@ -66,17 +66,8 @@ export function HelpSteps() {
                   as="li"
                   key={s.title}
                   delay={i * 110}
-                  className="relative grid grid-cols-[3rem_1fr] gap-4 border-t border-sand-50/10 py-7 sm:grid-cols-[6rem_1fr] sm:gap-8 sm:py-8"
+                  className="grid grid-cols-[3rem_1fr] gap-4 border-t border-sand-50/10 py-7 sm:grid-cols-[6rem_1fr] sm:gap-8 sm:py-8"
                 >
-                  {/* Garis emas yang tergambar di atas setiap langkah */}
-                  <Reveal
-                    variant="draw"
-                    duration={1000}
-                    delay={200 + i * 150}
-                    className="absolute -top-px left-0 h-px w-24 bg-gold-400 sm:w-40"
-                  >
-                    {null}
-                  </Reveal>
                   <span className="font-display text-5xl font-semibold leading-none text-gold-400/90 sm:text-6xl">
                     {i + 1}
                   </span>
@@ -90,14 +81,10 @@ export function HelpSteps() {
 
             <Reveal delay={150}>
               <div className="flex flex-col gap-7 border-t border-sand-50/10 pt-9 sm:flex-row sm:items-center sm:justify-between sm:pt-10">
-                <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-sand-200/80">
-                  {["Rahasia", "Boleh tanpa nama", "Gratis"].map((item) => (
-                    <li key={item} className="flex items-center gap-2">
-                      <Icon.check className="h-4 w-4 text-gold-400" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <p className="flex items-center gap-3 text-sm text-sand-200/80">
+                  <Icon.lock className="h-5 w-5 shrink-0 text-gold-400" />
+                  Ceritamu dijaga, dan boleh tanpa nama.
+                </p>
                 <div className="flex flex-col items-start gap-5 sm:items-end">
                   <ButtonLink href="/pertolongan" variant="light" size="lg">
                     Mulai cerita

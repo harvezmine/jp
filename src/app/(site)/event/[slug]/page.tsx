@@ -72,7 +72,7 @@ export default async function EventDetailPage({
     location: {
       "@type": "Place",
       name: event.location ?? site.name,
-      address: event.address ?? site.address.line1,
+      ...(event.address ? { address: event.address } : {}),
     },
     organizer: { "@type": "Organization", name: site.name, url: site.url },
   };
@@ -169,7 +169,10 @@ export default async function EventDetailPage({
                 </div>
               </div>
               <ButtonLink
-                href={event.map_url ?? site.address.mapUrl}
+                href={
+                  event.map_url ??
+                  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address ?? "")}`
+                }
                 external
                 variant="outline"
                 className="shrink-0"

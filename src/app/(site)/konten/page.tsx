@@ -10,7 +10,9 @@ import { getPosts, getQuotes, getSocialPosts } from "@/lib/queries";
 import { photos } from "@/lib/photos";
 import { POST_CATEGORY_LABEL } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { site } from "@/lib/site";
+import { socialLinks } from "@/lib/site";
+
+const SOCIAL_CTA = { instagram: "Ikuti di Instagram", tiktok: "Follow di TikTok", youtube: "Subscribe di YouTube" } as const;
 
 export const metadata: Metadata = {
   title: "Konten",
@@ -164,18 +166,15 @@ export default async function KontenPage({
                 </div>
                 <Reveal delay={150}>
                   <div className="mt-14 flex flex-col justify-center gap-3 sm:flex-row">
-                    <ButtonLink href={site.socials.tiktok} external variant="outline">
-                      <Icon.tiktok className="h-4 w-4" />
-                      Follow di TikTok
-                    </ButtonLink>
-                    <ButtonLink href={site.socials.youtube} external variant="outline">
-                      <Icon.youtube className="h-4 w-4" />
-                      Subscribe di YouTube
-                    </ButtonLink>
-                    <ButtonLink href={site.socials.instagram} external variant="outline">
-                      <Icon.instagram className="h-4 w-4" />
-                      Ikuti di Instagram
-                    </ButtonLink>
+                    {socialLinks.map(({ key, href }) => {
+                      const SocialIcon = Icon[key];
+                      return (
+                        <ButtonLink key={key} href={href} external variant="outline">
+                          <SocialIcon className="h-4 w-4" />
+                          {SOCIAL_CTA[key]}
+                        </ButtonLink>
+                      );
+                    })}
                   </div>
                 </Reveal>
               </>
@@ -184,9 +183,11 @@ export default async function KontenPage({
                 title="Belum ada video yang dipilih"
                 description="Tambahkan tautan TikTok, YouTube, atau Instagram lewat admin panel untuk menampilkannya di sini."
                 action={
-                  <ButtonLink href={site.socials.tiktok} external>
-                    Buka TikTok kami
-                  </ButtonLink>
+                  socialLinks[0] ? (
+                    <ButtonLink href={socialLinks[0].href} external>
+                      Buka {socialLinks[0].label} kami
+                    </ButtonLink>
+                  ) : undefined
                 }
               />
             ))}

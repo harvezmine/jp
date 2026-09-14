@@ -14,7 +14,7 @@ const uses = [
     body: "Sembako, obat, dan biaya mendesak untuk yang sedang kesulitan.",
   },
   { icon: Icon.users, title: "Konseling gratis", body: "Supaya siapa pun bisa didampingi konselor." },
-  { icon: Icon.play, title: "Konten dan acara", body: "Podcast, live, dan acara di Ruang Pengharapan." },
+  { icon: Icon.play, title: "Konten dan acara", body: "Renungan dan acara di Ruang Pengharapan." },
 ];
 
 /** "0000000000" → "000 000 0000", supaya nomor rekening mudah dibaca. */
@@ -69,7 +69,7 @@ export function DonationSection({ className = "bg-paper" }: { className?: string
             <Reveal variant="curtain" duration={1100} className="relative">
               <ParallaxImage
                 src={photos.donation}
-                alt="Anak-anak tersenyum dan melambaikan tangan ke arah kamera"
+                alt="Tiga lilin menyala di dalam gelap"
                 sizes="(min-width: 1024px) 45vw, 576px"
                 strength={8}
                 className="aspect-[4/3] rounded-[2rem] bg-sand-200"

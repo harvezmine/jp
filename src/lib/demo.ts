@@ -1,4 +1,4 @@
-import { coverPool, eventPool, socialPool } from "@/lib/photos";
+import { coverPool, eventPool } from "@/lib/photos";
 import type { JPEvent, Post, Quote, Service, SocialPost } from "@/lib/types";
 
 /**
@@ -51,36 +51,43 @@ export const demoServices: Service[] = [
   },
 ];
 
+// Empat kutipan unggulan: satu pembuka, lalu satu untuk tiap pergumulan yang paling sering
+// dibawa orang (hati yang patah karena hubungan, sakit dan takut, keuangan).
 export const demoQuotes: Quote[] = [
   {
     id: "q1",
-    content: "Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, yaitu rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan.",
-    reference: "Yeremia 29:11", author: null, published: true, featured: true, created_at: iso(-1),
+    content: "Marilah kepada-Ku, semua yang letih lesu dan berbeban berat, Aku akan memberi kelegaan kepadamu.",
+    reference: "Matius 11:28", author: null, published: true, featured: true, created_at: iso(-1),
   },
   {
     id: "q2",
-    content: "Pengharapan tidak mengecewakan, karena kasih Allah telah dicurahkan di dalam hati kita.",
-    reference: "Roma 5:5", author: null, published: true, featured: true, created_at: iso(-3),
+    content: "Tuhan itu dekat kepada orang-orang yang patah hati, dan Ia menyelamatkan orang-orang yang remuk jiwanya.",
+    reference: "Mazmur 34:19", author: null, published: true, featured: true, created_at: iso(-3),
   },
   {
     id: "q3",
-    content: "Marilah kepada-Ku, semua yang letih lesu dan berbeban berat, Aku akan memberi kelegaan kepadamu.",
-    reference: "Matius 11:28", author: null, published: true, featured: true, created_at: iso(-5),
+    content: "Janganlah takut, sebab Aku menyertai engkau, janganlah bimbang, sebab Aku ini Allahmu.",
+    reference: "Yesaya 41:10", author: null, published: true, featured: true, created_at: iso(-5),
   },
   {
     id: "q4",
-    content: "Tuhan itu dekat kepada orang-orang yang patah hati, dan Ia menyelamatkan orang-orang yang remuk jiwanya.",
-    reference: "Mazmur 34:19", author: null, published: true, featured: true, created_at: iso(-7),
+    content: "Allahku akan memenuhi segala keperluanmu menurut kekayaan dan kemuliaan-Nya dalam Kristus Yesus.",
+    reference: "Filipi 4:19", author: null, published: true, featured: true, created_at: iso(-7),
   },
   {
     id: "q5",
-    content: "Janganlah takut, sebab Aku menyertai engkau, janganlah bimbang, sebab Aku ini Allahmu.",
-    reference: "Yesaya 41:10", author: null, published: true, featured: true, created_at: iso(-9),
+    content: "Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, yaitu rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan.",
+    reference: "Yeremia 29:11", author: null, published: true, featured: false, created_at: iso(-9),
   },
   {
     id: "q6",
+    content: "Pengharapan tidak mengecewakan, karena kasih Allah telah dicurahkan di dalam hati kita.",
+    reference: "Roma 5:5", author: null, published: true, featured: false, created_at: iso(-11),
+  },
+  {
+    id: "q7",
     content: "Serahkanlah segala kekuatiranmu kepada-Nya, sebab Ia yang memelihara kamu.",
-    reference: "1 Petrus 5:7", author: null, published: true, featured: false, created_at: iso(-11),
+    reference: "1 Petrus 5:7", author: null, published: true, featured: false, created_at: iso(-13),
   },
 ];
 
@@ -170,9 +177,3 @@ export const demoEvents: JPEvent[] = [
   },
 ];
 
-export const demoSocialPosts: SocialPost[] = [
-  { id: "sp1", platform: "instagram", url: "https://instagram.com/janjipengharapan", caption: "Berharap itu menunggu bersama Pribadi yang pasti, walau waktunya belum kelihatan.", thumbnail_url: socialPool[0], sort_order: 1, published: true, created_at: iso(-1) },
-  { id: "sp2", platform: "tiktok", url: "https://tiktok.com/@janjipengharapan", caption: "3 hal yang berubah waktu kamu berhenti berdoa sendirian.", thumbnail_url: socialPool[1], sort_order: 2, published: true, created_at: iso(-3) },
-  { id: "sp3", platform: "instagram", url: "https://instagram.com/janjipengharapan", caption: "Tuhan tidak pernah terlambat, walau jarang secepat yang kita mau.", thumbnail_url: socialPool[2], sort_order: 3, published: true, created_at: iso(-5) },
-  { id: "sp4", platform: "tiktok", url: "https://tiktok.com/@janjipengharapan", caption: "Baca Mazmur waktu lagi capek. Utas singkat.", thumbnail_url: socialPool[3], sort_order: 4, published: true, created_at: iso(-8) },
-];

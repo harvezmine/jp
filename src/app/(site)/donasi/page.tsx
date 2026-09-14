@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { DonationSection } from "@/components/donation";
 import { FaqSection, type Faq } from "@/components/faq";
 import { PageHero } from "@/components/page-hero";
 import { photos } from "@/lib/photos";
-import { waLink, site } from "@/lib/site";
+import { features, waLink, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Donasi",
@@ -21,6 +22,8 @@ const faqs: Faq[] = [
 ];
 
 export default function DonasiPage() {
+  // Sementara disembunyikan sampai isi dan klaim donasinya dipastikan.
+  if (!features.donation) notFound();
   return (
     <>
       <PageHero

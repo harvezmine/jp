@@ -5,6 +5,7 @@ import { submitHelpRequest, type FormState } from "@/app/actions/help";
 import { Checkbox, Field, Input, OptionCard, Textarea } from "@/components/form-fields";
 import { Icon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui";
+import { crisis } from "@/lib/crisis";
 import { validateHelp, type HelpValues } from "@/lib/help-validation";
 import {
   CONTACT_PREF_LABEL,
@@ -18,6 +19,13 @@ import {
 import { cn } from "@/lib/utils";
 
 const initialState: FormState = { status: "idle" };
+
+/**
+ * Pilihan yang tampil di formulir. "kebutuhan" tetap sah di database supaya permintaan
+ * lama masih terbaca di admin, tapi tidak ditawarkan lagi: dua pilihan soal ekonomi
+ * terasa terlalu mengotak-ngotakkan, dan JP tidak menjanjikan bantuan materi.
+ */
+const FORM_CATEGORIES: HelpCategory[] = ["doa", "konseling", "kunjungan", "keuangan", "lainnya"];
 const categoryIcons: Record<HelpCategory, keyof typeof Icon> = {
   doa: "hands",
   konseling: "users",
@@ -53,7 +61,7 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
   const [state, dispatch, pending] = useActionState(submitHelpRequest, initialState);
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<HelpValues>({
-    category: initialCategory ?? "",
+    category: initialCategory && FORM_CATEGORIES.includes(initialCategory) ? initialCategory : "",
     urgency: "biasa",
     message: "",
     name: "",
@@ -247,9 +255,9 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
             aria-label="Dukungan yang kamu butuhkan"
             aria-describedby={errors.category ? "category-error" : undefined}
             aria-invalid={Boolean(errors.category)}
-            className="grid gap-3 sm:grid-cols-2"
+            className="grid gap-3 sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2"
           >
-            {(Object.keys(HELP_CATEGORY_LABEL) as HelpCategory[]).map((key) => {
+            {FORM_CATEGORIES.map((key) => {
               const CategoryIcon = Icon[categoryIcons[key]];
               return (
                 <OptionCard
@@ -325,8 +333,21 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
               role="note"
               className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm leading-relaxed text-amber-950"
             >
-              <strong>Utamakan keselamatanmu.</strong> Jika keselamatanmu atau orang lain sedang terancam, hubungi
-              layanan darurat setempat dan orang terdekat sekarang. Formulir ini tidak dipantau setiap saat.
+              <strong>Utamakan keselamatanmu.</strong> Formulir ini tidak dipantau setiap saat. Kalau nyawamu atau orang
+              lain sedang terancam, telepon{" "}
+              <a href={crisis.emergency.href} className="font-semibold underline underline-offset-4">
+                {crisis.emergency.label}
+              </a>{" "}
+              sekarang. Kalau butuh bicara, telepon {crisis.counseling.label} atau buka{" "}
+              <a
+                href={crisis.online.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold underline underline-offset-4"
+              >
+                {crisis.online.label}
+              </a>
+              .
             </div>
           )}
           <Checkbox

@@ -15,12 +15,13 @@ insert into services (slug, title, summary, icon, schedule, sort_order) values
 on conflict (slug) do nothing;
 
 insert into quotes (content, reference, featured) values
-  ('Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, yaitu rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan.', 'Yeremia 29:11', true),
-  ('Pengharapan tidak mengecewakan, karena kasih Allah telah dicurahkan di dalam hati kita.', 'Roma 5:5', true),
+  ('Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, yaitu rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan.', 'Yeremia 29:11', false),
+  ('Pengharapan tidak mengecewakan, karena kasih Allah telah dicurahkan di dalam hati kita.', 'Roma 5:5', false),
   ('Marilah kepada-Ku, semua yang letih lesu dan berbeban berat, Aku akan memberi kelegaan kepadamu.', 'Matius 11:28', true),
   ('Tuhan itu dekat kepada orang-orang yang patah hati, dan Ia menyelamatkan orang-orang yang remuk jiwanya.', 'Mazmur 34:19', true),
-  ('Janganlah takut, sebab Aku menyertai engkau, janganlah bimbang, sebab Aku ini Allahmu.', 'Yesaya 41:10', false),
-  ('Serahkanlah segala kekuatiranmu kepada-Nya, sebab Ia yang memelihara kamu.', '1 Petrus 5:7', false);
+  ('Janganlah takut, sebab Aku menyertai engkau, janganlah bimbang, sebab Aku ini Allahmu.', 'Yesaya 41:10', true),
+  ('Serahkanlah segala kekuatiranmu kepada-Nya, sebab Ia yang memelihara kamu.', '1 Petrus 5:7', false),
+  ('Allahku akan memenuhi segala keperluanmu menurut kekayaan dan kemuliaan-Nya dalam Kristus Yesus.', 'Filipi 4:19', true);
 
 insert into posts (slug, title, excerpt, body, category, author, published, published_at) values
   ('ketika-doa-belum-dijawab',

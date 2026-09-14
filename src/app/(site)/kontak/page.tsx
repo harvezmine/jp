@@ -8,20 +8,22 @@ import { Icon } from "@/components/icons";
 import { ButtonLink, Container } from "@/components/ui";
 import { photos } from "@/lib/photos";
 import { weekDays, weeklyPrograms } from "@/lib/ruang";
-import { site, waLink } from "@/lib/site";
+import { site, socialHandle, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Kontak",
-  description: "Hubungi Janji Pengharapan lewat WhatsApp, email, atau TikTok, atau kirim pesan lewat formulir.",
+  description: "Hubungi Janji Pengharapan lewat WhatsApp atau DM Instagram, atau kirim pesan lewat formulir.",
   alternates: { canonical: "/kontak" },
 };
 
 const channels = [
   site.whatsapp
-    ? { icon: Icon.whatsapp, label: "WhatsApp", value: site.phone, href: waLink(), note: "Sampaikan pesan dengan nyaman" }
+    ? { icon: Icon.whatsapp, label: "WhatsApp", value: site.phoneDisplay, href: waLink(), note: "Sampaikan pesan dengan nyaman" }
     : { icon: Icon.mail, label: "Pesan untuk tim JP", value: "Kami ingin mendengarkan", href: "#kirim-pesan", note: "Tinggalkan kontak agar kami bisa membalas" },
-  { icon: Icon.mail, label: "Email", value: site.email, href: `mailto:${site.email}`, note: "Untuk pertanyaan panjang" },
-  { icon: Icon.tiktok, label: "TikTok", value: "@janjipengharapan", href: site.socials.tiktok, note: "Boleh juga lewat DM" },
+  // Instagram JP memang menerima DM ("Butuh dukungan doa? DM kami!").
+  ...(site.socials.instagram
+    ? [{ icon: Icon.instagram, label: "Instagram", value: socialHandle(site.socials.instagram), href: site.socials.instagram, note: "Boleh juga lewat DM" }]
+    : []),
 ];
 
 export default function KontakPage() {
@@ -38,7 +40,7 @@ export default function KontakPage() {
 
       <section className="bg-cream pb-20 pt-14 sm:pb-28 sm:pt-20">
         <Container size="wide">
-          <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
+          <div className={`grid gap-3 sm:gap-4 ${channels.length > 2 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
             {channels.map((c, i) => (
               <Reveal key={c.label} delay={i * 90}>
                 <a

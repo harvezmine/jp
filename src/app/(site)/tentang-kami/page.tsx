@@ -21,7 +21,7 @@ const story = [
     title: "Satu video renungan",
     body: "Kami mulai membagikan renungan pendek di media sosial. Isinya sederhana: satu ayat dan satu cerita.",
     image: photos.storyStart,
-    alt: "Tangan memegang Alkitab yang terbuka",
+    alt: "Pembicara Janji Pengharapan menyampaikan renungan di depan kamera",
   },
   {
     label: "Lalu",
@@ -35,7 +35,7 @@ const story = [
     title: "Bertumbuh untuk menemani",
     body: "Ada tim pendoa, konselor, dan relawan, dibantu jemaat gereja lokal kami.",
     image: photos.storyToday,
-    alt: "Relawan mengangkat kardus berisi bantuan",
+    alt: "Sekelompok orang berdoa sambil saling merangkul",
   },
 ];
 
@@ -131,8 +131,8 @@ export default function TentangKamiPage() {
                 </Reveal>
                 <Reveal variant="curtain" duration={1100} className="mt-12 hidden lg:block">
                   <ParallaxImage
-                    src={photos.aboutPrayer}
-                    alt="Sekelompok orang berdoa sambil saling merangkul"
+                    src={photos.aboutHands}
+                    alt="Tangan terlipat berdoa di atas Alkitab yang terbuka"
                     sizes="38vw"
                     strength={8}
                     className="aspect-[4/3] rounded-[2rem] bg-sand-200 shadow-warm-lg"
@@ -149,16 +149,6 @@ export default function TentangKamiPage() {
                   delay={i * 100}
                   className="group relative border-t border-sand-300/70 py-9 first:border-t-0 first:pt-0 sm:py-12"
                 >
-                  {i > 0 && (
-                    <Reveal
-                      variant="draw"
-                      duration={900}
-                      delay={200}
-                      className="absolute -top-px left-0 h-px w-24 bg-maroon-600"
-                    >
-                      {null}
-                    </Reveal>
-                  )}
                   <span className="font-display block text-6xl font-semibold leading-none text-transparent transition-colors duration-500 [-webkit-text-stroke:1.5px_var(--color-maroon-300)] group-hover:text-maroon-300 sm:text-8xl">
                     {String(i + 1).padStart(2, "0")}
                   </span>

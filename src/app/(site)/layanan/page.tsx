@@ -28,7 +28,7 @@ const faqs: Faq[] = [
   },
   {
     q: "Kalau keadaanku darurat?",
-    a: "Jika keselamatanmu atau orang lain terancam, hubungi layanan darurat setempat dan orang terdekat. Formulir ini bukan layanan darurat.",
+    a: "Formulir ini tidak dipantau setiap saat. Kalau nyawamu atau orang lain terancam, telepon 119. Kalau butuh bicara sekarang, telepon 119 lalu tekan 8, atau buka healing119.id.",
   },
   {
     q: "Berapa lama sampai dihubungi?",

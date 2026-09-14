@@ -4,8 +4,8 @@
  * kutipan) diambil dari database lewat admin panel. Struktur pelayanan
  * ("ruang") ada di lib/ruang.ts.
  */
-// Set the real contact number through the environment; never send visitors to a sample number.
-const rawWhatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
+// Nomor WhatsApp tim JP (dikonfirmasi 15 September 2026). Env boleh menimpanya, tapi jangan pernah nomor contoh.
+const rawWhatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+62 817-9168-016").replace(/\D/g, "");
 const normalizedWhatsapp = rawWhatsapp.startsWith("0") ? `62${rawWhatsapp.slice(1)}` : rawWhatsapp;
 const whatsapp = /^\d{8,15}$/.test(normalizedWhatsapp) && !/0{7}/.test(normalizedWhatsapp) ? normalizedWhatsapp : "";
 
@@ -14,19 +14,22 @@ export const site = {
   shortName: "JP",
   tagline: "Tempat bercerita dan didoakan",
   description:
-    "Ruang untuk bercerita, didoakan, dan menemukan dukungan. Kamu boleh datang dengan ceritamu, apa adanya.",
+    "Tempat untuk bercerita dan didoakan saat hidup terasa berat. Kamu boleh datang apa adanya.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://janjipengharapan.com",
-  email: "halo@janjipengharapan.com",
+  // Belum ada alamat email yang aktif, jadi email sengaja tidak ditampilkan di mana pun.
   phone: whatsapp ? `+${whatsapp}` : "",
+  /** Nomor untuk dibaca orang, mis. "+62 817-9168-016". */
+  phoneDisplay: whatsapp.startsWith("62") ? `+62 ${whatsapp.slice(2, 5)}-${whatsapp.slice(5, 9)}-${whatsapp.slice(9)}` : whatsapp ? `+${whatsapp}` : "",
   whatsapp,
-  address: {
-    line1: "Jl. Contoh Raya No. 12",
-    line2: "Jakarta, DKI Jakarta",
-    mapUrl: "https://maps.google.com/?q=janji+pengharapan",
-  },
+  /**
+   * Akun sosial yang sudah dicek benar milik JP (15 September 2026). Kalau sebuah
+   * akun belum pasti, kosongkan nilainya: tombolnya otomatis disembunyikan di
+   * seluruh situs. Alamat sengaja tidak disimpan sampai ada alamat yang benar.
+   */
   socials: {
-    instagram: "https://instagram.com/janjipengharapan",
-    tiktok: "https://tiktok.com/@janjipengharapan",
+    instagram: "https://www.instagram.com/janji_pengharapan/",
+    tiktok: "https://www.tiktok.com/@janji.pengharapan",
+    // Channel asli JP, tapi unggahan terakhirnya Mei 2024.
     youtube: "https://youtube.com/@janjipengharapan",
   },
   /** Gereja lokal yang menaungi pelayanan ini. */
@@ -42,7 +45,12 @@ export const site = {
   },
 } as const;
 
-export const navigation = [
+/** Fitur yang sementara disembunyikan dari situs. Ubah ke true untuk menampilkannya lagi. */
+export const features = {
+  donation: false,
+} as const;
+
+export const navigation = ([
   { href: "/", label: "Beranda" },
   { href: "/tentang-kami", label: "Siapa Kami" },
   { href: "/layanan", label: "Pelayanan" },
@@ -50,7 +58,22 @@ export const navigation = [
   { href: "/event", label: "Event" },
   { href: "/donasi", label: "Donasi" },
   { href: "/kontak", label: "Kontak" },
-] as const;
+] as const).filter((item) => item.href !== "/donasi" || features.donation);
+
+/** Tombol sosial yang tautannya terisi, dalam urutan tampil yang sama di mana-mana. */
+export const socialLinks = (
+  [
+    { key: "instagram", label: "Instagram", href: site.socials.instagram },
+    { key: "tiktok", label: "TikTok", href: site.socials.tiktok },
+    { key: "youtube", label: "YouTube", href: site.socials.youtube },
+  ] as const
+).filter((s) => Boolean(s.href));
+
+/** "https://www.instagram.com/janji_pengharapan/" menjadi "@janji_pengharapan". */
+export function socialHandle(url: string) {
+  const first = new URL(url).pathname.split("/").filter(Boolean)[0] ?? "";
+  return first.startsWith("@") ? first : `@${first}`;
+}
 
 /** Tautan WhatsApp ke tim, opsional dengan pesan yang sudah terisi. */
 export function waLink(text?: string) {
@@ -61,7 +84,7 @@ export function waLink(text?: string) {
 export const values = [
   {
     title: "Mendengar dulu",
-    body: "Kamu boleh bercerita pelan-pelan. Kami mendengarkan untuk memahami, bukan menghakimi.",
+    body: "Kamu boleh bercerita pelan-pelan. Kami mendengarkan dulu, dan kamu tidak akan dihakimi di sini.",
   },
   {
     title: "Ceritamu kami jaga",

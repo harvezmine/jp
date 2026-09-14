@@ -1,10 +1,11 @@
 import Link from "next/link";
 
+import { CrisisLine } from "@/components/crisis-line";
 import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
 import { ArrowLink, ButtonLink, Container } from "@/components/ui";
 import { ruang } from "@/lib/ruang";
-import { navigation, site, waLink } from "@/lib/site";
+import { features, navigation, site, socialLinks, waLink } from "@/lib/site";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -34,19 +35,17 @@ export function SiteFooter() {
           </div>
         </div>
 
+        <CrisisLine tone="dark" layout="row" className="mt-10 sm:mt-12" />
+
         <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-14 sm:py-16 lg:grid-cols-12 lg:gap-8">
           {/* Identitas */}
           <div className="col-span-2 lg:col-span-4">
             <Logo variant="light" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-sand-300/80">
-              Tempat bercerita, didoakan, dan ditolong.
+              Tempat untuk bercerita saat hidup terasa berat.
             </p>
             <div className="mt-6 flex gap-2">
-              {[
-                { href: site.socials.tiktok, icon: Icon.tiktok, label: "TikTok" },
-                { href: site.socials.youtube, icon: Icon.youtube, label: "YouTube" },
-                { href: site.socials.instagram, icon: Icon.instagram, label: "Instagram" },
-              ].map((s) => (
+              {socialLinks.map(({ key, href, label }) => ({ href, label, icon: Icon[key] })).map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
@@ -107,21 +106,17 @@ export function SiteFooter() {
                   rel="noopener noreferrer"
                   className="text-sand-300/80 hover:text-gold-400"
                 >
-                  {site.phone || "Kirim pesan kepada tim"}
+                  {site.phoneDisplay || "Kirim pesan kepada tim"}
                 </a>
               </li>
-              <li className="flex gap-3">
-                <Icon.mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <a href={`mailto:${site.email}`} className="break-all text-sand-300/80 hover:text-gold-400">
-                  {site.email}
-                </a>
-              </li>
-              <li className="flex gap-3">
-                <Icon.gift className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <Link href="/donasi" className="text-sand-300/80 hover:text-gold-400">
-                  Dukung lewat donasi
-                </Link>
-              </li>
+              {features.donation && (
+                <li className="flex gap-3">
+                  <Icon.gift className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                  <Link href="/donasi" className="text-sand-300/80 hover:text-gold-400">
+                    Dukung lewat donasi
+                  </Link>
+                </li>
+              )}
               <li className="flex gap-3">
                 <Icon.arrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <a

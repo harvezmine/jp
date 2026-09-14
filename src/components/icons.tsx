@@ -88,6 +88,9 @@ export const Icon = {
   shield: (p: IconProps) => (
     <svg {...base} {...p}><path d="M12 3l7 3v5.5c0 4.3-3 8-7 9.5-4-1.5-7-5.2-7-9.5V6Z" /><path d="m9 12 2 2 4-4" /></svg>
   ),
+  lock: (p: IconProps) => (
+    <svg {...base} {...p}><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.5v2" /></svg>
+  ),
   check: (p: IconProps) => (
     <svg {...base} {...p}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
   ),

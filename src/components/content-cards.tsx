@@ -158,7 +158,6 @@ export function QuoteCard({ quote, index = 0 }: { quote: Quote; index?: number }
             dark ? "text-gold-400" : "text-maroon-700",
           )}
         >
-          <span className="h-px w-8 bg-current opacity-40" />
           {quote.reference ?? quote.author}
         </figcaption>
       )}
@@ -229,37 +228,41 @@ export function SocialCard({ post }: { post: SocialPost }) {
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-[1.5rem] bg-ink"
+      className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-ink"
     >
-      {thumb ? (
-        <Image
-          src={thumb}
-          alt=""
-          fill
-          sizes="(max-width: 640px) 72vw, (max-width: 1024px) 45vw, 25vw"
-          className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-        />
-      ) : (
-        <div className={cn("absolute inset-0 bg-gradient-to-br", meta.tone)}>
-          <div className="bg-grain absolute inset-0 opacity-20" />
-        </div>
-      )}
+      {/* Thumbnail video biasanya sudah berisi tulisan, jadi caption ditaruh di bawahnya, bukan di atasnya */}
+      <div className="relative aspect-[4/5] overflow-hidden">
+        {thumb ? (
+          <Image
+            src={thumb}
+            alt=""
+            fill
+            sizes="(max-width: 640px) 72vw, (max-width: 1024px) 45vw, 25vw"
+            className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+          />
+        ) : (
+          <div className={cn("absolute inset-0 bg-gradient-to-br", meta.tone)}>
+            <div className="bg-grain absolute inset-0 opacity-20" />
+          </div>
+        )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
+        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md">
+          <meta.icon className="h-3.5 w-3.5" />
+          {meta.label}
+        </span>
 
-      <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md">
-        <meta.icon className="h-3.5 w-3.5" />
-        {meta.label}
-      </span>
+        <span className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 scale-90 place-items-center rounded-full bg-white/90 text-ink opacity-0 transition duration-300 group-hover:scale-100 group-hover:opacity-100">
+          <Icon.play className="h-5 w-5 translate-x-0.5" />
+        </span>
+      </div>
 
-      <span className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 scale-90 place-items-center rounded-full bg-white/90 text-ink opacity-0 transition duration-300 group-hover:scale-100 group-hover:opacity-100">
-        <Icon.play className="h-5 w-5 translate-x-0.5" />
-      </span>
-
+      {/* Padding di pembungkus: kalau ditaruh di elemen yang di-clamp, baris keempat ikut terlihat */}
       {post.caption && (
-        <p className="font-display relative line-clamp-4 p-5 text-lg leading-snug text-white">
-          {post.caption}
-        </p>
+        <div className="flex-1 p-5">
+          <p className="font-display line-clamp-3 text-base leading-snug text-sand-50 sm:text-[1.05rem]">
+            {post.caption}
+          </p>
+        </div>
       )}
     </a>
   );

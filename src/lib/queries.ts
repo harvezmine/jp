@@ -1,13 +1,15 @@
 import { createPublicClient } from "@/lib/supabase/public";
 import type { JPEvent, Post, Quote, Service, SocialPost } from "@/lib/types";
-import { demoEvents, demoPosts, demoQuotes, demoServices, demoSocialPosts } from "@/lib/demo";
+import { demoEvents, demoPosts, demoQuotes, demoServices } from "@/lib/demo";
+import { featuredSocialPosts } from "@/lib/social-featured";
 import { MOCK_ENABLED } from "@/lib/mock";
 
 /**
  * Query publik.
  *
  * Dua lapis pengaman, supaya situs tidak pernah menampilkan halaman rusak:
- *  1. Supabase belum dikonfigurasi  → pakai konten contoh dari demo.ts.
+ *  1. Supabase belum dikonfigurasi  → konten contoh dari demo.ts saat development,
+ *     empty state di produksi (jangan sampai testimoni fiktif tampil ke publik).
  *  2. Supabase error saat dipanggil → kembalikan array kosong + catat di log,
  *     halaman menampilkan empty state yang rapi.
  *
@@ -47,7 +49,7 @@ async function query<T>(
   demo: T,
   empty: T,
 ): Promise<T> {
-  if (!isSupabaseConfigured()) return demo;
+  if (!isSupabaseConfigured()) return MOCK_ENABLED ? demo : empty;
   try {
     return withMock(await run(createPublicClient()), demo);
   } catch (err) {
@@ -224,7 +226,9 @@ export async function getServices() {
   );
 }
 
+/** Kalau admin belum mengisi apa pun, yang tampil adalah postingan Instagram JP yang asli. */
 export async function getSocialPosts({ limit }: { limit?: number } = {}) {
+  const featured = featuredSocialPosts.slice(0, limit ?? featuredSocialPosts.length);
   return query<SocialPost[]>(
     "getSocialPosts",
     async (supabase) => {
@@ -237,9 +241,9 @@ export async function getSocialPosts({ limit }: { limit?: number } = {}) {
 
       const { data, error } = await q;
       if (error) throw error;
-      return (data ?? []) as SocialPost[];
+      return data?.length ? (data as SocialPost[]) : featured;
     },
-    demoSocialPosts.slice(0, limit ?? demoSocialPosts.length),
-    [],
+    featured,
+    featured,
   );
 }
