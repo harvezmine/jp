@@ -26,10 +26,10 @@ export function SiteFooter() {
           <div className="flex flex-col items-start gap-5 lg:col-span-4 lg:items-end">
             <ButtonLink href="/pertolongan" variant="light" size="lg">
               <Icon.hands className="h-5 w-5" />
-              Minta pertolongan
+              Mulai bercerita
             </ButtonLink>
             <ArrowLink href={waLink()} tone="light">
-              Atau chat lewat WhatsApp
+              {site.whatsapp ? "Atau chat lewat WhatsApp" : "Hubungi tim JP"}
             </ArrowLink>
           </div>
         </div>
@@ -84,7 +84,7 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-3.5">
               {ruang.map((r) => (
                 <li key={r.slug} className="text-sm">
-                  <Link href={`/#${r.slug}`} className="group">
+                  <Link href={`/layanan#${r.slug}`} className="group">
                     <span className="font-medium text-sand-100 transition-colors group-hover:text-gold-400">
                       Ruang {r.name}
                     </span>
@@ -107,7 +107,7 @@ export function SiteFooter() {
                   rel="noopener noreferrer"
                   className="text-sand-300/80 hover:text-gold-400"
                 >
-                  {site.phone}
+                  {site.phone || "Kirim pesan kepada tim"}
                 </a>
               </li>
               <li className="flex gap-3">

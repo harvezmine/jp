@@ -4,8 +4,9 @@ import { HelpForm } from "@/components/help-form";
 import { HeroLip } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/icons";
-import { ArrowLink, Container, Rise } from "@/components/ui";
-import { waLink } from "@/lib/site";
+import { Container, Rise } from "@/components/ui";
+import { HELP_CATEGORIES } from "@/lib/help-validation";
+import type { HelpCategory } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Butuh Pertolongan",
@@ -15,17 +16,21 @@ export const metadata: Metadata = {
 };
 
 const assurances = [
-  { icon: Icon.shield, title: "Rahasia", body: "Hanya dibaca tim yang menanganinya." },
+  { icon: Icon.shield, title: "Ceritamu berarti", body: "Bagikan sebatas yang nyaman kamu ceritakan." },
   { icon: Icon.users, title: "Boleh tanpa nama", body: "Kalau belum siap, kirim tanpa nama." },
   { icon: Icon.heart, title: "Gratis", body: "Tidak ada biaya apa pun." },
-  { icon: Icon.clock, title: "Dibalas secepatnya", body: "Yang mendesak, kami usahakan hari itu juga." },
+  { icon: Icon.clock, title: "Sesuai pilihanmu", body: "Kamu memilih cara dihubungi, atau belum ingin dihubungi." },
 ];
 
-export default function PertolonganPage() {
+export default async function PertolonganPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const { category } = await searchParams;
+  const initialCategory = (HELP_CATEGORIES as readonly string[]).includes(category ?? "")
+    ? (category as HelpCategory)
+    : undefined;
   return (
     <>
       {/* Hero sengaja ringkas supaya formulir cepat terlihat di layar HP */}
-      <section className="bg-maroon-deep relative isolate overflow-hidden pb-20 pt-28 sm:pb-28 sm:pt-44">
+      <section className="bg-maroon-deep relative isolate overflow-hidden pb-20 pt-28 sm:pb-24 sm:pt-36">
         <div
           aria-hidden
           className="animate-breathe pointer-events-none absolute -left-24 -top-20 h-80 w-80 rounded-full bg-maroon-500/30 blur-[90px]"
@@ -34,13 +39,14 @@ export default function PertolonganPage() {
 
         <Container className="relative">
           <Rise>
-            <h1 className="text-display max-w-2xl text-sand-50">
-              Ceritakan yang sedang <span className="italic text-gold-400">kamu hadapi.</span>
+            <h1 className="text-headline max-w-2xl text-sand-50">
+              Ada ruang untuk <span className="italic text-gold-400">ceritamu.</span>
             </h1>
           </Rise>
           <Rise delay={90}>
             <p className="text-lead mt-5 max-w-md text-sand-200/85 sm:mt-6">
-              Tiga langkah singkat, kurang dari dua menit. Tidak ada cerita yang terlalu kecil.
+              Tidak perlu tahu harus mulai dari mana. Ambil waktu yang kamu butuhkan, lalu ceritakan sedikit demi
+              sedikit.
             </p>
           </Rise>
         </Container>
@@ -50,18 +56,18 @@ export default function PertolonganPage() {
 
       <section className="bg-cream overflow-clip">
         <Container>
-          <div className="grid gap-12 pb-20 pt-8 sm:pb-24 sm:pt-12 lg:grid-cols-12 lg:gap-12 lg:pb-28 lg:pt-14">
+          <div className="grid min-w-0 gap-10 pb-20 pt-8 sm:pb-24 sm:pt-12 lg:grid-cols-12 lg:gap-12 lg:pb-28 lg:pt-14">
             {/* Formulir didahulukan di HP */}
-            <div className="lg:order-2 lg:col-span-7">
-              <div className="sm:rounded-[2rem] sm:bg-white sm:p-8 sm:shadow-warm-lg sm:ring-1 sm:ring-sand-200/70 lg:p-10">
-                <HelpForm />
+            <div className="min-w-0 lg:order-2 lg:col-span-8">
+              <div className="form-surface rounded-[1.75rem] p-5 sm:p-8 lg:p-10">
+                <HelpForm key={initialCategory ?? "default"} initialCategory={initialCategory} />
               </div>
             </div>
 
-            <aside className="lg:order-1 lg:col-span-5">
+            <aside className="min-w-0 lg:order-1 lg:col-span-4">
               <div className="space-y-6 lg:sticky lg:top-28 lg:space-y-8">
                 <Reveal variant="left">
-                  <h2 className="font-display text-2xl font-semibold text-ink">Sebelum mulai</h2>
+                  <h2 className="font-display text-2xl font-semibold text-ink">Kamu boleh merasa nyaman</h2>
                   <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:gap-5">
                     {assurances.map((a) => (
                       <li key={a.title} className="flex gap-4">
@@ -88,20 +94,19 @@ export default function PertolonganPage() {
                     <blockquote className="font-display relative text-xl italic leading-snug text-maroon-900">
                       &ldquo;Marilah kepada-Ku, semua yang letih lesu dan berbeban berat.&rdquo;
                     </blockquote>
-                    <figcaption className="relative mt-3 text-sm font-semibold text-maroon-600">Matius 11:28</figcaption>
+                    <figcaption className="relative mt-3 text-sm font-semibold text-maroon-600">
+                      Matius 11:28
+                    </figcaption>
                   </figure>
                 </Reveal>
 
                 <Reveal variant="left" delay={200}>
-                  <div className="rounded-2xl border border-red-200 bg-red-50/60 p-6 sm:p-7">
-                    <p className="font-semibold text-red-900">Keadaan darurat?</p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-red-900/80">
-                      Kalau ada nyawa yang terancam, hubungi <strong>112</strong> sekarang. Setelah itu,
-                      kabari kami lewat WhatsApp.
+                  <div className="rounded-2xl border border-sand-300 bg-sand-100 p-6">
+                    <p className="font-semibold text-maroon-900">Jika kamu membutuhkan bantuan segera</p>
+                    <p className="mt-2 text-sm leading-relaxed text-sand-800">
+                      Formulir ini tidak dipantau setiap saat. Jika keselamatanmu atau orang lain terancam, hubungi
+                      layanan darurat setempat dan orang terdekat.
                     </p>
-                    <div className="mt-4">
-                      <ArrowLink href={waLink("DARURAT: ")}>WhatsApp tim kami</ArrowLink>
-                    </div>
                   </div>
                 </Reveal>
               </div>

@@ -180,7 +180,7 @@ export function ButtonLink({
     className,
   );
 
-  if (external) {
+  if (external && typeof href === "string" && !href.startsWith("/")) {
     return (
       <a href={href as string} target="_blank" rel="noopener noreferrer" className={cls}>
         {children}

@@ -40,8 +40,8 @@ export const ruang: Ruang[] = [
   {
     slug: "ruang-pengharapan",
     name: "Pengharapan",
-    short: "Renungan, podcast, dan live",
-    tagline: "Renungan, podcast, dan acara untuk menguatkan harimu.",
+    short: "Saat kamu butuh dikuatkan",
+    tagline: "Temukan penguatan, satu hari demi satu hari.",
     summary:
       "Renungan pendek dan obrolan jujur soal hidup. Bisa ditonton online, bisa juga didatangi langsung.",
     forWho: "Untuk kamu yang butuh dikuatkan, atau baru mulai mengenal Tuhan.",
@@ -76,7 +76,7 @@ export const ruang: Ruang[] = [
   {
     slug: "ruang-doa",
     name: "Doa",
-    short: "Doa kesembuhan dan nubuatan",
+    short: "Saat kamu ingin didoakan",
     tagline: "Ada yang ikut mendoakanmu.",
     summary:
       "Setiap pokok doa yang masuk kami doakan. Kirim kapan saja, ikut doa online, atau minta sesi doa khusus.",
@@ -102,7 +102,7 @@ export const ruang: Ruang[] = [
         format: "Formulir atau WhatsApp",
       },
     ],
-    cta: { label: "Kirim pokok doa", href: "/pertolongan" },
+    cta: { label: "Saya ingin didoakan", href: "/pertolongan?category=doa" },
     secondary: {
       label: "Minta link doa online",
       href: waLink("Halo, saya mau ikut Doa Kesembuhan hari Rabu. Boleh minta link Zoom-nya?"),
@@ -115,15 +115,15 @@ export const ruang: Ruang[] = [
   {
     slug: "ruang-cerita",
     name: "Cerita",
-    short: "Konseling dan support group",
-    tagline: "Tempat aman untuk bercerita.",
+    short: "Saat kamu butuh teman cerita",
+    tagline: "Ceritamu layak didengarkan.",
     summary:
-      "Ada konseling empat mata, bimbingan rohani, dan kelompok dukungan. Pilih yang paling nyaman untukmu.",
-    forWho: "Untuk kamu yang sedang bergumul soal keluarga, relasi, rasa cemas, atau duka.",
+      "Kamu tidak perlu merangkai kata dengan sempurna. Ada pendampingan pribadi dan kelompok berbagi untuk saling menguatkan.",
+    forWho: "Untuk saat keluarga, hubungan, rasa khawatir, atau kehilangan terasa berat.",
     programs: [
       {
-        title: "Pastoral Konseling",
-        summary: "Bicara empat mata dengan konselor, gratis dan rahasia. Bisa pilih konselor perempuan atau laki-laki.",
+        title: "Konseling pastoral",
+        summary: "Bercerita secara pribadi bersama pendamping rohani. Sampaikan juga jika kamu lebih nyaman dengan pendamping perempuan atau laki-laki.",
         when: "Dengan janji temu",
         format: "Online atau tatap muka",
       },
@@ -135,16 +135,16 @@ export const ruang: Ruang[] = [
         weekly: { day: 3, time: "19.30" },
       },
       {
-        title: "Support Group",
+        title: "Kelompok berbagi",
         summary: "Kelompok kecil untuk yang sedang melewati hal serupa, seperti duka atau pemulihan dari kecanduan.",
         when: "Jumat, 19.30 WIB",
         format: "Tatap muka di Jakarta",
         weekly: { day: 4, time: "19.30" },
       },
     ],
-    cta: { label: "Atur sesi konseling", href: "/pertolongan" },
+    cta: { label: "Saya ingin ditemani", href: "/pertolongan?category=konseling" },
     secondary: {
-      label: "Tanya lewat WhatsApp",
+      label: site.whatsapp ? "Tanya lewat WhatsApp" : "Tanya kepada tim JP",
       href: waLink("Halo, saya mau tanya soal konseling dan support group."),
     },
     image: photos.ruangStory,
@@ -155,10 +155,10 @@ export const ruang: Ruang[] = [
   {
     slug: "ruang-belajar",
     name: "Belajar",
-    short: "Kelas pengembangan diri",
+    short: "Saat kamu ingin bertumbuh",
     tagline: "Kelas untuk terus bertumbuh.",
     summary:
-      "Kelas dan komunitas untuk mengembangkan diri. Mulai dari kepemimpinan sampai skill praktis seperti AI dan bahasa Inggris.",
+      "Kelas dan komunitas untuk mengembangkan diri. Mulai dari kepemimpinan sampai keterampilan praktis seperti AI dan bahasa Inggris.",
     forWho: "Untuk pelajar, pekerja, dan pemimpin yang mau terus belajar.",
     programs: [
       {

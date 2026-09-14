@@ -41,6 +41,9 @@
   --color-ink:   #241c19;
   --color-cream: #fdfaf6;
 
+  /* Warna persis logo JP (public/logojp.jpg) */
+  --color-jp: #660f2f;
+
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, sans-serif;
 
@@ -304,3 +307,44 @@
 .prose-jp ol { list-style: decimal; }
 .prose-jp li + li { margin-top: 0.4em; }
 .prose-jp img { border-radius: var(--radius-xl); }
+
+/* Gentle depth: warm paper, soft edges, and one clear focal point. */
+.jp-hero-heading {
+  font-size: clamp(2.65rem, 1.2rem + 4.3vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+.hero-welcome-card {
+  box-shadow: 0 2px 0 rgb(255 255 255 / .6) inset, 0 0 0 8px rgb(253 250 246 / .08), 0 32px 80px -24px rgb(36 10 15 / .65);
+}
+.form-surface {
+  border: 1px solid rgb(230 212 191 / .85);
+  background: linear-gradient(150deg, #fff 0%, #fffdfa 75%, #faf4ec 100%);
+  box-shadow: 0 2px 0 white inset, 0 4px 8px -6px rgb(86 44 30 / .12), 0 24px 64px -28px rgb(86 44 30 / .28);
+}
+.form-option {
+  box-shadow: 0 2px 3px -2px rgb(86 44 30 / .12);
+}
+.form-option:has(input:focus-visible) {
+  outline: 2px solid var(--color-maroon-600);
+  outline-offset: 3px;
+}
+.form-option:has(input:checked) {
+  box-shadow: 0 1px 0 rgb(255 255 255 / .75) inset, 0 6px 16px -10px rgb(116 34 47 / .4);
+}
+.form-control {
+  box-shadow: 0 2px 4px rgb(86 44 30 / .035) inset;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 4px rgb(116 34 47 / .1), 0 3px 10px -5px rgb(86 44 30 / .2);
+}
+.form-step[hidden] { display: none; }
+.form-step:not([hidden]) { animation: fade-in 220ms ease both; }
+html:not(.motion-ready) [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+@media (max-width: 639px) {
+  .jp-hero-heading { font-size: clamp(2.55rem, 10.8vw, 4rem); }
+}

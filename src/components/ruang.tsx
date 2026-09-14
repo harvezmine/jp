@@ -108,12 +108,14 @@ export function RuangIntro({
       Pilih <span className="italic text-maroon-700">ruang</span> yang kamu butuhkan.
     </>
   ),
-  description = "Semua ruang gratis dan terbuka untuk siapa saja, termasuk yang belum pernah ke gereja.",
+  description = "Ingin didoakan, punya teman cerita, atau menemukan penguatan? Mulai dari yang terasa nyaman untukmu.",
+  linkPrefix = "",
   className = "bg-cream",
 }: {
   title?: ReactNode;
   description?: string;
   className?: string;
+  linkPrefix?: string;
 }) {
   return (
     <section id="ruang" className={cn("relative overflow-hidden pb-16 pt-20 sm:pb-24 sm:pt-28 lg:pt-36", className)}>
@@ -138,7 +140,7 @@ export function RuangIntro({
                 i % 2 === 1 && "lg:translate-y-16",
               )}
             >
-              <a href={`#${r.slug}`} className="group block">
+              <a id={linkPrefix ? r.slug : undefined} href={`${linkPrefix}#${r.slug}`} className="group block">
                 <div className="relative aspect-[3/4] overflow-hidden rounded-b-2xl rounded-t-[20rem] bg-sand-200 shadow-warm transition-shadow duration-500 group-hover:shadow-warm-lg">
                   <Image
                     src={r.image}
@@ -495,12 +497,11 @@ export function RuangSummary({
                 Tidak bisa di jam-jam itu?
               </h3>
               <p className="relative mt-3 leading-relaxed text-sand-700">
-                Formulir bisa diisi kapan saja, dan WhatsApp kami balas setiap hari. Kalau darurat,
-                tulis di awal pesan.
+                Kamu bisa menulis saat sudah siap. Jika ingin dihubungi, pilih cara yang paling nyaman. Tim akan membaca dan menindaklanjuti ceritamu.
               </p>
               <div className="relative mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-                <ButtonLink href="/pertolongan">Isi formulir</ButtonLink>
-                <ArrowLink href={waLink()}>Chat WhatsApp</ArrowLink>
+                <ButtonLink href="/pertolongan">Mulai bercerita</ButtonLink>
+                <ArrowLink href={waLink()}>{site.whatsapp ? "Chat WhatsApp" : "Hubungi tim JP"}</ArrowLink>
               </div>
             </div>
           </Reveal>

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 /* Primitif form yang dipakai bersama oleh form pertolongan, kontak, dan admin. */
 
 const controlBase =
-  "w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-sand-500 focus:border-maroon-600 focus:ring-2 focus:ring-maroon-600/15 disabled:opacity-60";
+  "form-control w-full min-w-0 rounded-xl border bg-white px-4 py-3.5 text-base text-ink outline-none transition placeholder:text-sand-700 focus:border-maroon-600 disabled:opacity-60";
 
 export function Field({
   label,
@@ -25,14 +25,18 @@ export function Field({
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="flex items-baseline gap-2 text-sm font-semibold text-ink">
+      <label htmlFor={htmlFor} className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm font-semibold text-ink">
         {label}
         {optional && <span className="text-xs font-normal text-sand-600">opsional</span>}
       </label>
-      {hint && <p className="mt-1 text-xs leading-relaxed text-sand-600">{hint}</p>}
+      {hint && (
+        <p id={`${htmlFor}-hint`} className="mt-1 text-xs leading-relaxed text-sand-700">
+          {hint}
+        </p>
+      )}
       <div className="mt-2">{children}</div>
       {error && (
-        <p role="alert" className="mt-1.5 text-xs font-medium text-red-700">
+        <p id={`${htmlFor}-error`} role="alert" className="mt-1.5 text-sm font-medium text-red-700">
           {error}
         </p>
       )}
@@ -40,29 +44,27 @@ export function Field({
   );
 }
 
-export function Input({
-  error,
-  className,
-  ...props
-}: React.ComponentProps<"input"> & { error?: string }) {
+export function Input({ error, className, ...props }: React.ComponentProps<"input"> & { error?: string }) {
   return (
     <input
       {...props}
       aria-invalid={error ? true : undefined}
+      aria-describedby={
+        [props["aria-describedby"], error && props.id ? `${props.id}-error` : ""].filter(Boolean).join(" ") || undefined
+      }
       className={cn(controlBase, error ? "border-red-400" : "border-sand-300", className)}
     />
   );
 }
 
-export function Textarea({
-  error,
-  className,
-  ...props
-}: React.ComponentProps<"textarea"> & { error?: string }) {
+export function Textarea({ error, className, ...props }: React.ComponentProps<"textarea"> & { error?: string }) {
   return (
     <textarea
       {...props}
       aria-invalid={error ? true : undefined}
+      aria-describedby={
+        [props["aria-describedby"], error && props.id ? `${props.id}-error` : ""].filter(Boolean).join(" ") || undefined
+      }
       className={cn(
         controlBase,
         "min-h-36 resize-y leading-relaxed",
@@ -73,16 +75,14 @@ export function Textarea({
   );
 }
 
-export function Select({
-  error,
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"select"> & { error?: string }) {
+export function Select({ error, className, children, ...props }: React.ComponentProps<"select"> & { error?: string }) {
   return (
     <select
       {...props}
       aria-invalid={error ? true : undefined}
+      aria-describedby={
+        [props["aria-describedby"], error && props.id ? `${props.id}-error` : ""].filter(Boolean).join(" ") || undefined
+      }
       className={cn(
         controlBase,
         "appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-10",
@@ -120,10 +120,10 @@ export function OptionCard({
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-all duration-200",
+        "form-option flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition-all duration-200",
         checked
           ? "border-maroon-600 bg-maroon-50 ring-1 ring-maroon-600"
-          : "border-sand-300 bg-white hover:border-maroon-300",
+          : "border-sand-300 bg-white hover:border-maroon-300 hover:bg-sand-50",
       )}
     >
       <input
@@ -145,17 +145,8 @@ export function OptionCard({
         </span>
       )}
       <span className="min-w-0 flex-1">
-        <span
-          className={cn(
-            "block text-sm font-semibold",
-            checked ? "text-maroon-800" : "text-ink",
-          )}
-        >
-          {title}
-        </span>
-        {description && (
-          <span className="mt-0.5 block text-xs leading-relaxed text-sand-600">{description}</span>
-        )}
+        <span className={cn("block text-sm font-semibold", checked ? "text-maroon-800" : "text-ink")}>{title}</span>
+        {description && <span className="mt-0.5 block text-xs leading-relaxed text-sand-700">{description}</span>}
       </span>
       <span
         aria-hidden
@@ -186,8 +177,10 @@ export function Checkbox({
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors",
-        checked ? "border-maroon-600 bg-maroon-50" : "border-sand-300 bg-white hover:border-maroon-300",
+        "form-option flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition-colors",
+        checked
+          ? "border-maroon-600 bg-maroon-50"
+          : "border-sand-300 bg-white hover:border-maroon-300 hover:bg-sand-50",
       )}
     >
       <input
@@ -205,16 +198,22 @@ export function Checkbox({
         )}
       >
         {checked && (
-          <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-3 w-3"
+            fill="none"
+            stroke="white"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="m5 12.5 4.5 4.5L19 7.5" />
           </svg>
         )}
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-semibold text-ink">{title}</span>
-        {description && (
-          <span className="mt-0.5 block text-xs leading-relaxed text-sand-600">{description}</span>
-        )}
+        {description && <span className="mt-0.5 block text-xs leading-relaxed text-sand-700">{description}</span>}
       </span>
     </label>
   );

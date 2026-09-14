@@ -112,11 +112,11 @@ export const POST_CATEGORY_LABEL: Record<PostCategory, string> = {
 
 export const HELP_CATEGORY_LABEL: Record<HelpCategory, string> = {
   doa: "Didoakan",
-  konseling: "Konseling & pendampingan",
+  konseling: "Teman bercerita",
   kebutuhan: "Kebutuhan pokok",
-  kunjungan: "Kunjungan / dijenguk",
-  keuangan: "Pergumulan keuangan",
-  lainnya: "Lainnya",
+  kunjungan: "Ditemani atau dijenguk",
+  keuangan: "Kesulitan keuangan",
+  lainnya: "Belum tahu / lainnya",
 };
 
 export const HELP_CATEGORY_HINT: Record<HelpCategory, string> = {
@@ -125,12 +125,12 @@ export const HELP_CATEGORY_HINT: Record<HelpCategory, string> = {
   kebutuhan: "Sembako, obat, atau kebutuhan harian",
   kunjungan: "Sakit, berduka, atau ingin ditemani",
   keuangan: "Kesulitan biaya sekolah, kontrakan, atau usaha",
-  lainnya: "Hal lain yang belum ada di daftar",
+  lainnya: "Tidak apa-apa, kita cari tahu bersama",
 };
 
 export const URGENCY_LABEL: Record<Urgency, string> = {
   biasa: "Bisa menunggu",
-  mendesak: "Cukup mendesak",
+  mendesak: "Perlu segera dibantu",
   darurat: "Darurat",
 };
 
@@ -138,7 +138,7 @@ export const CONTACT_PREF_LABEL: Record<ContactPreference, string> = {
   whatsapp: "WhatsApp",
   telepon: "Telepon",
   email: "Email",
-  tidak_perlu: "Tidak perlu dihubungi",
+  tidak_perlu: "Belum ingin dihubungi",
 };
 
 export const HELP_STATUS_LABEL: Record<HelpStatus, string> = {

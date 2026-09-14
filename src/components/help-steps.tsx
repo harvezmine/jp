@@ -3,12 +3,12 @@ import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
 import { ArrowLink, ButtonLink, Container } from "@/components/ui";
 import { photos } from "@/lib/photos";
-import { waLink } from "@/lib/site";
+import { waLink, site } from "@/lib/site";
 
 const steps = [
-  { title: "Ceritakan", body: "Isi formulir singkat atau chat WhatsApp. Boleh tanpa nama." },
-  { title: "Kami hubungi", body: "Pendamping akan menghubungimu. Yang mendesak, kami usahakan hari itu juga." },
-  { title: "Jalan bersama", body: "Kami doakan, dampingi, atau bantu sesuai kebutuhanmu." },
+  { title: "Mulai dari ceritamu", body: "Bagikan yang nyaman kamu ceritakan. Singkat pun tidak apa-apa." },
+  { title: "Kami mendengarkan", body: "Jika kamu ingin dihubungi, tim akan membalas melalui cara yang kamu pilih." },
+  { title: "Melangkah bersama", body: "Kita bicarakan dukungan yang kamu butuhkan, sesuai kenyamananmu." },
 ];
 
 /** Alur minta pertolongan. Dipakai di beranda dan halaman pelayanan. */
@@ -51,12 +51,12 @@ export function HelpSteps() {
           <div className="lg:col-span-7 lg:pt-6">
             <Reveal>
               <h2 className="text-display text-sand-50">
-                Minta tolong <span className="italic text-gold-400">tidak perlu ribet.</span>
+                Satu langkah kecil. <span className="italic text-gold-400">Kita mulai bersama.</span>
               </h2>
             </Reveal>
             <Reveal delay={100}>
               <p className="text-lead mt-5 max-w-md text-sand-200/80 sm:mt-6">
-                Siapa pun boleh minta tolong. Gratis, dan ceritamu boleh seadanya.
+                Tidak perlu menunggu semuanya terasa terlalu berat. Kamu boleh mulai bercerita kapan pun kamu siap.
               </p>
             </Reveal>
 
@@ -104,7 +104,7 @@ export function HelpSteps() {
                     <Icon.arrowRight className="h-4 w-4" />
                   </ButtonLink>
                   <ArrowLink href={waLink("Halo, saya mau cerita.")} tone="light">
-                    Lebih nyaman lewat WhatsApp
+                    {site.whatsapp ? "Lebih nyaman lewat WhatsApp" : "Hubungi tim JP"}
                   </ArrowLink>
                 </div>
               </div>

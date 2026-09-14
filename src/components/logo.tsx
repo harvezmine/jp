@@ -2,8 +2,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
- * Lambang JP. Menunjuk ke /brand/logo.svg; timpa file itu dengan logo asli
- * dan seluruh situs ikut berubah, tanpa menyentuh kode.
+ * Monogram JP dari logo resmi (public/logojp.jpg) yang sudah diubah menjadi
+ * vektor di /brand/logo-mark.svg. Warnanya mengikuti warna teks induk
+ * (currentColor): maroon di latar terang, krem di latar gelap.
  */
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -11,8 +12,9 @@ export function LogoMark({ className }: { className?: string }) {
       className={cn("inline-flex shrink-0 items-center justify-center", className)}
       aria-hidden="true"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/logo.svg" alt="" className="h-full w-full object-contain" />
+      <svg viewBox="0 0 492 894" fill="currentColor" className="h-full w-full">
+        <use href="/brand/logo-mark.svg#jp" />
+      </svg>
     </span>
   );
 }
@@ -29,17 +31,15 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={cn("group flex items-center gap-2.5 sm:gap-3", className)}
-      aria-label={`${"Janji Pengharapan"}, kembali ke beranda`}
+      className={cn("group flex items-center gap-3", className)}
+      aria-label="Janji Pengharapan, kembali ke beranda"
     >
-      <span
+      <LogoMark
         className={cn(
-          "grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-transform duration-500 group-hover:scale-105 sm:h-11 sm:w-11",
-          light ? "bg-sand-50/10 text-sand-50" : "bg-maroon-700 text-sand-50",
+          "h-10 w-[1.375rem] transition-transform duration-500 group-hover:-translate-y-0.5 sm:h-11 sm:w-6",
+          light ? "text-sand-50" : "text-jp",
         )}
-      >
-        <LogoMark className="h-6 w-6 sm:h-6.5 sm:w-6.5" />
-      </span>
+      />
       <span className="flex flex-col leading-none">
         <span
           className={cn(

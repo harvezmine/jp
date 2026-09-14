@@ -4,16 +4,21 @@
  * kutipan) diambil dari database lewat admin panel. Struktur pelayanan
  * ("ruang") ada di lib/ruang.ts.
  */
+// Set the real contact number through the environment; never send visitors to a sample number.
+const rawWhatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
+const normalizedWhatsapp = rawWhatsapp.startsWith("0") ? `62${rawWhatsapp.slice(1)}` : rawWhatsapp;
+const whatsapp = /^\d{8,15}$/.test(normalizedWhatsapp) && !/0{7}/.test(normalizedWhatsapp) ? normalizedWhatsapp : "";
+
 export const site = {
   name: "Janji Pengharapan",
   shortName: "JP",
   tagline: "Tempat bercerita dan didoakan",
   description:
-    "Tempat untuk bercerita, didoakan, dan ditolong. Gratis untuk siapa saja yang sedang bergumul.",
+    "Ruang untuk bercerita, didoakan, dan menemukan dukungan. Kamu boleh datang dengan ceritamu, apa adanya.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://janjipengharapan.com",
   email: "halo@janjipengharapan.com",
-  phone: "+62 812-0000-0000",
-  whatsapp: "6281200000000",
+  phone: whatsapp ? `+${whatsapp}` : "",
+  whatsapp,
   address: {
     line1: "Jl. Contoh Raya No. 12",
     line2: "Jakarta, DKI Jakarta",
@@ -49,20 +54,21 @@ export const navigation = [
 
 /** Tautan WhatsApp ke tim, opsional dengan pesan yang sudah terisi. */
 export function waLink(text?: string) {
+  if (!site.whatsapp) return "/kontak#kirim-pesan";
   return `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 }
 
 export const values = [
   {
     title: "Mendengar dulu",
-    body: "Kami dengarkan ceritamu sampai selesai, tanpa menghakimi.",
+    body: "Kamu boleh bercerita pelan-pelan. Kami mendengarkan untuk memahami, bukan menghakimi.",
   },
   {
-    title: "Rahasiamu aman",
-    body: "Ceritamu hanya dibaca tim yang menanganinya. Mau tanpa nama juga boleh.",
+    title: "Ceritamu kami jaga",
+    body: "Kamu menentukan apa yang ingin dibagikan. Boleh memakai nama panggilan atau bercerita tanpa nama.",
   },
   {
-    title: "Bantuan yang nyata",
-    body: "Selain mendoakan, kami bantu carikan konselor, sembako, atau teman pendamping.",
+    title: "Mencari langkah bersama",
+    body: "Kami mendampingi dan membicarakan bentuk dukungan yang sesuai dengan kebutuhanmu.",
   },
 ] as const;

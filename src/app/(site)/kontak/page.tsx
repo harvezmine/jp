@@ -17,7 +17,9 @@ export const metadata: Metadata = {
 };
 
 const channels = [
-  { icon: Icon.whatsapp, label: "WhatsApp", value: site.phone, href: waLink(), note: "Paling cepat dibalas" },
+  site.whatsapp
+    ? { icon: Icon.whatsapp, label: "WhatsApp", value: site.phone, href: waLink(), note: "Sampaikan pesan dengan nyaman" }
+    : { icon: Icon.mail, label: "Pesan untuk tim JP", value: "Kami ingin mendengarkan", href: "#kirim-pesan", note: "Tinggalkan kontak agar kami bisa membalas" },
   { icon: Icon.mail, label: "Email", value: site.email, href: `mailto:${site.email}`, note: "Untuk pertanyaan panjang" },
   { icon: Icon.tiktok, label: "TikTok", value: "@janjipengharapan", href: site.socials.tiktok, note: "Boleh juga lewat DM" },
 ];
@@ -30,8 +32,8 @@ export default function KontakPage() {
       <PageHero
         image={photos.heroContact}
         imageAlt="Tiga perempuan tertawa bersama"
-        title="Mau tanya sesuatu? Tulis saja."
-        description="Untuk pertanyaan, kerja sama, atau sekadar menyapa."
+        title="Kami senang mendengar darimu."
+        description="Ada yang ingin ditanyakan, ingin bekerja sama, atau sekadar menyapa? Kamu bisa mulai di sini."
       />
 
       <section className="bg-cream pb-20 pt-14 sm:pb-28 sm:pt-20">
@@ -68,10 +70,10 @@ export default function KontakPage() {
           <div className="mt-14 grid gap-12 sm:mt-20 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <Reveal>
-                <h2 className="text-headline text-ink">Kirim pesan</h2>
-                <p className="mt-3 leading-relaxed text-sand-700">Kami balas lewat email atau WhatsApp.</p>
+                <h2 id="kirim-pesan" className="text-headline scroll-mt-28 text-ink">Kirim pesan</h2>
+                <p className="mt-3 leading-relaxed text-sand-700">Tinggalkan email atau nomor WhatsApp agar kami bisa membalas.</p>
               </Reveal>
-              <div className="mt-8 rounded-[2rem] sm:mt-10 sm:bg-white sm:p-10 sm:shadow-warm-lg sm:ring-1 sm:ring-sand-200/70">
+              <div className="form-surface mt-8 rounded-[2rem] p-5 sm:mt-10 sm:p-10">
                 <ContactForm />
               </div>
             </div>
@@ -87,11 +89,11 @@ export default function KontakPage() {
                   <Icon.hands className="h-8 w-8 text-gold-400" />
                   <h2 className="font-display mt-6 text-2xl font-semibold leading-snug">Sedang butuh pertolongan?</h2>
                   <p className="mt-3 max-w-sm leading-relaxed text-sand-200/80">
-                    Pakai formulir khusus supaya langsung sampai ke pendamping. Boleh tanpa nama.
+                    Ada ruang khusus untuk ceritamu, agar tim lebih memahami dukungan yang kamu butuhkan. Kamu boleh bercerita tanpa nama.
                   </p>
                   <div className="mt-7">
                     <ButtonLink href="/pertolongan" variant="light">
-                      Buka formulir pertolongan
+                      Saya ingin bercerita
                       <Icon.arrowRight className="h-4 w-4" />
                     </ButtonLink>
                   </div>
@@ -104,7 +106,7 @@ export default function KontakPage() {
                   <ul className="mt-4 divide-y divide-sand-300/70">
                     {weekly.map((w) => (
                       <li key={w.title}>
-                        <Link href={`/#${w.ruang.slug}`} className="group flex items-baseline justify-between gap-4 py-4">
+                        <Link href={`/layanan#${w.ruang.slug}`} className="group flex items-baseline justify-between gap-4 py-4">
                           <span className="min-w-0">
                             <span className="block font-semibold text-ink transition-colors group-hover:text-maroon-700">
                               {w.title}

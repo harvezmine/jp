@@ -167,7 +167,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 Minta pertolongan
               </ButtonLink>
               <ArrowLink href={waLink()} tone="light">
-                Chat lewat WhatsApp
+                {site.whatsapp ? "Chat lewat WhatsApp" : "Hubungi tim JP"}
               </ArrowLink>
             </div>
           </div>

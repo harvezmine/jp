@@ -8,7 +8,11 @@ import { site, waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const uses = [
-  { icon: Icon.gift, title: "Bantuan kebutuhan pokok", body: "Sembako, obat, dan biaya mendesak untuk yang sedang kesulitan." },
+  {
+    icon: Icon.gift,
+    title: "Bantuan kebutuhan pokok",
+    body: "Sembako, obat, dan biaya mendesak untuk yang sedang kesulitan.",
+  },
   { icon: Icon.users, title: "Konseling gratis", body: "Supaya siapa pun bisa didampingi konselor." },
   { icon: Icon.play, title: "Konten dan acara", body: "Podcast, live, dan acara di Ruang Pengharapan." },
 ];
@@ -18,6 +22,7 @@ const formatAccount = (value: string) => value.replace(/^(\d{3})(\d{3})(\d+)$/, 
 
 export function DonationSection({ className = "bg-paper" }: { className?: string }) {
   const { donation } = site;
+  const hasAccount = Boolean(donation.bank && donation.accountNumber && !/^0+$/.test(donation.accountNumber));
 
   return (
     <section id="donasi" className={cn("relative overflow-hidden py-20 sm:py-28 lg:py-40", className)}>
@@ -31,7 +36,8 @@ export function DonationSection({ className = "bg-paper" }: { className?: string
             </Reveal>
             <Reveal delay={80}>
               <p className="text-lead mt-5 max-w-md text-sand-700 sm:mt-6">
-                Semua pelayanan kami gratis. Itu bisa terjadi karena ada yang ikut memberi.
+                Dukunganmu membantu kami hadir bagi lebih banyak orang. Doa dan pendampingan tetap terbuka, dengan atau
+                tanpa donasi.
               </p>
             </Reveal>
 
@@ -79,30 +85,45 @@ export function DonationSection({ className = "bg-paper" }: { className?: string
                     aria-hidden
                     className="pointer-events-none absolute -right-12 -top-12 -z-10 h-40 w-40 rounded-full bg-gold-400/20 blur-3xl"
                   />
-                  <p className="text-sm text-sand-200/75">Transfer ke {donation.bank}</p>
-                  <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
-                    <div>
-                      <p className="font-display text-[1.75rem] font-semibold tabular-nums tracking-wide sm:text-4xl">
-                        {formatAccount(donation.accountNumber)}
+                  {hasAccount ? (
+                    <>
+                      <p className="text-sm text-sand-200/75">Transfer ke {donation.bank}</p>
+                      <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
+                        <div>
+                          <p className="font-display text-[1.75rem] font-semibold tabular-nums tracking-wide sm:text-4xl">
+                            {formatAccount(donation.accountNumber)}
+                          </p>
+                          <p className="mt-1 text-sm text-sand-200/75">a.n. {donation.accountName}</p>
+                        </div>
+                        <CopyButton value={donation.accountNumber} label="Salin nomor" />
+                      </div>
+                      <div className="mt-6 flex flex-col gap-4 border-t border-sand-50/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="max-w-60 text-sm leading-relaxed text-sand-200/75">
+                          Sudah berdonasi? Kamu bisa mengabari tim melalui halaman kontak.
+                        </p>
+                        <ButtonLink
+                          href={waLink("Halo, saya sudah berdonasi untuk Janji Pengharapan. Ini bukti transfernya.")}
+                          external
+                          variant="light"
+                          className="shrink-0 self-start sm:self-auto"
+                        >
+                          <Icon.whatsapp className="h-4 w-4" />
+                          Konfirmasi donasi
+                        </ButtonLink>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm text-gold-400">Berbagi pengharapan</p>
+                      <h3 className="font-display mt-3 text-2xl text-sand-50">Ingin ikut mendukung?</h3>
+                      <p className="mt-3 text-sm leading-7 text-sand-200/85">
+                        Hubungi tim JP untuk informasi rekening dan cara berdonasi.
                       </p>
-                      <p className="mt-1 text-sm text-sand-200/75">a.n. {donation.accountName}</p>
-                    </div>
-                    <CopyButton value={donation.accountNumber} label="Salin nomor" />
-                  </div>
-                  <div className="mt-6 flex flex-col gap-4 border-t border-sand-50/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="max-w-60 text-sm leading-relaxed text-sand-200/75">
-                      Sudah transfer? Kirim buktinya lewat WhatsApp, ya.
-                    </p>
-                    <ButtonLink
-                      href={waLink("Halo, saya sudah berdonasi untuk Janji Pengharapan. Ini bukti transfernya.")}
-                      external
-                      variant="light"
-                      className="shrink-0 self-start sm:self-auto"
-                    >
-                      <Icon.whatsapp className="h-4 w-4" />
-                      Konfirmasi donasi
-                    </ButtonLink>
-                  </div>
+                      <ButtonLink href="/kontak" variant="light" className="mt-6">
+                        Tanya cara berdonasi <Icon.arrowRight className="h-4 w-4" />
+                      </ButtonLink>
+                    </>
+                  )}
                 </div>
               </Reveal>
             </Parallax>

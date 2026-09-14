@@ -11,6 +11,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     name: site.name,
     description: site.description,
     url: site.url,
+    logo: `${site.url}/brand/logo.png`,
     email: site.email,
     telephone: site.phone,
     address: {

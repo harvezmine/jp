@@ -26,13 +26,13 @@ const story = [
   {
     label: "Lalu",
     title: "Pesan mulai berdatangan",
-    body: "Ada yang minta didoakan karena orang tuanya sakit. Ada yang menulis jam dua pagi karena merasa tidak sanggup lagi. Kami tidak mau membalasnya asal-asalan.",
+    body: "Ada yang minta didoakan karena orang tuanya sakit. Ada yang menulis jam dua pagi karena merasa tidak sanggup lagi. Setiap cerita mengingatkan kami betapa berartinya didengarkan.",
     image: photos.storyGrow,
     alt: "Surat tulisan tangan dan pena di atas meja",
   },
   {
     label: "Sekarang",
-    title: "Tim yang siap menolong",
+    title: "Bertumbuh untuk menemani",
     body: "Ada tim pendoa, konselor, dan relawan, dibantu jemaat gereja lokal kami.",
     image: photos.storyToday,
     alt: "Relawan mengangkat kardus berisi bantuan",
@@ -54,7 +54,7 @@ export default function TentangKamiPage() {
         imageAlt="Empat teman berangkulan menghadap matahari terbenam"
         title={
           <>
-            Dari satu video, <span className="italic text-gold-400">jadi tim yang menolong.</span>
+            Hadir untuk mendengar. <span className="italic text-gold-400">Belajar menemani.</span>
           </>
         }
         description="Kami relawan yang ingin setiap orang punya tempat untuk bercerita dan didoakan."

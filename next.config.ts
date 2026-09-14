@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
   // Kunci akar penelusuran file ke folder proyek ini (ada lockfile lain di $HOME).
   outputFileTracingRoot: process.cwd(),
   poweredByHeader: false,
+  // Sembunyikan badge "N" Next.js di pojok layar saat development.
+  devIndicators: false,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },

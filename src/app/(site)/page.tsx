@@ -7,12 +7,11 @@ import { Icon } from "@/components/icons";
 import { HeroLip } from "@/components/page-hero";
 import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
-import { RuangIntro, RuangSections, RuangSummary } from "@/components/ruang";
+import { RuangIntro } from "@/components/ruang";
 import { ArrowLink, ButtonLink, Container, Rise } from "@/components/ui";
 import { getEvents, getPosts, getQuotes, getSocialPosts } from "@/lib/queries";
 import { photos } from "@/lib/photos";
-import { ruang } from "@/lib/ruang";
-import { site, values, waLink } from "@/lib/site";
+import { site, values } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export default async function HomePage() {
@@ -28,17 +27,14 @@ export default async function HomePage() {
       <Hero />
       <About />
 
-      {/* Empat ruang: pembuka, satu section per ruang, lalu rangkuman */}
-      <RuangIntro />
-      <RuangSections />
-      <RuangSummary />
+      <RuangIntro linkPrefix="/layanan" />
 
       <HelpSteps />
-      <DonationSection />
       <Quotes quotes={quotes} />
       <FromSocials socials={socials} />
       <Reading posts={posts} />
       <Events events={events} />
+      <DonationSection />
     </>
   );
 }
@@ -48,80 +44,125 @@ export default async function HomePage() {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function Hero() {
+  const choices = [
+    {
+      icon: Icon.hands,
+      title: "Saya ingin didoakan",
+      description: "Bawa yang sedang kamu rasakan dalam doa.",
+      category: "doa",
+    },
+    {
+      icon: Icon.users,
+      title: "Saya butuh teman cerita",
+      description: "Ada ruang untuk didengar, tanpa dihakimi.",
+      category: "konseling",
+    },
+    {
+      icon: Icon.heart,
+      title: "Saya belum tahu harus mulai dari mana",
+      description: "Tidak apa-apa. Kita cari langkahnya bersama.",
+      category: "lainnya",
+    },
+  ];
   return (
-    <section className="relative isolate flex min-h-svh flex-col overflow-hidden bg-maroon-950 text-sand-50">
+    <section className="jp-home-hero relative isolate overflow-hidden bg-maroon-950 text-sand-50">
       <ParallaxImage
         src={photos.hero}
-        alt="Seorang perempuan duduk di atas bukit memandang matahari terbit"
+        alt="Cahaya matahari di atas perbukitan"
         priority
         cover
-        strength={10}
+        strength={5}
         className="-z-20"
         imageClassName="animate-settle"
       />
       <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-maroon-950 via-maroon-950/55 to-maroon-950/25"
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-maroon-950/95 via-maroon-950/75 to-maroon-950/35"
       />
       <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-maroon-950/85 via-maroon-950/35 to-transparent"
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-maroon-950/80 via-transparent to-maroon-950/20"
       />
-      <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.12]" />
-
-      <Container size="wide" className="relative flex flex-1 flex-col justify-end pb-16 pt-32 sm:pb-24 lg:pb-24">
-        <div className="max-w-4xl">
-          <Rise>
-            <h1 className="text-hero text-sand-50">
-              Ada janji yang <span className="italic text-gold-400">tidak pernah</span> dibatalkan.
-            </h1>
-          </Rise>
-          <Rise delay={120}>
-            <p className="text-lead mt-6 max-w-md text-sand-100/85 sm:mt-7">
-              Lagi ada yang berat? Ceritakan saja. Kami siap mendengar dan mendoakanmu, tanpa
-              menghakimi.
-            </p>
-          </Rise>
-          <Rise delay={220}>
-            <div className="mt-8 flex flex-col items-start gap-5 sm:mt-9 sm:flex-row sm:items-center sm:gap-8">
-              <ButtonLink href="/pertolongan" variant="light" size="lg">
-                <Icon.hands className="h-5 w-5" />
-                Minta pertolongan
-              </ButtonLink>
-              <ArrowLink href={waLink("Halo, saya mau cerita.")} tone="light">
-                Chat lewat WhatsApp
-              </ArrowLink>
+      <Container size="wide" className="relative pb-20 pt-32 sm:pb-24 sm:pt-40 lg:pb-28 lg:pt-44">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <Rise>
+              <p className="mb-6 flex items-center gap-3 text-xs font-medium tracking-wide text-sand-100/80">
+                <span className="h-px w-8 bg-gold-400" />
+                Tempat bercerita dan menemukan pengharapan
+              </p>
+            </Rise>
+            <Rise delay={80}>
+              <h1 className="jp-hero-heading">
+                Kamu tidak harus
+                <br />
+                melewati ini
+                <br />
+                <span className="italic text-gold-400">sendirian.</span>
+              </h1>
+            </Rise>
+            <Rise delay={160}>
+              <p className="mt-7 max-w-md text-base leading-7 text-sand-100/85 sm:text-lg sm:leading-8">
+                Saat hidup terasa berat, kamu boleh berhenti sejenak. Kami ada untuk mendengar, mendoakan, dan mencari
+                langkah berikutnya bersamamu.
+              </p>
+            </Rise>
+            <Rise delay={240}>
+              <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <ButtonLink href="/pertolongan" variant="light" size="lg">
+                  Mulai bercerita <Icon.arrowRight className="h-4 w-4" />
+                </ButtonLink>
+                <ArrowLink href="#ruang" tone="light">
+                  Kenali ruang untukmu
+                </ArrowLink>
+              </div>
+            </Rise>
+          </div>
+          <Rise delay={250} className="lg:col-span-5">
+            <div className="hero-welcome-card relative rounded-[1.75rem] bg-sand-50 p-6 text-ink sm:p-8">
+              <span
+                aria-hidden="true"
+                className="mb-5 grid h-12 w-12 place-items-center rounded-full bg-maroon-50 text-maroon-700 ring-1 ring-maroon-100"
+              >
+                <Icon.heart className="h-5 w-5" />
+              </span>
+              <h2 className="font-display text-2xl leading-tight sm:text-3xl">Apa yang kamu butuhkan hari ini?</h2>
+              <p className="mt-3 text-sm leading-relaxed text-sand-700">Pilih yang paling dekat dengan perasaanmu.</p>
+              <ul className="mt-6 divide-y divide-sand-300/70 border-y border-sand-300/70">
+                {choices.map(({ icon: ChoiceIcon, ...choice }) => (
+                  <li key={choice.category}>
+                    <a
+                      href={`/pertolongan?category=${choice.category}`}
+                      className="group flex min-h-24 items-center gap-3 py-5"
+                    >
+                      <ChoiceIcon className="h-5 w-5 shrink-0 text-maroon-600" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-sm font-semibold text-maroon-800">{choice.title}</span>
+                        <span className="mt-1 block text-xs leading-relaxed text-sand-700">{choice.description}</span>
+                      </span>
+                      <Icon.arrowUpRight className="h-4 w-4 shrink-0 text-maroon-600 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-sand-700">
+                <Icon.shield className="h-4 w-4 shrink-0 text-maroon-600" />
+                Kamu boleh memakai nama panggilan atau bercerita tanpa nama.
+              </p>
             </div>
           </Rise>
         </div>
-
-        {/* Pintasan ke empat ruang */}
-        <Rise delay={340}>
-          <nav
-            aria-label="Ruang pelayanan"
-            className="mt-12 overflow-hidden rounded-2xl border border-sand-50/12 bg-maroon-950/35 shadow-deep backdrop-blur-md sm:mt-20"
-          >
-            <ul className="-mb-px -mr-px grid grid-cols-2 lg:grid-cols-4">
-              {ruang.map((r, i) => (
-                <li key={r.slug} className="border-b border-r border-sand-50/12">
-                  <a
-                    href={`#${r.slug}`}
-                    className="group flex h-full items-center gap-3 p-4 transition-colors duration-300 hover:bg-sand-50/[0.06] sm:gap-4 sm:p-6"
-                  >
-                    <span className="font-display hidden text-sm italic text-gold-400/80 sm:block">0{i + 1}</span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-sand-50 sm:text-base">Ruang {r.name}</span>
-                      <span className="mt-0.5 hidden text-sm text-sand-200/70 sm:block">{r.short}</span>
-                    </span>
-                    <Icon.arrowRight className="hidden h-4 w-4 shrink-0 text-sand-200/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-gold-400 sm:block" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <Rise delay={320}>
+          <p className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-sand-100/75 lg:mt-14">
+            {["Kamu didengarkan", "Boleh mulai dari cerita singkat", "Sesuai kenyamananmu"].map((text) => (
+              <span key={text} className="flex items-center gap-2">
+                <Icon.check className="h-3.5 w-3.5 text-gold-400" />
+                {text}
+              </span>
+            ))}
+          </p>
         </Rise>
       </Container>
-
       <HeroLip />
     </section>
   );
@@ -146,10 +187,8 @@ function About() {
       <Container size="wide">
         <Reveal>
           <h2 className="font-display max-w-4xl text-[clamp(1.75rem,1rem+3.1vw,3.5rem)] font-medium leading-[1.16] tracking-[-0.025em] text-ink">
-            Semuanya dimulai dari <InlinePhoto src={photos.aboutTable} /> satu video renungan. Lalu
-            pesan berdatangan dari orang yang sedang <InlinePhoto src={photos.aboutPrayer} />{" "}
-            <span className="italic text-maroon-700">kehilangan arah.</span> Sekarang, kami menemani
-            mereka satu per satu.
+            Ada hari ketika <span className="italic text-maroon-700">didengarkan</span> saja sudah berarti banyak. Di
+            sini, kamu boleh datang dengan ceritamu, <InlinePhoto src={photos.aboutFriends} /> apa adanya.
           </h2>
         </Reveal>
 
@@ -180,7 +219,7 @@ function About() {
 
           <div className="lg:col-span-7 lg:pl-6 lg:pt-8">
             <Reveal>
-              <h3 className="text-title text-ink">Cara kami menolong</h3>
+              <h3 className="text-title text-ink">Cara kami menemanimu</h3>
             </Reveal>
             <ol className="mt-6 border-t border-sand-300/70 sm:mt-8">
               {values.map((v, i) => (

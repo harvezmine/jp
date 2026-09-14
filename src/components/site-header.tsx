@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
 import { ButtonLink } from "@/components/ui";
-import { navigation, site } from "@/lib/site";
+import { navigation, site, waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
@@ -112,7 +112,7 @@ export function SiteHeader() {
             <span className="hidden sm:block">
               <ButtonLink href="/pertolongan" variant={onDark ? "light" : "primary"} className="whitespace-nowrap">
                 <Icon.hands className="h-4 w-4" />
-                Butuh Pertolongan
+                Mulai bercerita
               </ButtonLink>
             </span>
 
@@ -168,17 +168,17 @@ export function SiteHeader() {
             >
               <ButtonLink href="/pertolongan" size="lg" className="w-full">
                 <Icon.hands className="h-5 w-5" />
-                Butuh Pertolongan
+                Mulai bercerita
               </ButtonLink>
               <ButtonLink
-                href={`https://wa.me/${site.whatsapp}`}
+                href={waLink()}
                 external
                 variant="outline"
                 size="lg"
                 className="w-full"
               >
                 <Icon.whatsapp className="h-5 w-5" />
-                Chat WhatsApp
+                {site.whatsapp ? "Chat WhatsApp" : "Hubungi tim JP"}
               </ButtonLink>
             </div>
 

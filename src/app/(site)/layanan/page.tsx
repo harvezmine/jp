@@ -7,7 +7,7 @@ import { PageHero } from "@/components/page-hero";
 import { RuangIntro, RuangSections, RuangSummary } from "@/components/ruang";
 import { ArrowLink, ButtonLink } from "@/components/ui";
 import { photos } from "@/lib/photos";
-import { waLink } from "@/lib/site";
+import { waLink, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Pelayanan",
@@ -28,11 +28,11 @@ const faqs: Faq[] = [
   },
   {
     q: "Kalau keadaanku darurat?",
-    a: "Kalau ada nyawa yang terancam, hubungi 112 sekarang. Setelah itu, kabari kami lewat WhatsApp.",
+    a: "Jika keselamatanmu atau orang lain terancam, hubungi layanan darurat setempat dan orang terdekat. Formulir ini bukan layanan darurat.",
   },
   {
     q: "Berapa lama sampai dihubungi?",
-    a: "Yang mendesak, kami usahakan hari itu juga. Lainnya biasanya 1 sampai 2 hari.",
+    a: "Tim akan membaca ceritamu dan membalas melalui cara yang kamu pilih. Balasan tidak selalu langsung, jadi kamu tidak perlu menunggu di halaman ini.",
   },
 ];
 
@@ -44,18 +44,18 @@ export default function LayananPage() {
         imageAlt="Tangan beberapa orang saling bertumpuk"
         title={
           <>
-            Empat ruang untuk kamu yang <span className="italic text-gold-400">butuh ditolong.</span>
+            Ada ruang untuk <span className="italic text-gold-400">setiap langkahmu.</span>
           </>
         }
-        description="Gratis dan terbuka untuk siapa saja."
+        description="Untuk saat kamu ingin didoakan, didengarkan, atau bertumbuh bersama. Kamu tidak harus tahu semua jawabannya dulu."
       >
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
           <ButtonLink href="/pertolongan" variant="light" size="lg">
             <Icon.hands className="h-5 w-5" />
-            Minta pertolongan
+            Mulai bercerita
           </ButtonLink>
           <ArrowLink href={waLink()} tone="light">
-            Chat lewat WhatsApp
+            {site.whatsapp ? "Chat lewat WhatsApp" : "Hubungi tim JP"}
           </ArrowLink>
         </div>
       </PageHero>
@@ -66,7 +66,7 @@ export default function LayananPage() {
             Mulai dari <span className="italic text-maroon-700">ruang</span> yang paling pas.
           </>
         }
-        description="Bingung pilih yang mana? Isi formulir saja, nanti kami bantu."
+        description="Belum tahu harus mulai dari mana? Ceritakan sedikit tentang keadaanmu, kita cari langkahnya bersama."
       />
       <RuangSections />
       <RuangSummary />
@@ -75,7 +75,7 @@ export default function LayananPage() {
 
       <FaqSection
         title="Yang sering ditanyakan"
-        description="Pertanyaan lain? Tanya langsung saja."
+        description="Wajar kalau masih ada yang ingin kamu ketahui sebelum mulai."
         action={{ label: "Hubungi kami", href: "/kontak" }}
         items={faqs}
       />
