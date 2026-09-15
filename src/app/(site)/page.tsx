@@ -89,7 +89,7 @@ function Hero() {
             <ButtonLink href="/pertolongan" variant="light" size="lg">
               Mulai bercerita <Icon.arrowRight className="h-4 w-4" />
             </ButtonLink>
-            <p className="text-sm text-sand-100/65">Gratis dan boleh tanpa nama.</p>
+            <p className="text-sm text-sand-100/65">Gratis Tidak dipungut biaya.</p>
           </div>
         </Rise>
         <Rise delay={260}>
