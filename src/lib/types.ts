@@ -4,6 +4,11 @@ export type Urgency = "biasa" | "mendesak" | "darurat";
 export type ContactPreference = "whatsapp" | "telepon" | "email" | "tidak_perlu";
 export type HelpStatus = "baru" | "diproses" | "selesai" | "ditutup";
 export type Platform = "instagram" | "tiktok" | "youtube";
+export type HelpSource = "umum" | "doa" | "cerita";
+export type PrayerFor = "diri_sendiri" | "orang_lain";
+export type Companion = "siapa_saja" | "perempuan" | "laki_laki";
+/** Jawaban khusus formulir Doa dan Cerita (kolom help_requests.details). */
+export type HelpDetails = { prayer_for?: PrayerFor; companion?: Companion };
 
 export type Post = {
   id: string;
@@ -80,6 +85,8 @@ export type HelpRequest = {
   email: string | null;
   city: string | null;
   category: HelpCategory;
+  source: HelpSource;
+  details: HelpDetails;
   urgency: Urgency;
   message: string;
   contact_preference: ContactPreference;
@@ -126,6 +133,23 @@ export const HELP_CATEGORY_HINT: Record<HelpCategory, string> = {
   kunjungan: "Ingin ada yang datang menemani",
   keuangan: "Ada yang sedang berat soal ini, boleh diceritakan",
   lainnya: "Tidak apa-apa, kita cari tahu bersama",
+};
+
+export const HELP_SOURCE_LABEL: Record<HelpSource, string> = {
+  umum: "Formulir umum",
+  doa: "Ruang Doa",
+  cerita: "Ruang Cerita",
+};
+
+export const PRAYER_FOR_LABEL: Record<PrayerFor, string> = {
+  diri_sendiri: "Diri sendiri",
+  orang_lain: "Orang lain",
+};
+
+export const COMPANION_LABEL: Record<Companion, string> = {
+  siapa_saja: "Siapa saja",
+  perempuan: "Perempuan",
+  laki_laki: "Laki-laki",
 };
 
 export const URGENCY_LABEL: Record<Urgency, string> = {
