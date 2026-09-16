@@ -8,13 +8,23 @@ const source = await readFile(new URL("../src/lib/help-validation.ts", import.me
 const { outputText } = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
 });
-const { isValidPhone, validateHelp, validateContact, readHelpValues, readContactValues } = await import(
-  `data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`
-);
+const {
+  isValidPhone,
+  validateHelp,
+  validateContact,
+  readHelpValues,
+  readContactValues,
+  helpDetails,
+  firstStepWithError,
+  HELP_FORM_STEPS,
+} = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
 const base = {
+  source: "umum",
   category: "doa",
   urgency: "biasa",
   message: "Saya ingin ditemani bercerita.",
+  prayerFor: "",
+  companion: "",
   name: "Rani",
   phone: "081234567890",
   email: "",
@@ -49,9 +59,9 @@ test("email preference requires email, not phone", () => {
   assert.ok(validateHelp({ ...base, contactPreference: "email", phone: "", email: "invalid" }).email);
   assert.deepEqual(validateHelp({ ...base, contactPreference: "email", phone: "", email: "rani@example.com" }), {});
 });
-test("the first step validates only the selected need", () => {
-  assert.deepEqual(validateHelp({ ...base, message: "", name: "", phone: "" }, 0), {});
-  assert.ok(validateHelp({ ...base, category: "" }, 0).category);
+test("the need step validates only the selected need", () => {
+  assert.deepEqual(validateHelp({ ...base, message: "", name: "", phone: "" }, "kebutuhan"), {});
+  assert.ok(validateHelp({ ...base, category: "" }, "kebutuhan").category);
 });
 test("invalid categories, urgency and contact choices are rejected on the server", () => {
   const errors = validateHelp({ ...base, category: "unknown", urgency: "unknown", contactPreference: "unknown" });
@@ -109,4 +119,87 @@ test("uploaded files cannot be treated as story text", () => {
   const form = new FormData();
   form.set("message", new Blob(["Not text input"]), "story.txt");
   assert.equal(readHelpValues(form).message, "");
+});
+
+const formOf = (entries) => {
+  const form = new FormData();
+  for (const [key, value] of Object.entries(entries)) form.set(key, value);
+  return form;
+};
+
+test("each form has its own steps", () => {
+  assert.deepEqual([...HELP_FORM_STEPS.umum], ["kebutuhan", "cerita", "kontak"]);
+  assert.deepEqual([...HELP_FORM_STEPS.doa], ["doa", "kontak"]);
+  assert.deepEqual([...HELP_FORM_STEPS.cerita], ["cerita", "kontak"]);
+});
+
+test("the prayer form forces the doa category and ignores urgency", () => {
+  const values = readHelpValues(
+    formOf({
+      source: "doa",
+      category: "keuangan",
+      urgency: "darurat",
+      prayer_for: "orang_lain",
+      message: "Doakan ibu saya, ya.",
+      contact_preference: "tidak_perlu",
+      is_anonymous: "on",
+    }),
+  );
+  assert.equal(values.source, "doa");
+  assert.equal(values.category, "doa");
+  assert.equal(values.urgency, "biasa");
+  assert.equal(values.prayerFor, "orang_lain");
+  assert.equal(values.companion, "");
+  assert.deepEqual(validateHelp(values), {});
+  assert.deepEqual(helpDetails(values), { prayer_for: "orang_lain" });
+});
+
+test("the story form forces the konseling category and keeps urgency and companion", () => {
+  const values = readHelpValues(
+    formOf({
+      source: "cerita",
+      category: "doa",
+      urgency: "mendesak",
+      companion: "perempuan",
+      message: "Saya ingin bercerita dengan seseorang.",
+      name: "Rani",
+      contact_preference: "whatsapp",
+      phone: "081234567890",
+    }),
+  );
+  assert.equal(values.category, "konseling");
+  assert.equal(values.urgency, "mendesak");
+  assert.equal(values.prayerFor, "");
+  assert.deepEqual(validateHelp(values), {});
+  assert.deepEqual(helpDetails(values), { companion: "perempuan" });
+});
+
+test("unknown sources fall back to the general form", () => {
+  const values = readHelpValues(formOf({ source: "hack", category: "kunjungan", message: base.message }));
+  assert.equal(values.source, "umum");
+  assert.equal(values.category, "kunjungan");
+  assert.deepEqual(helpDetails(values), {});
+  assert.ok(validateHelp({ ...base, source: "hack" }).source);
+});
+
+test("prayer requests may be shorter than stories", () => {
+  const doa = { ...base, source: "doa", category: "doa", prayerFor: "diri_sendiri" };
+  assert.equal(validateHelp({ ...doa, message: "Doakan ibu" }).message, undefined);
+  assert.ok(validateHelp({ ...doa, message: "Doakan" }).message);
+  assert.ok(validateHelp({ ...base, message: "Doakan ibu" }).message);
+});
+
+test("each group reports only its own fields", () => {
+  const doa = { ...base, source: "doa", category: "doa", prayerFor: "", message: "" };
+  assert.deepEqual(Object.keys(validateHelp(doa, "doa")).sort(), ["message", "prayer_for"]);
+  const cerita = { ...base, source: "cerita", category: "konseling", companion: "tamu" };
+  assert.deepEqual(Object.keys(validateHelp(cerita, "cerita")), ["companion"]);
+});
+
+test("errors send the form back to the first step that owns them", () => {
+  assert.equal(firstStepWithError("umum", { phone: "x" }), 2);
+  assert.equal(firstStepWithError("umum", { category: "x", phone: "x" }), 0);
+  assert.equal(firstStepWithError("doa", { prayer_for: "x" }), 0);
+  assert.equal(firstStepWithError("cerita", { email: "x" }), 1);
+  assert.equal(firstStepWithError("doa", { unknown: "x" }), 1);
 });
