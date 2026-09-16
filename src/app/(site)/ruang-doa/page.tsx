@@ -33,7 +33,7 @@ export default function RuangDoaPage() {
   return (
     <>
       <RuangHero ruang={r} action={{ label: "Kirim pokok doa", href: "#kirim-doa" }} />
-      <RuangSection ruang={r} index={0} heading={r.tagline} showSummary={false} />
+      <RuangSection ruang={r} index={0} heading={r.tagline} showSummary={false} showDetail={false} />
       <PrayerFormSection className="bg-cream" />
       <FaqSection
         title="Tentang Ruang Doa"

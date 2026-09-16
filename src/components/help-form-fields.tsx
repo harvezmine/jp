@@ -20,11 +20,12 @@ import {
 } from "@/lib/types";
 
 /**
- * Pilihan yang tampil di formulir umum. "kebutuhan" tetap sah di database supaya permintaan
- * lama masih terbaca di admin, tapi tidak ditawarkan lagi: dua pilihan soal ekonomi
- * terasa terlalu mengotak-ngotakkan, dan JP tidak menjanjikan bantuan materi.
+ * Pilihan yang tampil di formulir umum. Hanya tiga, karena sisanya sudah tercakup:
+ * kunjungan dan soal pekerjaan/keuangan tetap masuk lewat "didoakan" atau "teman bercerita".
+ * Nilai lama ("kebutuhan", "kunjungan", "keuangan") tetap sah di database supaya permintaan
+ * lama masih terbaca di admin.
  */
-export const FORM_CATEGORIES: HelpCategory[] = ["doa", "konseling", "kunjungan", "keuangan", "lainnya"];
+export const FORM_CATEGORIES: HelpCategory[] = ["doa", "konseling", "lainnya"];
 
 const categoryIcons: Record<HelpCategory, keyof typeof Icon> = {
   doa: "hands",

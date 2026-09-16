@@ -198,11 +198,14 @@ export function RuangSection({
   id = `${r.slug}-program`,
   heading,
   showSummary = true,
+  showDetail = true,
   secondary = r.secondary,
 }: {
   ruang: Ruang;
   index: number;
   id?: string;
+  /** Matikan foto bulat kecil bila foto itu sudah dipakai hero halaman ruang. */
+  showDetail?: boolean;
   /** Default: nama ruang besar. Di halaman ruang, isi dengan tagline karena nama sudah ada di hero. */
   heading?: ReactNode;
   /** Matikan di halaman ruang: ringkasan sudah tampil di hero. */
@@ -244,11 +247,11 @@ export function RuangSection({
       </Parallax>
 
       <Container size="wide" className="relative">
-        <div className="grid items-center gap-12 pt-6 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
+        <div className="grid items-start gap-12 pt-6 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
           {/* Foto berbentuk lengkung pintu */}
           <div
             className={cn(
-              "relative mx-auto w-full max-w-md sm:max-w-lg lg:col-span-5 lg:max-w-none",
+              "relative mx-auto w-full max-w-md sm:max-w-lg lg:sticky lg:top-28 lg:col-span-5 lg:max-w-none",
               flip && "lg:order-2 lg:col-start-8",
             )}
           >
@@ -271,25 +274,27 @@ export function RuangSection({
               />
             </Reveal>
 
-            <Parallax
-              speed={6}
-              className={cn(
-                "absolute -bottom-10 hidden w-44 lg:block xl:w-52",
-                flip ? "-left-14" : "-right-14",
-              )}
-            >
-              <Reveal variant="zoom" delay={300}>
-                <div
-                  className={cn(
-                    "relative aspect-square overflow-hidden rounded-full border-[6px] shadow-deep",
-                    t.frame,
-                    t.placeholder,
-                  )}
-                >
-                  <Image src={r.detailImage} alt="" fill sizes="208px" className="object-cover" />
-                </div>
-              </Reveal>
-            </Parallax>
+            {showDetail && (
+              <Parallax
+                speed={6}
+                className={cn(
+                  "absolute -bottom-10 hidden w-44 lg:block xl:w-52",
+                  flip ? "-left-14" : "-right-14",
+                )}
+              >
+                <Reveal variant="zoom" delay={300}>
+                  <div
+                    className={cn(
+                      "relative aspect-square overflow-hidden rounded-full border-[6px] shadow-deep",
+                      t.frame,
+                      t.placeholder,
+                    )}
+                  >
+                    <Image src={r.detailImage} alt="" fill sizes="208px" className="object-cover" />
+                  </div>
+                </Reveal>
+              </Parallax>
+            )}
           </div>
 
           {/* Isi */}
@@ -318,14 +323,25 @@ export function RuangSection({
                   as="li"
                   key={p.title}
                   delay={150 + i * 80}
-                  className={cn("group/program border-b py-5 sm:py-6", t.rule)}
+                  className={cn(
+                    "group/program grid grid-cols-[2.25rem_1fr] gap-x-4 border-b py-5 sm:grid-cols-[3.5rem_1fr] sm:gap-x-6 sm:py-7",
+                    t.rule,
+                  )}
                 >
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                    <h3 className={cn("font-display text-xl font-semibold sm:text-2xl", t.title)}>{p.title}</h3>
-                    <p className={cn("shrink-0 text-sm font-semibold tabular-nums", t.accent)}>{p.when}</p>
+                  <span
+                    aria-hidden
+                    className={cn("font-display text-2xl font-semibold leading-none sm:text-3xl", t.muted)}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                      <h3 className={cn("font-display text-xl font-semibold sm:text-2xl", t.title)}>{p.title}</h3>
+                      <p className={cn("shrink-0 text-sm font-semibold tabular-nums", t.accent)}>{p.when}</p>
+                    </div>
+                    <p className={cn("mt-2 max-w-xl leading-relaxed", t.body)}>{p.summary}</p>
+                    <p className={cn("mt-2 text-xs font-medium", t.muted)}>{p.format}</p>
                   </div>
-                  <p className={cn("mt-2 max-w-xl leading-relaxed", t.body)}>{p.summary}</p>
-                  <p className={cn("mt-2 text-xs font-medium", t.muted)}>{p.format}</p>
                 </Reveal>
               ))}
             </ol>
@@ -558,10 +574,12 @@ export function RuangSummary({
 
 /* ── Hero halaman ruang ───────────────────────────────────────────────────── */
 
-/** Hero tanpa foto: foto ruang sudah tampil besar di section program tepat di bawahnya. */
+/** Hero ruang: foto detail sebagai latar, dengan nama ruang besar di atasnya. */
 export function RuangHero({ ruang: r, action }: { ruang: Ruang; action: { label: string; href: string } }) {
   return (
     <PageHero
+      // Foto detail dipakai di sini, sementara foto utama jadi lengkung pintu di section program.
+      image={r.detailImage}
       lipClassName={tones[r.tone].section}
       title={<RuangName name={r.name} prefixClassName="mb-2 text-[0.42em] tracking-normal text-gold-400" />}
       description={r.summary}

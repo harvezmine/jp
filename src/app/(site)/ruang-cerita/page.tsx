@@ -32,7 +32,7 @@ export default function RuangCeritaPage() {
   return (
     <>
       <RuangHero ruang={r} action={{ label: "Mulai bercerita", href: "#ceritakan" }} />
-      <RuangSection ruang={r} index={0} heading={r.tagline} showSummary={false} />
+      <RuangSection ruang={r} index={0} heading={r.tagline} showSummary={false} showDetail={false} />
       <CaraMenemani className="bg-cream" />
       <HelpSteps ctaHref="#ceritakan" />
       <StoryFormSection className="bg-cream" />

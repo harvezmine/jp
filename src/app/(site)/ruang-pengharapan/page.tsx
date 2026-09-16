@@ -33,7 +33,7 @@ export default async function RuangPengharapanPage() {
             : { label: "Tonton renungan", href: "#konten-sosmed" }
         }
       />
-      <RuangSection ruang={r} index={0} heading={r.tagline} showSummary={false} />
+      <RuangSection ruang={r} index={0} heading={r.tagline} showSummary={false} showDetail={false} />
       <RenunganSection id="renungan" posts={posts} storyHref="/ruang-cerita#ceritakan" className="bg-paper" />
       <SocialReels socials={socials} />
       <QuotesSection quotes={quotes} className="bg-cream" />
