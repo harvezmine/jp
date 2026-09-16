@@ -13,8 +13,9 @@ export const photos = {
   aboutHands: unsplash("1437603568260-1950d3ca6eab"),
 
   ruangHope: unsplash("1438232992991-995b7058bbb3"),
-  // Frame asli dari reel Instagram JP, dipotong di atas judul yang tertanam di video.
-  ruangHopeDetail: "/images/jp/insight-studio.jpg",
+  // Foto stok (bukan wajah pembicara) untuk hero Ruang Pengharapan. Sengaja bukan foto
+  // yang dipakai halaman lain di jalur yang sama, dan tidak ada di kumpulan foto contoh.
+  ruangHopeDetail: unsplash("1517457373958-b7bdd4587205"),
   ruangPrayer: unsplash("1478147427282-58a87a120781"),
   // Bukan foto lilin: foto itu dipakai section support di beranda, dan dua-duanya
   // akan tampil di halaman yang sama.

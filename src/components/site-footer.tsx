@@ -1,9 +1,10 @@
 import Link from "next/link";
 
 import { CrisisLine } from "@/components/crisis-line";
+import { FooterCta } from "@/components/footer-cta";
 import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
-import { ArrowLink, ButtonLink, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 import { ruang, ruangHref } from "@/lib/ruang";
 import { navigation, site, socialLinks, waLink } from "@/lib/site";
 
@@ -20,20 +21,7 @@ export function SiteFooter() {
 
       <Container size="wide" className="pt-16 sm:pt-28">
         {/* Penutup */}
-        <div className="grid gap-8 border-b border-sand-50/10 pb-14 sm:pb-20 lg:grid-cols-12 lg:items-end lg:gap-10">
-          <h2 className="text-display text-sand-50 lg:col-span-8">
-            Kalau hari ini berat, <span className="italic text-gold-400">cerita saja.</span>
-          </h2>
-          <div className="flex flex-col items-start gap-5 lg:col-span-4 lg:items-end">
-            <ButtonLink href="/pertolongan" variant="light" size="lg">
-              <Icon.hands className="h-5 w-5" />
-              Mulai bercerita
-            </ButtonLink>
-            <ArrowLink href={waLink()} tone="light">
-              {site.whatsapp ? "Atau chat lewat WhatsApp" : "Hubungi tim JP"}
-            </ArrowLink>
-          </div>
-        </div>
+        <FooterCta />
 
         <CrisisLine tone="dark" layout="row" className="mt-10 sm:mt-12" />
 

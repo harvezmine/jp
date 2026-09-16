@@ -6,7 +6,6 @@ import { HeroLip } from "@/components/page-hero";
 import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
 import { ChapterHeading, RuangIntro, RuangSection, RuangTiles } from "@/components/ruang";
-import { BelajarChapter } from "@/components/sections/belajar-chapter";
 import { GeneralFormSection } from "@/components/sections/form-sections";
 import { RenunganSection } from "@/components/sections/renungan";
 import { SocialReels } from "@/components/sections/social-reels";
@@ -48,7 +47,12 @@ export default async function HomePage() {
       <HelpSteps ctaHref="/ruang-cerita#ceritakan" />
 
       {/* 04 Ruang Belajar */}
-      <BelajarChapter className="bg-paper" />
+      <RuangSection
+        ruang={getRuang("ruang-belajar")}
+        index={0}
+        id="bab-belajar"
+        secondary={{ label: "Masuk ke Ruang Belajar", href: "/ruang-belajar" }}
+      />
 
       <GeneralFormSection className="bg-cream" />
       <SupportSection className="bg-paper" />
