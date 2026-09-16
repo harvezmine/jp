@@ -24,8 +24,6 @@ function watermark(event: ProconEvent) {
 
 export function ProconSection({ events = proconEvents, className }: { events?: ProconEvent[]; className?: string }) {
   const shown = events.slice(0, 5);
-  // Kartu utama setinggi dua baris hanya bila sisa kartunya genap, supaya kisi tetap rapi.
-  const spanFeatured = shown.length % 2 === 1 && shown.length > 1;
 
   return (
     <section
@@ -56,29 +54,28 @@ export function ProconSection({ events = proconEvents, className }: { events?: P
           </Reveal>
         </div>
 
+        {/*
+          Kartu pertama melebar penuh sebagai sampul, sisanya dua kolom. Dengan begitu
+          kartu emas tidak menyisakan ruang kosong tinggi seperti saat memanjang ke bawah.
+        */}
         <ul className="mt-12 grid gap-5 sm:mt-14 lg:grid-cols-2">
           {shown.map((event, index) => {
             const featured = index === 0;
             const action = cardAction(event);
             return (
-              <Reveal
-                as="li"
-                key={event.id}
-                delay={index * 90}
-                className={cn(featured && spanFeatured && "lg:row-span-2")}
-              >
+              <Reveal as="li" key={event.id} delay={index * 90} className={cn(featured && "lg:col-span-2")}>
                 <article
                   className={cn(
                     "group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-7 transition duration-300 sm:p-9",
                     featured
-                      ? "min-h-[22rem] bg-gold-400 text-maroon-950 shadow-deep"
+                      ? "bg-gold-400 text-maroon-950 shadow-deep"
                       : "bg-sand-50/[0.04] ring-1 ring-sand-50/10 hover:bg-sand-50/[0.07]",
                   )}
                 >
                   {featured && (
                     <span
                       aria-hidden
-                      className="font-display pointer-events-none absolute -right-4 top-16 select-none text-[16rem] font-semibold italic leading-none tracking-tighter text-maroon-950/10 sm:text-[20rem]"
+                      className="font-display pointer-events-none absolute -right-6 -top-10 select-none text-[14rem] font-semibold italic leading-none tracking-tighter text-maroon-950/10 sm:text-[18rem] lg:-top-14 lg:text-[22rem]"
                     >
                       {watermark(event)}
                     </span>
@@ -98,7 +95,7 @@ export function ProconSection({ events = proconEvents, className }: { events?: P
                     </span>
                   </div>
 
-                  <div className="relative mt-auto pt-10 sm:pt-14">
+                  <div className="relative mt-auto pt-10 sm:pt-12">
                     <h3
                       className={cn(
                         "font-display text-balance font-semibold leading-tight tracking-tight",
@@ -140,7 +137,7 @@ export function ProconSection({ events = proconEvents, className }: { events?: P
 
         <Reveal className="mt-8 flex flex-col gap-5 rounded-[1.75rem] bg-sand-50/[0.04] p-6 ring-1 ring-sand-50/10 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <p className="max-w-xl text-sand-300/80">
-            Jadwal ProCon diumumkan tiap bulan. Tanya jadwal terdekat lewat WhatsApp.
+            {procon.openTo} Jadwalnya diumumkan tiap bulan, jadi tanya saja yang terdekat.
           </p>
           <ButtonLink href={proconWaLink()} external variant="light" className="shrink-0 self-start sm:self-auto">
             <Icon.whatsapp className="h-4 w-4" />

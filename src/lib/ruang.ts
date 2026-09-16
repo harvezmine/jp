@@ -7,7 +7,7 @@ import { site, waLink } from "@/lib/site";
  * Deskripsi dan jadwal program masih contoh; ganti sesuai yang sebenarnya.
  */
 
-export type RuangTone = "cream" | "night" | "paper" | "ink";
+export type RuangTone = "cream" | "night" | "paper" | "ink" | "sand";
 
 export type Program = {
   title: string;
@@ -153,14 +153,14 @@ export const ruang: Ruang[] = [
     slug: "ruang-belajar",
     name: "Belajar",
     short: "Saat kamu ingin bertumbuh",
-    tagline: "Kelas untuk terus bertumbuh.",
+    tagline: "Belajar bareng lewat ProCon.",
     summary:
-      "Kelas dan komunitas untuk mengembangkan diri. Mulai dari kepemimpinan sampai keterampilan praktis seperti AI dan bahasa Inggris.",
+      "Kelas dan diskusi pengembangan diri, semuanya berjalan lewat ProCon. Terbuka untuk siapa saja yang mau ikut.",
     forWho: "Untuk pelajar, pekerja, dan pemimpin yang mau terus belajar.",
     programs: [
       {
         title: "ProCon",
-        summary: "Ketemu dan berjejaring dengan sesama profesional.",
+        summary: "Kelas dan diskusi bareng sesama yang mau bertumbuh. Ketemu langsung, lalu berjejaring.",
         when: "Sebulan sekali",
         format: "Tatap muka di Jakarta",
       },
@@ -171,19 +171,21 @@ export const ruang: Ruang[] = [
         format: "Tatap muka",
       },
       {
-        title: "Komunitas belajar bersama",
-        summary: "Kelompok kecil yang belajar hal praktis bareng, seperti AI untuk kerja dan bahasa Inggris.",
-        when: "Sabtu, 10.00 WIB",
-        format: "Online dan tatap muka",
-        weekly: { day: 5, time: "10.00" },
+        title: "Belajar bareng",
+        summary: "Ada topik yang ingin kamu pelajari bareng-bareng? Kabari kami, nanti kita atur lewat ProCon.",
+        when: "Kalau ada yang mau",
+        format: "Lewat WhatsApp",
       },
     ],
-    cta: { label: "Lihat komunitas", href: "/ruang-belajar#komunitas" },
-    secondary: { label: "Jadwal ProCon", href: "/ruang-belajar#procon" },
+    cta: { label: "Lihat ProCon", href: "/ruang-belajar#procon" },
+    secondary: {
+      label: site.whatsapp ? "Tanya jadwal lewat WhatsApp" : "Hubungi tim JP",
+      href: waLink("Halo, saya tertarik dengan ProCon. Boleh minta info jadwalnya?"),
+    },
     image: photos.ruangLearn,
     imageAlt: "Beberapa orang tertawa sambil belajar bersama di perpustakaan",
     detailImage: photos.ruangLearnDetail,
-    tone: "ink",
+    tone: "sand",
   },
 ];
 
