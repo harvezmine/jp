@@ -4,7 +4,7 @@ import { FaqSection, type Faq } from "@/components/faq";
 import { HelpSteps } from "@/components/help-steps";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
-import { RuangIntro, RuangSections, RuangSummary } from "@/components/ruang";
+import { RuangIntro, RuangSummary } from "@/components/ruang";
 import { ArrowLink, ButtonLink } from "@/components/ui";
 import { photos } from "@/lib/photos";
 import { waLink, site } from "@/lib/site";
@@ -68,7 +68,6 @@ export default function LayananPage() {
         }
         description="Belum tahu harus mulai dari mana? Ceritakan sedikit tentang keadaanmu, kita cari langkahnya bersama."
       />
-      <RuangSections />
       <RuangSummary />
 
       <HelpSteps />

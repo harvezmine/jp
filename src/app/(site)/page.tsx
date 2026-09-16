@@ -8,7 +8,7 @@ import { Icon } from "@/components/icons";
 import { HeroLip } from "@/components/page-hero";
 import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
-import { RuangIntro } from "@/components/ruang";
+import { RuangIntro, RuangTiles } from "@/components/ruang";
 import { SupportSection } from "@/components/support";
 import { ArrowLink, ButtonLink, Container, Rise } from "@/components/ui";
 import { getPosts, getQuotes, getSocialPosts } from "@/lib/queries";
@@ -29,7 +29,7 @@ export default async function HomePage() {
       <Hero />
       <About />
 
-      <RuangIntro linkPrefix="/layanan" />
+      <RuangIntro />
 
       <HelpSteps />
       <Quotes quotes={quotes} />
@@ -95,35 +95,7 @@ function Hero() {
           </div>
         </Rise>
         <Rise delay={260}>
-          <nav aria-label="Ruang pelayanan" className="mt-10 sm:mt-14">
-            <ul className="grid max-w-3xl grid-cols-2 gap-2.5 sm:gap-3 lg:max-w-[60rem] lg:grid-cols-4">
-              {allRuang.map((r) => (
-                <li key={r.slug}>
-                  <a
-                    href={`/layanan#${r.slug}`}
-                    className="hero-ruang-tile group flex h-full items-center gap-2.5 rounded-2xl p-2 pr-2.5 transition duration-500 ease-out hover:-translate-y-0.5 sm:gap-3.5 sm:p-2.5 sm:pr-4"
-                  >
-                    <span className="relative block h-12 w-8 shrink-0 overflow-hidden rounded-b-md rounded-t-full bg-maroon-900 sm:h-14 sm:w-10">
-                      <Image
-                        src={r.image}
-                        alt=""
-                        fill
-                        sizes="40px"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="font-display block text-xs italic leading-none text-gold-400">Ruang</span>
-                      <span className="font-display mt-1 block text-sm font-semibold leading-tight text-sand-50 sm:text-lg">
-                        {r.name}
-                      </span>
-                      <span className="mt-0.5 hidden text-xs leading-snug text-sand-200/70 sm:block">{r.short}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <RuangTiles className="mt-10 sm:mt-14" />
         </Rise>
       </Container>
       <HeroLip />

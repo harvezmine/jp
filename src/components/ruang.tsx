@@ -6,7 +6,8 @@ import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
 import { TodayMarker } from "@/components/today-marker";
 import { ArrowLink, ButtonLink, Container } from "@/components/ui";
-import { ruang as allRuang, weekDays, weeklyPrograms, type Ruang } from "@/lib/ruang";
+import { PageHero } from "@/components/page-hero";
+import { ruang as allRuang, ruangHref, weekDays, weeklyPrograms, type Ruang } from "@/lib/ruang";
 import { site, waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -79,6 +80,10 @@ const tones = {
   },
 } as const;
 
+/** Ukuran nama ruang sebagai judul besar (section ruang dan bab di beranda). */
+const ruangTitleClass =
+  "font-display text-[clamp(2.75rem,1.4rem+5vw,5.25rem)] font-semibold leading-[0.9] tracking-[-0.04em]";
+
 /**
  * Nama ruang: kata "Ruang" kecil bergaya miring di atas nama yang besar.
  * Spasi di antaranya tetap ada supaya pembaca layar membaca "Ruang Doa".
@@ -109,13 +114,11 @@ export function RuangIntro({
     </>
   ),
   description = "Mulai dari ruang yang terasa paling nyaman untukmu. Pindah ruang kapan saja juga boleh.",
-  linkPrefix = "",
   className = "bg-cream",
 }: {
   title?: ReactNode;
   description?: string;
   className?: string;
-  linkPrefix?: string;
 }) {
   return (
     <section id="ruang" className={cn("relative overflow-hidden pb-16 pt-20 sm:pb-24 sm:pt-28 lg:pt-36", className)}>
@@ -140,7 +143,8 @@ export function RuangIntro({
                 i % 2 === 1 && "lg:translate-y-16",
               )}
             >
-              <a id={linkPrefix ? r.slug : undefined} href={`${linkPrefix}#${r.slug}`} className="group block">
+              {/* id menjaga tautan lama /layanan#ruang-doa tetap mendarat di kartu yang benar */}
+              <a id={r.slug} href={ruangHref(r.slug)} className="group block">
                 <div className="relative aspect-[3/4] overflow-hidden rounded-b-2xl rounded-t-[20rem] bg-sand-200 shadow-warm transition-shadow duration-500 group-hover:shadow-warm-lg">
                   <Image
                     src={r.image}
@@ -172,16 +176,32 @@ export function RuangIntro({
 
 /* ── Satu section per ruang ───────────────────────────────────────────────── */
 
-export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number }) {
+export function RuangSection({
+  ruang: r,
+  index,
+  id = `${r.slug}-program`,
+  heading,
+  showSummary = true,
+  secondary = r.secondary,
+}: {
+  ruang: Ruang;
+  index: number;
+  id?: string;
+  /** Default: nama ruang besar. Di halaman ruang, isi dengan tagline karena nama sudah ada di hero. */
+  heading?: ReactNode;
+  /** Matikan di halaman ruang: ringkasan sudah tampil di hero. */
+  showSummary?: boolean;
+  secondary?: { label: string; href: string };
+}) {
   const t = tones[r.tone];
   const flip = index % 2 === 1;
-  const headingId = `${r.slug}-judul`;
+  const headingId = `${id}-judul`;
 
   return (
     <section
-      id={r.slug}
+      id={id}
       aria-labelledby={headingId}
-      className={cn("relative isolate overflow-hidden pb-20 pt-12 sm:pb-28 sm:pt-20 lg:pb-40", t.section)}
+      className={cn("relative isolate scroll-mt-20 overflow-hidden pb-20 pt-12 sm:pb-28 sm:pt-20 lg:pb-40", t.section)}
     >
       {t.dark && (
         <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.07]" />
@@ -258,22 +278,17 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
           {/* Isi */}
           <div className={cn("lg:col-span-6", flip ? "lg:order-1 lg:col-start-1" : "lg:col-start-7")}>
             <Reveal>
-              <h2
-                id={headingId}
-                className={cn(
-                  "font-display text-[clamp(2.75rem,1.4rem+5vw,5.25rem)] font-semibold leading-[0.9] tracking-[-0.04em]",
-                  t.title,
+              <h2 id={headingId} className={cn(heading ? "text-display" : ruangTitleClass, t.title)}>
+                {heading ?? (
+                  <RuangName name={r.name} prefixClassName={cn("mb-3 text-[0.36em] tracking-normal", t.accent)} />
                 )}
-              >
-                <RuangName
-                  name={r.name}
-                  prefixClassName={cn("mb-3 text-[0.36em] tracking-normal", t.accent)}
-                />
               </h2>
             </Reveal>
-            <Reveal delay={80}>
-              <p className={cn("text-lead mt-6 max-w-lg sm:mt-7", t.body)}>{r.summary}</p>
-            </Reveal>
+            {showSummary && (
+              <Reveal delay={80}>
+                <p className={cn("text-lead mt-6 max-w-lg sm:mt-7", t.body)}>{r.summary}</p>
+              </Reveal>
+            )}
             <Reveal delay={120}>
               <p className={cn("font-display mt-4 max-w-lg text-lg italic leading-snug", t.accent)}>
                 {r.forWho}
@@ -313,8 +328,8 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
                     <Icon.arrowRight className="h-4 w-4" />
                   )}
                 </ButtonLink>
-                <ArrowLink href={r.secondary.href} tone={t.link}>
-                  {r.secondary.label}
+                <ArrowLink href={secondary.href} tone={t.link}>
+                  {secondary.label}
                 </ArrowLink>
               </div>
             </Reveal>
@@ -325,29 +340,16 @@ export function RuangSection({ ruang: r, index }: { ruang: Ruang; index: number 
   );
 }
 
-export function RuangSections() {
-  return (
-    <>
-      {allRuang.map((r, i) => (
-        <RuangSection key={r.slug} ruang={r} index={i} />
-      ))}
-    </>
-  );
-}
-
 /* ── Rangkuman di akhir rangkaian ─────────────────────────────────────────── */
 
 export function RuangSummary({
   title = "Sekilas tentang empat ruang",
   description = "Program dan jadwal rutin di setiap ruang.",
   className = "bg-cream",
-  linkPrefix = "",
 }: {
   title?: string;
   description?: string;
   className?: string;
-  /** Isi "/" bila dipakai di luar halaman yang memuat section ruang. */
-  linkPrefix?: string;
 }) {
   const weekly = weeklyPrograms();
 
@@ -367,7 +369,7 @@ export function RuangSummary({
             return (
               <Reveal key={r.slug} delay={i * 80}>
                 <a
-                  href={`${linkPrefix}#${r.slug}`}
+                  href={ruangHref(r.slug)}
                   className={cn(
                     "group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-6 shadow-warm transition duration-500 hover:-translate-y-1 hover:shadow-warm-lg sm:p-7",
                     t.card,
@@ -430,7 +432,7 @@ export function RuangSummary({
               <Reveal as="li" key={day} delay={i * 50} className="min-w-0">
                 {items.length ? (
                   <a
-                    href={`${linkPrefix}#${items[0].ruang.slug}`}
+                    href={ruangHref(items[0].ruang.slug)}
                     data-weekday={i}
                     aria-label={`${day}: ${items.map((it) => `${it.title} ${it.weekly.time} WIB`).join(", ")}`}
                     className="flex h-full min-h-20 flex-col justify-between rounded-lg bg-maroon-700 p-1.5 text-sand-50 shadow-warm transition-colors duration-300 hover:bg-maroon-800 sm:min-h-32 sm:rounded-2xl sm:p-3 lg:min-h-44 lg:p-4"
@@ -468,7 +470,7 @@ export function RuangSummary({
             {weekly.map((w, i) => (
               <Reveal as="li" key={w.title} delay={i * 70} className="border-b border-sand-300/70">
                 <a
-                  href={`${linkPrefix}#${w.ruang.slug}`}
+                  href={ruangHref(w.ruang.slug)}
                   className="group grid grid-cols-[4rem_1fr] gap-x-4 gap-y-1 py-5 sm:grid-cols-[6.5rem_1fr_auto] sm:items-baseline sm:gap-x-6"
                 >
                   <span className="font-display text-lg italic text-maroon-700">{weekDays[w.weekly.day]}</span>
@@ -534,5 +536,168 @@ export function RuangSummary({
         </Reveal>
       </Container>
     </section>
+  );
+}
+
+/* ── Hero halaman ruang ───────────────────────────────────────────────────── */
+
+/** Hero tanpa foto: foto ruang sudah tampil besar di section program tepat di bawahnya. */
+export function RuangHero({ ruang: r, action }: { ruang: Ruang; action: { label: string; href: string } }) {
+  return (
+    <PageHero
+      lipClassName={tones[r.tone].section}
+      title={<RuangName name={r.name} prefixClassName="mb-2 text-[0.42em] tracking-normal text-gold-400" />}
+      description={r.summary}
+    >
+      <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+        <ButtonLink href={action.href} variant="light" size="lg">
+          {action.label}
+          <Icon.arrowRight className="h-4 w-4" />
+        </ButtonLink>
+        <ArrowLink href={waLink(`Halo, saya mau tanya soal Ruang ${r.name}.`)} tone="light">
+          {site.whatsapp ? "Tanya lewat WhatsApp" : "Hubungi tim JP"}
+        </ArrowLink>
+      </div>
+    </PageHero>
+  );
+}
+
+/* ── Pintasan empat ruang ─────────────────────────────────────────────────── */
+
+export function RuangTiles({
+  current,
+  tone = "dark",
+  className,
+}: {
+  current?: string;
+  tone?: "dark" | "light";
+  className?: string;
+}) {
+  const dark = tone === "dark";
+  return (
+    <nav aria-label="Ruang pelayanan" className={className}>
+      <ul className="grid max-w-3xl grid-cols-2 gap-2.5 sm:gap-3 lg:max-w-[60rem] lg:grid-cols-4">
+        {allRuang.map((r) => {
+          const active = r.slug === current;
+          const onDark = dark || active;
+          return (
+            <li key={r.slug}>
+              <a
+                href={ruangHref(r.slug)}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "group flex h-full items-center gap-2.5 rounded-2xl p-2 pr-2.5 transition duration-500 ease-out hover:-translate-y-0.5 sm:gap-3.5 sm:p-2.5 sm:pr-4",
+                  dark
+                    ? "hero-ruang-tile"
+                    : active
+                      ? "bg-maroon-700 shadow-warm"
+                      : "bg-sand-100 ring-1 ring-sand-300/70 hover:bg-white hover:shadow-warm",
+                )}
+              >
+                <span className="relative block h-12 w-8 shrink-0 overflow-hidden rounded-b-md rounded-t-full bg-maroon-900 sm:h-14 sm:w-10">
+                  <Image
+                    src={r.image}
+                    alt=""
+                    fill
+                    sizes="40px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </span>
+                <span className="min-w-0">
+                  <span
+                    className={cn(
+                      "font-display block text-xs italic leading-none",
+                      onDark ? "text-gold-400" : "text-maroon-600",
+                    )}
+                  >
+                    Ruang
+                  </span>
+                  <span
+                    className={cn(
+                      "font-display mt-1 block text-sm font-semibold leading-tight sm:text-lg",
+                      onDark ? "text-sand-50" : "text-ink",
+                    )}
+                  >
+                    {r.name}
+                  </span>
+                  <span
+                    className={cn(
+                      "mt-0.5 hidden text-xs leading-snug sm:block",
+                      onDark ? "text-sand-200/70" : "text-sand-600",
+                    )}
+                  >
+                    {active ? "Kamu di sini" : r.short}
+                  </span>
+                </span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
+/* ── Penutup halaman ruang ────────────────────────────────────────────────── */
+
+export function RuangNav({ current, className = "bg-cream" }: { current: string; className?: string }) {
+  const index = allRuang.findIndex((r) => r.slug === current);
+  const next = allRuang[(index + 1) % allRuang.length];
+  return (
+    <section aria-labelledby="ruang-lain-judul" className={cn("py-20 sm:py-28", className)}>
+      <Container size="wide">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <Reveal>
+            <h2 id="ruang-lain-judul" className="text-headline max-w-xl text-ink">
+              Lanjut ke <span className="italic text-maroon-700">Ruang {next.name}.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <ArrowLink href="/layanan">Lihat semua ruang</ArrowLink>
+          </Reveal>
+        </div>
+        <Reveal delay={150}>
+          <RuangTiles current={current} tone="light" className="mt-10 sm:mt-12" />
+        </Reveal>
+      </Container>
+    </section>
+  );
+}
+
+/* ── Judul bab di beranda ─────────────────────────────────────────────────── */
+
+export function ChapterHeading({
+  ruang: r,
+  description,
+  tone = "light",
+  className,
+}: {
+  ruang: Ruang;
+  description?: ReactNode;
+  tone?: "light" | "dark";
+  className?: string;
+}) {
+  const dark = tone === "dark";
+  return (
+    <div className={cn("grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-12", className)}>
+      <Reveal className="lg:col-span-7">
+        <h2 className={cn(ruangTitleClass, dark ? "text-sand-50" : "text-ink")}>
+          <RuangName
+            name={r.name}
+            prefixClassName={cn("mb-3 text-[0.36em] tracking-normal", dark ? "text-gold-400" : "text-maroon-700")}
+          />
+        </h2>
+      </Reveal>
+      <Reveal delay={100} className="lg:col-span-5">
+        <p className={cn("text-lead max-w-md", dark ? "text-sand-200/80" : "text-sand-700")}>
+          {description ?? r.summary}
+        </p>
+        <div className="mt-6">
+          <ArrowLink href={ruangHref(r.slug)} tone={dark ? "light" : "maroon"}>
+            Masuk ke Ruang {r.name}
+          </ArrowLink>
+        </div>
+      </Reveal>
+    </div>
   );
 }

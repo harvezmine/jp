@@ -73,7 +73,6 @@ export default async function EventPage() {
       </section>
 
       <RuangSummary
-        linkPrefix="/"
         className="bg-paper"
         title="Setiap minggu juga ada ini"
         description="Tidak perlu menunggu acara khusus. Program rutin ini jalan terus."

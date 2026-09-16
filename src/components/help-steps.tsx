@@ -12,7 +12,7 @@ const steps = [
 ];
 
 /** Alur minta pertolongan. Dipakai di beranda dan halaman pelayanan. */
-export function HelpSteps() {
+export function HelpSteps({ ctaHref = "/pertolongan" }: { ctaHref?: string }) {
   return (
     <section className="bg-maroon-deep relative isolate overflow-clip py-20 text-sand-50 sm:py-28 lg:py-40">
       <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.08]" />
@@ -86,7 +86,7 @@ export function HelpSteps() {
                   Ceritamu dijaga, dan boleh tanpa nama.
                 </p>
                 <div className="flex flex-col items-start gap-5 sm:items-end">
-                  <ButtonLink href="/pertolongan" variant="light" size="lg">
+                  <ButtonLink href={ctaHref} variant="light" size="lg">
                     Mulai cerita
                     <Icon.arrowRight className="h-4 w-4" />
                   </ButtonLink>

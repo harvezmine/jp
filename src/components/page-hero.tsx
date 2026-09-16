@@ -28,12 +28,15 @@ export function PageHero({
   image,
   imageAlt = "",
   children,
+  lipClassName,
 }: {
   title: ReactNode;
   description?: ReactNode;
   image?: string;
   imageAlt?: string;
   children?: ReactNode;
+  /** Warna lengkung bawah. Samakan dengan latar section sesudah hero. */
+  lipClassName?: string;
 }) {
   return (
     <section className="relative isolate overflow-hidden bg-maroon-950 pb-20 pt-28 sm:pb-32 sm:pt-44 lg:pb-36 lg:pt-52">
@@ -77,7 +80,7 @@ export function PageHero({
         )}
       </Container>
 
-      <HeroLip />
+      <HeroLip className={lipClassName} />
     </section>
   );
 }
