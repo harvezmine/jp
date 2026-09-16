@@ -52,11 +52,13 @@ export async function submitHelpRequest(_prev: FormState, formData: FormData): P
     source,
   } = values;
   const fieldErrors = validateHelp(values);
+  // Formulir Ruang Doa memakai kata "pokok doa", bukan "cerita".
+  const noun = source === "doa" ? "Pokok doamu" : "Ceritamu";
 
   if (Object.keys(fieldErrors).length) {
     return {
       status: "error",
-      message: "Ada sedikit yang perlu dilengkapi. Ceritamu tetap ada di sini.",
+      message: `Ada sedikit yang perlu dilengkapi. ${noun} tetap ada di sini.`,
       fieldErrors,
     };
   }
@@ -95,14 +97,13 @@ export async function submitHelpRequest(_prev: FormState, formData: FormData): P
     return {
       status: "success",
       refCode,
-      message: "Terima kasih. Ceritamu sudah kami terima.",
+      message: `Terima kasih. ${noun} sudah kami terima.`,
     };
   } catch (err) {
     console.error("[help] gagal menyimpan permohonan:", err);
     return {
       status: "error",
-      message:
-        "Maaf, ceritamu belum berhasil terkirim. Tulisanmu tetap ada di sini. Kamu bisa mencoba lagi atau menghubungi kami lewat halaman kontak.",
+      message: `Maaf, ${noun.toLowerCase()} belum berhasil terkirim. Tulisanmu tetap ada di sini. Kamu bisa mencoba lagi atau menghubungi kami lewat halaman kontak.`,
     };
   }
 }
