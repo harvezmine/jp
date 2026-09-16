@@ -4,7 +4,13 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { notifyNewHelpRequest } from "@/lib/notify";
 import { makeRefCode } from "@/lib/utils";
 import type { HelpRequest } from "@/lib/types";
-import { readHelpValues, readContactValues, validateHelp, validateContact } from "@/lib/help-validation";
+import {
+  helpDetails,
+  readContactValues,
+  readHelpValues,
+  validateContact,
+  validateHelp,
+} from "@/lib/help-validation";
 
 export type FormState = {
   status: "idle" | "success" | "error";
@@ -32,8 +38,19 @@ export async function submitHelpRequest(_prev: FormState, formData: FormData): P
   }
 
   const values = readHelpValues(formData);
-  const { isAnonymous, isConfidential, name, phone, email, city, message, category, urgency, contactPreference } =
-    values;
+  const {
+    isAnonymous,
+    isConfidential,
+    name,
+    phone,
+    email,
+    city,
+    message,
+    category,
+    urgency,
+    contactPreference,
+    source,
+  } = values;
   const fieldErrors = validateHelp(values);
 
   if (Object.keys(fieldErrors).length) {
@@ -59,6 +76,8 @@ export async function submitHelpRequest(_prev: FormState, formData: FormData): P
         email: email || null,
         city: city || null,
         category,
+        source,
+        details: helpDetails(values),
         urgency,
         message,
         contact_preference: contactPreference,

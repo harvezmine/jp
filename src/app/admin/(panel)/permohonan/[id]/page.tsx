@@ -6,8 +6,11 @@ import { Icon } from "@/components/icons";
 import { Badge, Card } from "@/components/ui";
 import { adminDb } from "@/lib/admin-auth";
 import {
+  COMPANION_LABEL,
   CONTACT_PREF_LABEL,
   HELP_CATEGORY_LABEL,
+  HELP_SOURCE_LABEL,
+  PRAYER_FOR_LABEL,
   URGENCY_LABEL,
   type HelpRequest,
 } from "@/lib/types";
@@ -39,6 +42,7 @@ export default async function HelpRequestDetailPage({
           <Card className="p-5 sm:p-6">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone="maroon">{HELP_CATEGORY_LABEL[r.category]}</Badge>
+              {r.source && r.source !== "umum" && <Badge tone="sand">{HELP_SOURCE_LABEL[r.source]}</Badge>}
               <Badge tone={r.urgency === "darurat" ? "red" : r.urgency === "mendesak" ? "gold" : "sand"}>
                 {URGENCY_LABEL[r.urgency]}
               </Badge>
@@ -83,6 +87,18 @@ export default async function HelpRequestDetailPage({
                 <dt className="w-32 shrink-0 text-sand-600">Ingin dihubungi</dt>
                 <dd className="font-medium text-ink">{CONTACT_PREF_LABEL[r.contact_preference]}</dd>
               </div>
+              {r.details?.prayer_for && (
+                <div className="flex gap-3">
+                  <dt className="w-32 shrink-0 text-sand-600">Doa untuk</dt>
+                  <dd className="font-medium text-ink">{PRAYER_FOR_LABEL[r.details.prayer_for]}</dd>
+                </div>
+              )}
+              {r.details?.companion && (
+                <div className="flex gap-3">
+                  <dt className="w-32 shrink-0 text-sand-600">Pendamping</dt>
+                  <dd className="font-medium text-ink">{COMPANION_LABEL[r.details.companion]}</dd>
+                </div>
+              )}
             </dl>
 
             {r.contact_preference !== "tidak_perlu" && (r.phone || r.email) && (

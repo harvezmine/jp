@@ -1,6 +1,13 @@
 import "server-only";
 
-import { HELP_CATEGORY_LABEL, URGENCY_LABEL, type HelpRequest } from "@/lib/types";
+import {
+  COMPANION_LABEL,
+  HELP_CATEGORY_LABEL,
+  HELP_SOURCE_LABEL,
+  PRAYER_FOR_LABEL,
+  URGENCY_LABEL,
+  type HelpRequest,
+} from "@/lib/types";
 import { site } from "@/lib/site";
 
 /**
@@ -19,6 +26,14 @@ type NotifyResult = { channel: string; ok: boolean; detail?: string };
 
 const HELP_URL = `${site.url}/admin/permohonan`;
 
+/** Asal formulir dan jawaban khusus Doa/Cerita, sebagai pasangan label dan nilai. */
+function extraRows(req: HelpRequest): [string, string][] {
+  const rows: [string, string][] = [["Formulir", HELP_SOURCE_LABEL[req.source] ?? HELP_SOURCE_LABEL.umum]];
+  if (req.details?.prayer_for) rows.push(["Doa untuk", PRAYER_FOR_LABEL[req.details.prayer_for]]);
+  if (req.details?.companion) rows.push(["Pendamping", COMPANION_LABEL[req.details.companion]]);
+  return rows;
+}
+
 function buildSummary(req: HelpRequest) {
   const nama = req.is_anonymous ? "Anonim" : req.name || "Tanpa nama";
   const lines = [
@@ -28,6 +43,8 @@ function buildSummary(req: HelpRequest) {
     `Kategori : ${HELP_CATEGORY_LABEL[req.category]}`,
     `Urgensi  : ${URGENCY_LABEL[req.urgency]}`,
   ];
+
+  for (const [label, value] of extraRows(req)) lines.push(`${label}: ${value}`);
 
   if (req.city) lines.push(`Kota     : ${req.city}`);
 
@@ -81,6 +98,9 @@ async function sendEmail(req: HelpRequest): Promise<NotifyResult | null> {
           req.is_anonymous ? "<em>Anonim</em>" : escapeHtml(req.name || "-")
         }</td></tr>
         <tr><td style="padding:6px 0;color:#97765d">Kategori</td><td>${HELP_CATEGORY_LABEL[req.category]}</td></tr>
+        ${extraRows(req)
+          .map(([label, value]) => `<tr><td style="padding:6px 0;color:#97765d">${label}</td><td>${value}</td></tr>`)
+          .join("")}
         <tr><td style="padding:6px 0;color:#97765d">Urgensi</td><td style="color:${urgencyColor};font-weight:600">${URGENCY_LABEL[req.urgency]}</td></tr>
         ${req.city ? `<tr><td style="padding:6px 0;color:#97765d">Kota</td><td>${escapeHtml(req.city)}</td></tr>` : ""}
       </table>

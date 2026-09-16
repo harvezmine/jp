@@ -6,6 +6,7 @@ import { Badge, Card, EmptyState } from "@/components/ui";
 import { adminDb } from "@/lib/admin-auth";
 import {
   HELP_CATEGORY_LABEL,
+  HELP_SOURCE_LABEL,
   HELP_STATUS_LABEL,
   type HelpRequest,
   type HelpStatus,
@@ -94,6 +95,7 @@ export default async function AdminPermohonanPage({
                     <span className="font-normal text-sand-600">
                       {" "}
                       · {HELP_CATEGORY_LABEL[r.category]}
+                      {r.source && r.source !== "umum" ? ` · ${HELP_SOURCE_LABEL[r.source]}` : ""}
                     </span>
                   </p>
 
