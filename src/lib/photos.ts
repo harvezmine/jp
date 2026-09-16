@@ -9,8 +9,6 @@ const unsplash = (id: string) =>
 export const photos = {
   hero: unsplash("1484627147104-f5197bcd6651"),
 
-  aboutTable: unsplash("1528605248644-14dd04022da1"),
-  aboutPrayer: unsplash("1609234656388-0ff363383899"),
   aboutFriends: unsplash("1529156069898-49953e39b3ac"),
   aboutHands: unsplash("1437603568260-1950d3ca6eab"),
 
@@ -18,7 +16,9 @@ export const photos = {
   // Frame asli dari reel Instagram JP, dipotong di atas judul yang tertanam di video.
   ruangHopeDetail: "/images/jp/insight-studio.jpg",
   ruangPrayer: unsplash("1478147427282-58a87a120781"),
-  ruangPrayerDetail: unsplash("1602523961358-f9f03dd557db"),
+  // Bukan foto lilin: foto itu dipakai section support di beranda, dan dua-duanya
+  // akan tampil di halaman yang sama.
+  ruangPrayerDetail: unsplash("1609234656388-0ff363383899"),
   ruangStory: unsplash("1508963493744-76fce69379c0"),
   ruangStoryDetail: unsplash("1604881991720-f91add269bed"),
   ruangLearn: unsplash("1523240795612-9a054b0db644"),
