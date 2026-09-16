@@ -170,12 +170,6 @@ export const ruang: Ruang[] = [
         when: "Per angkatan",
         format: "Tatap muka",
       },
-      {
-        title: "Belajar bareng",
-        summary: "Ada topik yang ingin kamu pelajari bareng-bareng? Kabari kami, nanti kita atur lewat ProCon.",
-        when: "Kalau ada yang mau",
-        format: "Lewat WhatsApp",
-      },
     ],
     cta: { label: "Lihat ProCon", href: "/ruang-belajar#procon" },
     secondary: {

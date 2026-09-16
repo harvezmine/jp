@@ -39,7 +39,7 @@ export function RenunganSection({
             <PostCard post={first} variant="feature" />
           </Reveal>
           {rest.length > 0 && (
-            <div className="flex flex-col gap-8 lg:col-span-5 lg:border-l lg:border-sand-300/70 lg:pl-14">
+            <div className="flex flex-col gap-8 lg:col-span-5 lg:justify-between lg:border-l lg:border-sand-300/70 lg:pl-14">
               {rest.slice(0, 2).map((p, i) => (
                 <Reveal key={p.id} delay={(i + 1) * 100}>
                   <PostCard post={p} variant="compact" />

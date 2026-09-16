@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: site.url, changeFrequency: "weekly", priority: 1 },
     { url: `${site.url}/tentang-kami`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/layanan`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${site.url}/mitra`, changeFrequency: "yearly", priority: 0.5 },
     { url: `${site.url}/ruang-pengharapan`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${site.url}/ruang-doa`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/ruang-cerita`, changeFrequency: "monthly", priority: 0.9 },

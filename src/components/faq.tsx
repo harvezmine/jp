@@ -23,13 +23,16 @@ export function FaqSection({
       <Container size="wide">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-4">
-            <h2 className="text-headline text-ink">{title}</h2>
-            {description && <p className="mt-5 leading-relaxed text-sand-700">{description}</p>}
-            {action && (
-              <div className="mt-6">
-                <ArrowLink href={action.href}>{action.label}</ArrowLink>
-              </div>
-            )}
+            {/* Menempel saat digulir, supaya kolom kiri tidak menyisakan ruang kosong. */}
+            <div className="lg:sticky lg:top-28">
+              <h2 className="text-headline text-ink">{title}</h2>
+              {description && <p className="mt-5 leading-relaxed text-sand-700">{description}</p>}
+              {action && (
+                <div className="mt-6">
+                  <ArrowLink href={action.href}>{action.label}</ArrowLink>
+                </div>
+              )}
+            </div>
           </Reveal>
           <Reveal delay={100} className="form-surface overflow-hidden rounded-3xl px-5 sm:px-8 lg:col-span-8">
             {items.map((item) => (

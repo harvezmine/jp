@@ -247,11 +247,11 @@ export function RuangSection({
       </Parallax>
 
       <Container size="wide" className="relative">
-        <div className="grid items-start gap-12 pt-6 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
+        <div className="grid gap-12 pt-6 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
           {/* Foto berbentuk lengkung pintu */}
           <div
             className={cn(
-              "relative mx-auto w-full max-w-md sm:max-w-lg lg:sticky lg:top-28 lg:col-span-5 lg:max-w-none",
+              "relative mx-auto w-full max-w-md sm:max-w-lg lg:col-span-5 lg:max-w-none",
               flip && "lg:order-2 lg:col-start-8",
             )}
           >
@@ -264,13 +264,16 @@ export function RuangSection({
                 t.dark ? "border-sand-50/15" : "border-maroon-200",
               )}
             />
-            <Reveal variant="curtain" duration={1200} className="relative">
+            <Reveal variant="curtain" duration={1200} className="relative lg:h-full">
               <ParallaxImage
                 src={r.image}
                 alt={r.imageAlt}
                 sizes="(min-width: 1024px) 40vw, (min-width: 640px) 512px, 100vw"
                 strength={7}
-                className={cn("aspect-[4/5] rounded-b-[2rem] rounded-t-[24rem] shadow-deep", t.placeholder)}
+                className={cn(
+                  "aspect-[4/5] rounded-b-[2rem] rounded-t-[24rem] shadow-deep lg:aspect-auto lg:h-full",
+                  t.placeholder,
+                )}
               />
             </Reveal>
 
@@ -499,7 +502,7 @@ export function RuangSummary({
         </ol>
 
         <div className="mt-10 grid gap-10 sm:mt-12 lg:grid-cols-12 lg:gap-16">
-          <ol className="border-t border-sand-300/70 lg:col-span-7">
+          <ol className="border-t border-sand-300/70 lg:col-span-7 lg:flex lg:flex-col lg:justify-between">
             {weekly.map((w, i) => (
               <Reveal as="li" key={w.title} delay={i * 70} className="border-b border-sand-300/70">
                 <a

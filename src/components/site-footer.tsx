@@ -6,7 +6,7 @@ import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
 import { Container } from "@/components/ui";
 import { ruang, ruangHref } from "@/lib/ruang";
-import { navigation, site, socialLinks, waLink } from "@/lib/site";
+import { footerLinks, site, socialLinks, waLink } from "@/lib/site";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -52,7 +52,7 @@ export function SiteFooter() {
           <nav className="lg:col-span-2" aria-label="Navigasi footer">
             <h3 className="font-display text-base font-semibold text-sand-50">Jelajahi</h3>
             <ul className="mt-4 space-y-2.5">
-              {navigation.map((item) => (
+              {footerLinks.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}

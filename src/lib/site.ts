@@ -52,9 +52,16 @@ export const navigation = [
   { href: "/", label: "Beranda" },
   { href: "/tentang-kami", label: "Siapa Kami" },
   { href: "/layanan", label: "Pelayanan" },
-  { href: "/konten", label: "Konten" },
+  { href: "/mitra", label: "Mitra Kami" },
   { href: "/event", label: "Event" },
   { href: "/kontak", label: "Kontak" },
+] as const;
+
+/** Footer memuat semua halaman, termasuk Konten yang tidak lagi tampil di navbar. */
+export const footerLinks = [
+  ...navigation.slice(0, 4),
+  { href: "/konten", label: "Konten" },
+  ...navigation.slice(4),
 ] as const;
 
 /** Tombol sosial yang tautannya terisi, dalam urutan tampil yang sama di mana-mana. */
