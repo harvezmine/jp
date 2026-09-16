@@ -5,7 +5,7 @@ import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
 import { ArrowLink, ButtonLink, Container } from "@/components/ui";
 import { ruang } from "@/lib/ruang";
-import { features, navigation, site, socialLinks, waLink } from "@/lib/site";
+import { navigation, site, socialLinks, waLink } from "@/lib/site";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -109,23 +109,15 @@ export function SiteFooter() {
                   {site.phoneDisplay || "Kirim pesan kepada tim"}
                 </a>
               </li>
-              {features.donation && (
-                <li className="flex gap-3">
-                  <Icon.gift className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                  <Link href="/donasi" className="text-sand-300/80 hover:text-gold-400">
-                    Dukung lewat donasi
-                  </Link>
-                </li>
-              )}
               <li className="flex gap-3">
                 <Icon.arrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
                 <a
-                  href={site.church.url}
+                  href={site.partnerChurch.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sand-300/80 hover:text-gold-400"
                 >
-                  Gereja kami: {site.church.name}
+                  Mitra gereja: {site.partnerChurch.name}
                 </a>
               </li>
             </ul>

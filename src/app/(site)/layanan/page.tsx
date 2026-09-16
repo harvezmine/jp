@@ -24,7 +24,7 @@ const faqs: Faq[] = [
   { q: "Siapa yang membaca ceritaku?", a: "Hanya tim yang menanganinya. Boleh juga tanpa nama." },
   {
     q: "Nanti diajak ikut gereja?",
-    a: "Kami akan bercerita tentang Yesus kalau kamu mau. Keputusannya tetap di tanganmu.",
+    a: "Tidak harus. Kalau kamu mau, kami bisa bercerita tentang Yesus atau mengenalkanmu ke mitra gereja kami. Keputusannya tetap di tanganmu.",
   },
   {
     q: "Kalau keadaanku darurat?",

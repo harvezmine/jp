@@ -1,6 +1,6 @@
 # Janji Pengharapan
 
-Situs komunitas gereja Janji Pengharapan — landing page publik + admin panel
+Situs pelayanan Janji Pengharapan — landing page publik + admin panel
 untuk mengelola konten, dan formulir permohonan pertolongan.
 
 - **Stack**: Next.js 15 (App Router) · React 19 · Tailwind CSS v4 · Supabase
@@ -19,7 +19,6 @@ untuk mengelola konten, dan formulir permohonan pertolongan.
 | Konten (tulisan · kutipan · sosmed) | `/konten` | Supabase |
 | Detail tulisan | `/konten/[slug]` | Supabase |
 | Event | `/event`, `/event/[slug]` | Supabase |
-| Donasi | `/donasi` | statis (`src/lib/site.ts` → `donation`) |
 | Kontak | `/kontak` | statis + form |
 | **Butuh Pertolongan** | `/pertolongan` | form 3 langkah |
 | Admin panel | `/admin` | login Supabase |
@@ -119,7 +118,7 @@ Isinya hanya bisa dibaca di admin panel yang terlindungi login.
 | Nama, alamat, telepon, sosmed | `src/lib/site.ts` |
 | Ruang pelayanan & jadwal rutin | `src/lib/ruang.ts` |
 | Foto (sementara dari Unsplash) | `src/lib/photos.ts` |
-| Rekening donasi | `src/lib/site.ts` → `donation` |
+| Rekening support (section terakhir beranda) | `src/lib/site.ts` → `support` |
 | Warna | `src/app/globals.css` → blok `@theme` |
 
 Palet dibangun dari maroon logo (`--color-maroon-700`) plus netral hangat

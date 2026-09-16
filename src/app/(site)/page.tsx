@@ -9,6 +9,7 @@ import { HeroLip } from "@/components/page-hero";
 import { Parallax, ParallaxImage } from "@/components/parallax";
 import { Reveal } from "@/components/reveal";
 import { RuangIntro } from "@/components/ruang";
+import { SupportSection } from "@/components/support";
 import { ArrowLink, ButtonLink, Container, Rise } from "@/components/ui";
 import { getPosts, getQuotes, getSocialPosts } from "@/lib/queries";
 import { photos } from "@/lib/photos";
@@ -35,6 +36,7 @@ export default async function HomePage() {
       <Reading posts={posts} />
       <FromSocials socials={socials} />
       <StartHere />
+      <SupportSection className="bg-cream" />
     </>
   );
 }

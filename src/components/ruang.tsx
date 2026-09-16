@@ -507,10 +507,10 @@ export function RuangSummary({
           </Reveal>
         </div>
 
-        {/* Jembatan ke gereja lokal */}
+        {/* Jembatan ke mitra gereja */}
         <Reveal className="mt-14 lg:mt-20">
           <a
-            href={site.church.url}
+            href={site.partnerChurch.url}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-maroon-deep group relative isolate flex flex-col gap-7 overflow-hidden rounded-[2rem] p-7 text-sand-50 shadow-deep sm:p-10 lg:flex-row lg:items-center lg:justify-between lg:p-14"
@@ -523,7 +523,7 @@ export function RuangSummary({
             <div className="max-w-2xl">
               <p className="font-display text-lg italic text-gold-400">Cari gereja untuk ibadah Minggu?</p>
               <p className="font-display mt-3 text-2xl font-semibold leading-snug sm:text-3xl">
-                Kami berjemaat di {site.church.name}. Jadwal ibadahnya ada di sini.
+                {site.partnerChurch.name} adalah mitra gereja kami. Jadwal ibadahnya ada di sini.
               </p>
             </div>
             <span className="inline-flex shrink-0 items-center gap-3 self-start rounded-full bg-sand-50 px-6 py-3.5 text-sm font-semibold text-maroon-800 transition-colors duration-300 group-hover:bg-white lg:self-auto">

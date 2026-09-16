@@ -32,33 +32,30 @@ export const site = {
     // Channel asli JP, tapi unggahan terakhirnya Mei 2024.
     youtube: "https://youtube.com/@janjipengharapan",
   },
-  /** Gereja lokal yang menaungi pelayanan ini. */
-  church: {
+  /**
+   * Mitra gereja JP. Janji Pengharapan berdiri sendiri. Gereja ini rekan kerja
+   * yang bisa kami kenalkan kalau ada yang sedang mencari gereja.
+   */
+  partnerChurch: {
     name: "Every Nation Kelapa Gading",
     url: "https://everynationkg.com",
   },
-  /** Rekening donasi. Masih contoh, ganti dengan rekening yang sebenarnya. */
-  donation: {
+  /** Rekening untuk support. Masih contoh, ganti dengan rekening yang sebenarnya. */
+  support: {
     bank: "BCA",
     accountNumber: "0000000000",
     accountName: "Janji Pengharapan",
   },
 } as const;
 
-/** Fitur yang sementara disembunyikan dari situs. Ubah ke true untuk menampilkannya lagi. */
-export const features = {
-  donation: false,
-} as const;
-
-export const navigation = ([
+export const navigation = [
   { href: "/", label: "Beranda" },
   { href: "/tentang-kami", label: "Siapa Kami" },
   { href: "/layanan", label: "Pelayanan" },
   { href: "/konten", label: "Konten" },
   { href: "/event", label: "Event" },
-  { href: "/donasi", label: "Donasi" },
   { href: "/kontak", label: "Kontak" },
-] as const).filter((item) => item.href !== "/donasi" || features.donation);
+] as const;
 
 /** Tombol sosial yang tautannya terisi, dalam urutan tampil yang sama di mana-mana. */
 export const socialLinks = (

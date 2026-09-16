@@ -7,37 +7,34 @@ import { photos } from "@/lib/photos";
 import { site, waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
+/** Yang ikut berjalan berkat support. Sengaja tidak menjanjikan bantuan materi. */
 const uses = [
-  {
-    icon: Icon.gift,
-    title: "Bantuan kebutuhan pokok",
-    body: "Sembako, obat, dan biaya mendesak untuk yang sedang kesulitan.",
-  },
-  { icon: Icon.users, title: "Konseling gratis", body: "Supaya siapa pun bisa didampingi konselor." },
-  { icon: Icon.play, title: "Konten dan acara", body: "Renungan dan acara di Ruang Pengharapan." },
+  { icon: Icon.hands, title: "Doa dan pendampingan", body: "Supaya tetap gratis bagi siapa pun yang datang." },
+  { icon: Icon.play, title: "Renungan singkat", body: "Video dan tulisan pendek yang kami bagikan setiap minggu." },
+  { icon: Icon.book, title: "Kelas di Ruang Belajar", body: "Untuk yang ingin terus bertumbuh." },
 ];
 
 /** "0000000000" → "000 000 0000", supaya nomor rekening mudah dibaca. */
 const formatAccount = (value: string) => value.replace(/^(\d{3})(\d{3})(\d+)$/, "$1 $2 $3");
 
-export function DonationSection({ className = "bg-paper" }: { className?: string }) {
-  const { donation } = site;
-  const hasAccount = Boolean(donation.bank && donation.accountNumber && !/^0+$/.test(donation.accountNumber));
+export function SupportSection({ className = "bg-paper" }: { className?: string }) {
+  const { support } = site;
+  const hasAccount = Boolean(support.bank && support.accountNumber && !/^0+$/.test(support.accountNumber));
 
   return (
-    <section id="donasi" className={cn("relative overflow-hidden py-20 sm:py-28 lg:py-40", className)}>
+    <section id="support" className={cn("relative scroll-mt-20 overflow-hidden py-20 sm:py-28 lg:py-40", className)}>
       <Container size="wide">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
             <Reveal>
               <h2 className="text-display text-ink">
-                Ikut menolong <span className="italic text-maroon-700">lewat donasi.</span>
+                Beri support untuk <span className="italic text-maroon-700">Janji Pengharapan.</span>
               </h2>
             </Reveal>
             <Reveal delay={80}>
               <p className="text-lead mt-5 max-w-md text-sand-700 sm:mt-6">
-                Dukunganmu membantu kami hadir bagi lebih banyak orang. Doa dan pendampingan tetap terbuka, dengan atau
-                tanpa donasi.
+                Mau ikut ambil bagian? Kamu bisa memberi support lewat transfer. Doa dan pendampingan tetap gratis untuk
+                siapa saja.
               </p>
             </Reveal>
 
@@ -68,7 +65,7 @@ export function DonationSection({ className = "bg-paper" }: { className?: string
             />
             <Reveal variant="curtain" duration={1100} className="relative">
               <ParallaxImage
-                src={photos.donation}
+                src={photos.support}
                 alt="Tiga lilin menyala di dalam gelap"
                 sizes="(min-width: 1024px) 45vw, 576px"
                 strength={8}
@@ -87,40 +84,45 @@ export function DonationSection({ className = "bg-paper" }: { className?: string
                   />
                   {hasAccount ? (
                     <>
-                      <p className="text-sm text-sand-200/75">Transfer ke {donation.bank}</p>
+                      <p className="text-sm text-sand-200/75">Transfer ke {support.bank}</p>
                       <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
                         <div>
                           <p className="font-display text-[1.75rem] font-semibold tabular-nums tracking-wide sm:text-4xl">
-                            {formatAccount(donation.accountNumber)}
+                            {formatAccount(support.accountNumber)}
                           </p>
-                          <p className="mt-1 text-sm text-sand-200/75">a.n. {donation.accountName}</p>
+                          <p className="mt-1 text-sm text-sand-200/75">a.n. {support.accountName}</p>
                         </div>
-                        <CopyButton value={donation.accountNumber} label="Salin nomor" />
+                        <CopyButton value={support.accountNumber} label="Salin nomor" />
                       </div>
                       <div className="mt-6 flex flex-col gap-4 border-t border-sand-50/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
                         <p className="max-w-60 text-sm leading-relaxed text-sand-200/75">
-                          Sudah berdonasi? Kamu bisa mengabari tim melalui halaman kontak.
+                          Sudah transfer? Kabari kami lewat WhatsApp.
                         </p>
                         <ButtonLink
-                          href={waLink("Halo, saya sudah berdonasi untuk Janji Pengharapan. Ini bukti transfernya.")}
+                          href={waLink("Halo, saya sudah kirim support untuk Janji Pengharapan.")}
                           external
                           variant="light"
                           className="shrink-0 self-start sm:self-auto"
                         >
                           <Icon.whatsapp className="h-4 w-4" />
-                          Konfirmasi donasi
+                          Kabari tim
                         </ButtonLink>
                       </div>
                     </>
                   ) : (
                     <>
-                      <p className="text-sm text-gold-400">Berbagi pengharapan</p>
-                      <h3 className="font-display mt-3 text-2xl text-sand-50">Ingin ikut mendukung?</h3>
+                      <h3 className="font-display text-2xl text-sand-50">Ingin memberi support?</h3>
                       <p className="mt-3 text-sm leading-7 text-sand-200/85">
-                        Hubungi tim JP untuk informasi rekening dan cara berdonasi.
+                        Tanya info rekening ke tim JP. Kami balas secepatnya.
                       </p>
-                      <ButtonLink href="/kontak" variant="light" className="mt-6">
-                        Tanya cara berdonasi <Icon.arrowRight className="h-4 w-4" />
+                      <ButtonLink
+                        href={waLink("Halo, saya ingin memberi support untuk Janji Pengharapan. Boleh minta info rekeningnya?")}
+                        external
+                        variant="light"
+                        className="mt-6"
+                      >
+                        {site.whatsapp && <Icon.whatsapp className="h-4 w-4" />}
+                        Tanya info rekening
                       </ButtonLink>
                     </>
                   )}

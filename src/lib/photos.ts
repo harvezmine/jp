@@ -27,7 +27,7 @@ export const photos = {
   help: unsplash("1544027993-37dbfe43562a"),
   // Sengaja simbolis dan tanpa wajah orang: foto anak-anak sebelumnya mengesankan
   // mereka penerima bantuan JP, dan JP tidak menyalurkan bantuan ekonomi secara khusus.
-  donation: unsplash("1602523961358-f9f03dd557db"),
+  support: unsplash("1602523961358-f9f03dd557db"),
   quotes: unsplash("1508672019048-805c876b67e2"),
   invite: unsplash("1496275068113-fff8c90750d1"),
 
@@ -36,7 +36,6 @@ export const photos = {
   heroContent: unsplash("1445445290350-18a3b86e0b5a"),
   heroEvents: unsplash("1517457373958-b7bdd4587205"),
   heroContact: unsplash("1491438590914-bc09fcaaf77a"),
-  heroDonation: unsplash("1593113598332-cd288d649433"),
 
   storyStart: "/images/jp/insight-studio-2.jpg",
   storyGrow: unsplash("1473186505569-9c61870c11f9"),

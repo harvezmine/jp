@@ -33,7 +33,7 @@ const story = [
   {
     label: "Sekarang",
     title: "Bertumbuh untuk menemani",
-    body: "Ada tim pendoa, konselor, dan relawan, dibantu jemaat gereja lokal kami.",
+    body: "Ada tim pendoa, konselor, dan relawan. Kami juga bekerja sama dengan mitra gereja.",
     image: photos.storyToday,
     alt: "Sekelompok orang berdoa sambil saling merangkul",
   },

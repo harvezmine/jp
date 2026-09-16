@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   description: site.description,
   keywords: [
     "janji pengharapan",
-    "gereja Jakarta",
-    "komunitas gereja",
-    "komsel Jakarta",
+    "tempat bercerita",
+    "minta didoakan",
+    "konseling Kristen",
     "renungan harian",
     "doa dan konseling",
   ],
