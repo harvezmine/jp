@@ -68,7 +68,8 @@ export default function LayananPage() {
         }
         description="Belum tahu harus mulai dari mana? Ceritakan sedikit tentang keadaanmu, kita cari langkahnya bersama."
       />
-      <RuangSummary />
+      {/* bg-paper supaya tidak menyatu dengan RuangIntro yang juga terang */}
+      <RuangSummary className="bg-paper" />
 
       <HelpSteps />
 
