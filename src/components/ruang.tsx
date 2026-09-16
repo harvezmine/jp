@@ -568,16 +568,24 @@ export function RuangHero({ ruang: r, action }: { ruang: Ruang; action: { label:
 export function RuangTiles({
   current,
   tone = "dark",
+  fluid = false,
   className,
 }: {
   current?: string;
   tone?: "dark" | "light";
+  /** Isi lebar kontainer, bukan dibatasi seperti di hero. */
+  fluid?: boolean;
   className?: string;
 }) {
   const dark = tone === "dark";
   return (
     <nav aria-label="Ruang pelayanan" className={className}>
-      <ul className="grid max-w-3xl grid-cols-2 gap-2.5 sm:gap-3 lg:max-w-[60rem] lg:grid-cols-4">
+      <ul
+        className={cn(
+          "grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4",
+          !fluid && "max-w-3xl lg:max-w-[60rem]",
+        )}
+      >
         {allRuang.map((r) => {
           const active = r.slug === current;
           const onDark = dark || active;
@@ -658,7 +666,7 @@ export function RuangNav({ current, className = "bg-cream" }: { current: string;
           </Reveal>
         </div>
         <Reveal delay={150}>
-          <RuangTiles current={current} tone="light" className="mt-10 sm:mt-12" />
+          <RuangTiles current={current} tone="light" fluid className="mt-10 sm:mt-12" />
         </Reveal>
       </Container>
     </section>
