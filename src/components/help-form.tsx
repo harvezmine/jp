@@ -1,69 +1,98 @@
 "use client";
 
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
+
 import { submitHelpRequest, type FormState } from "@/app/actions/help";
-import { Checkbox, Field, Input, OptionCard, Textarea } from "@/components/form-fields";
+import {
+  ContactFields,
+  FORM_CATEGORIES,
+  NeedFields,
+  PrayerFields,
+  StoryFields,
+  type StepProps,
+} from "@/components/help-form-fields";
 import { Icon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui";
-import { crisis } from "@/lib/crisis";
-import { validateHelp, type HelpValues } from "@/lib/help-validation";
 import {
-  CONTACT_PREF_LABEL,
-  HELP_CATEGORY_HINT,
-  HELP_CATEGORY_LABEL,
-  URGENCY_LABEL,
-  type HelpCategory,
-  type Urgency,
-  type ContactPreference,
-} from "@/lib/types";
+  FIXED_CATEGORY,
+  HELP_FORM_STEPS,
+  firstStepWithError,
+  validateHelp,
+  type HelpGroup,
+  type HelpValues,
+} from "@/lib/help-validation";
+import { CONTACT_PREF_LABEL, type ContactPreference, type HelpCategory, type HelpSource } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const initialState: FormState = { status: "idle" };
 
-/**
- * Pilihan yang tampil di formulir. "kebutuhan" tetap sah di database supaya permintaan
- * lama masih terbaca di admin, tapi tidak ditawarkan lagi: dua pilihan soal ekonomi
- * terasa terlalu mengotak-ngotakkan, dan JP tidak menjanjikan bantuan materi.
- */
-const FORM_CATEGORIES: HelpCategory[] = ["doa", "konseling", "kunjungan", "keuangan", "lainnya"];
-const categoryIcons: Record<HelpCategory, keyof typeof Icon> = {
-  doa: "hands",
-  konseling: "users",
-  kebutuhan: "gift",
-  kunjungan: "heart",
-  keuangan: "shield",
-  lainnya: "spark",
-};
-const steps = [
-  {
+type StepCopy = { title: string; heading: string; hint: string };
+
+const stepCopy: Record<HelpGroup, StepCopy> = {
+  kebutuhan: {
     title: "Kebutuhanmu",
     heading: "Apa yang bisa kami bantu?",
     hint: "Pilih yang paling dekat dengan keadaanmu. Belum yakin juga tidak apa-apa.",
   },
-  {
+  cerita: {
     title: "Ceritamu",
     heading: "Kami ingin mendengarkan.",
     hint: "Mulai dari bagian yang nyaman kamu bagikan. Tidak perlu menceritakan semuanya sekaligus.",
   },
-  {
+  doa: {
+    title: "Pokok doa",
+    heading: "Apa yang ingin kami doakan?",
+    hint: "Singkat pun tidak apa-apa. Kamu juga boleh mengirim tanpa nama.",
+  },
+  kontak: {
     title: "Hubungi kamu",
     heading: "Bagaimana kami bisa menyapamu?",
     hint: "Pilih cara yang nyaman. Kalau belum ingin dihubungi, kami tetap menerima ceritamu.",
   },
-] as const;
-const urgencyHints = {
-  biasa: "Tidak ada kebutuhan segera",
-  mendesak: "Ada yang perlu dibantu dalam waktu dekat",
-  darurat: "Keselamatan sedang terancam",
 };
 
-export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }) {
+/** Formulir doa memakai kata yang lebih pas untuk langkah kontak. */
+const prayerContactCopy: StepCopy = {
+  title: "Kabar",
+  heading: "Mau kami kabari?",
+  hint: "Kalau belum ingin dihubungi, pokok doamu tetap kami doakan.",
+};
+
+/** Label tombol lanjut, menurut langkah berikutnya. */
+const nextLabel: Record<HelpGroup, string> = {
+  kebutuhan: "Lanjut",
+  cerita: "Lanjut ke cerita",
+  doa: "Lanjut",
+  kontak: "Pilih cara dihubungi",
+};
+
+/** Nama field error yang berbeda dari nama state-nya. */
+const errorKey: Partial<Record<keyof HelpValues, string>> = {
+  contactPreference: "contact_preference",
+  prayerFor: "prayer_for",
+};
+
+export function HelpForm({
+  source = "umum",
+  initialCategory,
+}: {
+  source?: HelpSource;
+  /** Hanya untuk formulir umum. Formulir Doa dan Cerita memakai kategori tetap. */
+  initialCategory?: HelpCategory;
+}) {
   const [state, dispatch, pending] = useActionState(submitHelpRequest, initialState);
+  const groups = HELP_FORM_STEPS[source];
+  const lastStep = groups.length - 1;
+  const prayer = source === "doa";
   const [step, setStep] = useState(0);
-  const [values, setValues] = useState<HelpValues>({
-    category: initialCategory && FORM_CATEGORIES.includes(initialCategory) ? initialCategory : "",
+  const [values, setValues] = useState<HelpValues>(() => ({
+    source,
+    category:
+      FIXED_CATEGORY[source] ?? (initialCategory && FORM_CATEGORIES.includes(initialCategory) ? initialCategory : ""),
     urgency: "biasa",
     message: "",
+    prayerFor: prayer ? "diri_sendiri" : "",
+    companion: source === "cerita" ? "siapa_saja" : "",
     name: "",
     phone: "",
     email: "",
@@ -71,7 +100,7 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
     contactPreference: "whatsapp",
     isAnonymous: false,
     isConfidential: true,
-  });
+  }));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showServerError, setShowServerError] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
@@ -79,13 +108,12 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
   const formRef = useRef<HTMLFormElement>(null);
   const lastPosition = useRef({ step, status: state.status });
 
-  const update = <K extends keyof HelpValues>(key: K, value: HelpValues[K]) => {
+  const update: StepProps["update"] = (key, value) => {
     setValues((current) => ({ ...current, [key]: value }));
     setErrors((current) => {
       const next = { ...current };
-      delete next[key];
+      delete next[errorKey[key] ?? key];
       if (key === "contactPreference") {
-        delete next.contact_preference;
         delete next.phone;
         delete next.email;
       }
@@ -109,11 +137,8 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
     if (state.status !== "error") return;
     setErrors(state.fieldErrors ?? {});
     setShowServerError(true);
-    if (state.fieldErrors) {
-      const keys = Object.keys(state.fieldErrors);
-      setStep(keys.includes("category") ? 0 : keys.some((k) => ["message", "urgency"].includes(k)) ? 1 : 2);
-    }
-  }, [state]);
+    if (state.fieldErrors) setStep(firstStepWithError(source, state.fieldErrors));
+  }, [state, source]);
 
   const focusError = (next: Record<string, string>) => {
     requestAnimationFrame(() => {
@@ -122,51 +147,66 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
     });
   };
   const advance = () => {
-    const next = validateHelp(values, step);
+    const next = validateHelp(values, groups[step]);
     setErrors(next);
     if (Object.keys(next).length) {
       focusError(next);
       return;
     }
-    setStep((current) => Math.min(current + 1, 2));
+    setStep((current) => Math.min(current + 1, lastStep));
   };
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
-    if (step < 2) {
+    if (step < lastStep) {
       advance();
       return;
     }
     const next = validateHelp(values);
     setErrors(next);
     if (Object.keys(next).length) {
-      setStep(next.category ? 0 : next.message || next.urgency ? 1 : 2);
+      setStep(firstStepWithError(source, next));
       focusError(next);
       return;
     }
-    // Dispatch manually so React does not clear the story when the server returns an error.
+    // Dispatch manual supaya React tidak mengosongkan isian saat server mengembalikan error.
     const data = new FormData(event.currentTarget);
     setShowServerError(false);
     startTransition(() => dispatch(data));
   };
 
-  if (state.status === "success")
+  const copyFor = (group: HelpGroup) => (prayer && group === "kontak" ? prayerContactCopy : stepCopy[group]);
+
+  if (state.status === "success") {
+    const contacted = values.contactPreference !== "tidak_perlu";
+    const via = CONTACT_PREF_LABEL[values.contactPreference as ContactPreference];
+    const success = prayer
+      ? {
+          heading: "Pokok doamu sudah kami terima.",
+          body: contacted
+            ? `Tim pendoa akan mendoakannya dan mengabarimu melalui ${via}.`
+            : "Tim pendoa akan mendoakannya. Sesuai pilihanmu, kami tidak akan menghubungimu.",
+          code: "Nomor pokok doamu",
+        }
+      : {
+          heading: "Terima kasih sudah bercerita.",
+          body: contacted
+            ? `Ceritamu sudah kami terima. Tim akan membacanya dan menghubungimu melalui ${via}. Kamu tidak perlu menunggu di halaman ini.`
+            : "Ceritamu sudah kami terima. Sesuai pilihanmu, tim tidak akan menghubungimu. Jika nanti ingin berbicara, kamu boleh menghubungi kami kembali.",
+          code: "Nomor ceritamu",
+        };
     return (
       <div ref={topRef} className="scroll-mt-28 py-6 text-center" role="status">
         <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-maroon-50 text-maroon-700 ring-1 ring-maroon-200">
           <Icon.check className="h-7 w-7" />
         </span>
         <h2 ref={headingRef} tabIndex={-1} className="font-display mt-6 text-3xl text-ink">
-          Terima kasih sudah bercerita.
+          {success.heading}
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-sand-700">
-          {values.contactPreference === "tidak_perlu"
-            ? "Ceritamu sudah kami terima. Sesuai pilihanmu, tim tidak akan menghubungimu. Jika nanti ingin berbicara, kamu boleh menghubungi kami kembali."
-            : `Ceritamu sudah kami terima. Tim akan membacanya dan menghubungimu melalui ${CONTACT_PREF_LABEL[values.contactPreference as ContactPreference]}. Kamu tidak perlu menunggu di halaman ini.`}
-        </p>
+        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-sand-700">{success.body}</p>
         {state.refCode && (
           <div className="mx-auto mt-7 max-w-xs rounded-2xl bg-paper p-5">
-            <p className="text-xs text-sand-700">Nomor ceritamu</p>
+            <p className="text-xs text-sand-700">{success.code}</p>
             <p className="mt-2 text-2xl font-semibold tracking-wide text-maroon-700">{state.refCode}</p>
             <p className="mt-2 text-xs leading-relaxed text-sand-700">
               Simpan nomor ini jika ingin menanyakan kabar selanjutnya.
@@ -181,6 +221,10 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
         </div>
       </div>
     );
+  }
+
+  const current = copyFor(groups[step]);
+  const submitLabel = prayer ? "Kirim pokok doa" : "Kirim ceritaku";
 
   return (
     <div ref={topRef} className="scroll-mt-28">
@@ -189,11 +233,16 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
           <Icon.heart className="h-4 w-4 text-maroon-600" />
           Pelan-pelan saja, sesuai kesiapanmu.
         </span>
-        <span className="shrink-0 tabular-nums">{step + 1} / 3</span>
+        <span className="shrink-0 tabular-nums">
+          {step + 1} / {groups.length}
+        </span>
       </div>
-      <ol className="mb-8 grid grid-cols-3 gap-3" aria-label="Langkah bercerita">
-        {steps.map((item, index) => (
-          <li key={item.title}>
+      <ol
+        className={cn("mb-8 grid gap-3", groups.length === 2 ? "grid-cols-2" : "grid-cols-3")}
+        aria-label="Langkah formulir"
+      >
+        {groups.map((group, index) => (
+          <li key={group}>
             <button
               type="button"
               disabled={index > step || pending}
@@ -220,16 +269,16 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
                 )}
               >
                 {index < step ? <Icon.check className="h-3 w-3" /> : `${index + 1}. `}
-                {item.title}
+                {copyFor(group).title}
               </span>
             </button>
           </li>
         ))}
       </ol>
       <h2 ref={headingRef} tabIndex={-1} className="font-display text-2xl leading-tight text-ink sm:text-3xl">
-        {steps[step].heading}
+        {current.heading}
       </h2>
-      <p className="mt-3 mb-7 text-sm leading-6 text-sand-700">{steps[step].hint}</p>
+      <p className="mb-7 mt-3 text-sm leading-6 text-sand-700">{current.hint}</p>
       <noscript>
         <p className="mb-5 rounded-xl bg-maroon-50 p-4 text-sm">
           Aktifkan JavaScript untuk mengisi formulir ini, atau{" "}
@@ -248,246 +297,14 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
           aria-hidden="true"
           className="absolute h-0 w-0 opacity-0"
         />
-        <fieldset hidden={step !== 0} disabled={pending} className="form-step space-y-5">
-          <legend className="sr-only">Dukungan yang kamu butuhkan</legend>
-          <div
-            role="radiogroup"
-            aria-label="Dukungan yang kamu butuhkan"
-            aria-describedby={errors.category ? "category-error" : undefined}
-            aria-invalid={Boolean(errors.category)}
-            className="grid gap-3 sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2"
-          >
-            {FORM_CATEGORIES.map((key) => {
-              const CategoryIcon = Icon[categoryIcons[key]];
-              return (
-                <OptionCard
-                  key={key}
-                  name="category"
-                  value={key}
-                  checked={values.category === key}
-                  onChange={(value) => update("category", value)}
-                  title={HELP_CATEGORY_LABEL[key]}
-                  description={HELP_CATEGORY_HINT[key]}
-                  icon={<CategoryIcon className="h-4.5 w-4.5" />}
-                />
-              );
-            })}
-          </div>
-          {errors.category && (
-            <p id="category-error" role="alert" className="text-sm text-red-700">
-              {errors.category}
-            </p>
-          )}
-          <p className="rounded-xl bg-sand-100 p-4 text-xs leading-relaxed text-sand-700">
-            Pilihan ini membantu tim memahami ceritamu. Bentuk bantuan akan dibicarakan bersama, sesuai kebutuhan dan
-            ketersediaan.
-          </p>
-        </fieldset>
-
-        <fieldset hidden={step !== 1} disabled={pending} className="form-step space-y-6">
-          <legend className="sr-only">Bagikan ceritamu</legend>
-          <Field
-            label="Yang ingin kamu ceritakan"
-            htmlFor="message"
-            error={errors.message}
-            hint="Satu atau dua kalimat untuk memulai juga boleh."
-          >
-            <Textarea
-              id="message"
-              name="message"
-              value={values.message}
-              onChange={(e) => update("message", e.target.value)}
-              error={errors.message}
-              aria-describedby="message-hint message-count"
-              placeholder="Akhir-akhir ini saya merasa… Saya berharap bisa…"
-              maxLength={4000}
-              className="min-h-48"
-            />
-            <p id="message-count" className="mt-2 text-right text-xs tabular-nums text-sand-700">
-              {values.message.length.toLocaleString("id-ID")} / 4.000 karakter
-            </p>
-          </Field>
-          <fieldset>
-            <legend className="mb-3 text-sm font-semibold text-ink">Kapan kamu membutuhkan dukungan?</legend>
-            <div className="grid gap-2.5">
-              {(Object.keys(URGENCY_LABEL) as Urgency[]).map((key) => (
-                <OptionCard
-                  key={key}
-                  name="urgency"
-                  value={key}
-                  checked={values.urgency === key}
-                  onChange={(value) => update("urgency", value)}
-                  title={URGENCY_LABEL[key]}
-                  description={urgencyHints[key]}
-                />
-              ))}
-            </div>
-            {errors.urgency && (
-              <p role="alert" className="mt-2 text-sm text-red-700">
-                {errors.urgency}
-              </p>
-            )}
-          </fieldset>
-          {values.urgency === "darurat" && (
-            <div
-              role="note"
-              className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm leading-relaxed text-amber-950"
-            >
-              <strong>Utamakan keselamatanmu.</strong> Formulir ini tidak dipantau setiap saat. Kalau nyawamu atau orang
-              lain sedang terancam, telepon{" "}
-              <a href={crisis.emergency.href} className="font-semibold underline underline-offset-4">
-                {crisis.emergency.label}
-              </a>{" "}
-              sekarang. Kalau butuh bicara, telepon {crisis.counseling.label} atau buka{" "}
-              <a
-                href={crisis.online.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold underline underline-offset-4"
-              >
-                {crisis.online.label}
-              </a>
-              .
-            </div>
-          )}
-          <Checkbox
-            name="is_confidential"
-            checked={values.isConfidential}
-            onChange={(value) => update("isConfidential", value)}
-            title="Jaga isi ceritaku tetap pribadi"
-            description="Tim hanya menerima pemberitahuan cerita baru tanpa isinya. Ceritamu tetap bisa dibaca oleh tim yang mendampingi."
-          />
-        </fieldset>
-
-        <fieldset hidden={step !== 2} disabled={pending} className="form-step space-y-6">
-          <legend className="sr-only">Pilihan kontak dan ringkasan</legend>
-          <Checkbox
-            name="is_anonymous"
-            checked={values.isAnonymous}
-            onChange={(value) => update("isAnonymous", value)}
-            title="Saya ingin bercerita tanpa nama"
-            description="Namamu tidak disimpan. Jika memilih untuk dihubungi, kontakmu tetap diperlukan."
-          />
-          {!values.isAnonymous && (
-            <Field label="Kami boleh memanggilmu siapa?" htmlFor="name" error={errors.name}>
-              <Input
-                id="name"
-                name="name"
-                value={values.name}
-                onChange={(e) => update("name", e.target.value)}
-                error={errors.name}
-                autoComplete="name"
-                maxLength={120}
-                placeholder="Nama panggilan juga boleh"
-              />
-            </Field>
-          )}
-          <fieldset>
-            <legend className="mb-3 text-sm font-semibold text-ink">Cara yang nyaman untuk dihubungi</legend>
-            <div className="grid gap-2.5 sm:grid-cols-2">
-              {(Object.keys(CONTACT_PREF_LABEL) as ContactPreference[]).map((key) => (
-                <OptionCard
-                  key={key}
-                  name="contact_preference"
-                  value={key}
-                  checked={values.contactPreference === key}
-                  onChange={(value) => update("contactPreference", value)}
-                  title={CONTACT_PREF_LABEL[key]}
-                />
-              ))}
-            </div>
-            {errors.contact_preference && (
-              <p role="alert" className="mt-2 text-sm text-red-700">
-                {errors.contact_preference}
-              </p>
-            )}
-          </fieldset>
-          {["whatsapp", "telepon"].includes(values.contactPreference) && (
-            <Field
-              label={values.contactPreference === "whatsapp" ? "Nomor WhatsApp-mu" : "Nomor teleponmu"}
-              htmlFor="phone"
-              error={errors.phone}
-              hint="Gunakan nomor yang bisa kamu akses sendiri."
-            >
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                inputMode="tel"
-                value={values.phone}
-                onChange={(e) => update("phone", e.target.value)}
-                error={errors.phone}
-                aria-describedby="phone-hint"
-                placeholder="Contoh: 081234567890"
-                autoComplete="tel"
-                maxLength={30}
-              />
-            </Field>
-          )}
-          {values.contactPreference === "email" && (
-            <Field label="Alamat emailmu" htmlFor="email" error={errors.email}>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                inputMode="email"
-                value={values.email}
-                onChange={(e) => update("email", e.target.value)}
-                error={errors.email}
-                placeholder="nama@email.com"
-                autoComplete="email"
-                maxLength={160}
-              />
-            </Field>
-          )}
-          {values.contactPreference === "tidak_perlu" && (
-            <p className="rounded-xl bg-sand-100 p-4 text-sm leading-relaxed text-sand-700">
-              Kami akan menerima ceritamu tanpa menghubungimu. Nomor telepon dan email tidak ikut dikirim.
-            </p>
-          )}
-          <Field
-            label="Kota atau wilayah"
-            htmlFor="city"
-            optional
-            error={errors.city}
-            hint="Boleh diisi jika kamu membutuhkan dukungan di dekatmu."
-          >
-            <Input
-              id="city"
-              name="city"
-              value={values.city}
-              onChange={(e) => update("city", e.target.value)}
-              error={errors.city}
-              aria-describedby="city-hint"
-              placeholder="Cukup kota atau wilayah, tanpa alamat lengkap"
-              autoComplete="address-level2"
-              maxLength={120}
-            />
-          </Field>
-          <div className="rounded-2xl border border-sand-200 bg-sand-100/70 p-5">
-            <p className="mb-3 text-sm font-semibold text-maroon-800">Sebelum kamu mengirim</p>
-            <dl className="space-y-2 text-sm">
-              <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
-                <dt className="text-sand-700">Dukungan</dt>
-                <dd className="font-medium text-ink">{HELP_CATEGORY_LABEL[values.category as HelpCategory]}</dd>
-              </div>
-              <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
-                <dt className="text-sand-700">Balasan melalui</dt>
-                <dd className="font-medium text-ink">
-                  {CONTACT_PREF_LABEL[values.contactPreference as ContactPreference]}
-                </dd>
-              </div>
-            </dl>
-            <details className="mt-4 border-t border-sand-300/70 pt-3">
-              <summary className="cursor-pointer text-sm font-semibold text-maroon-700">Baca kembali ceritamu</summary>
-              <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-sand-800">{values.message}</p>
-            </details>
-            <p className="mt-4 text-xs leading-relaxed text-sand-700">
-              Dengan mengirim, kamu mengizinkan tim JP membaca cerita dan menggunakan kontak sesuai pilihanmu untuk
-              menindaklanjutinya.
-            </p>
-          </div>
-        </fieldset>
+        <input type="hidden" name="source" value={source} />
+        {groups.map((group, index) => {
+          const props: StepProps = { values, errors, update, hidden: index !== step, disabled: pending };
+          if (group === "kebutuhan") return <NeedFields key={group} {...props} />;
+          if (group === "cerita") return <StoryFields key={group} {...props} withCompanion={source === "cerita"} />;
+          if (group === "doa") return <PrayerFields key={group} {...props} />;
+          return <ContactFields key={group} {...props} source={source} />;
+        })}
 
         {showServerError && state.message && (
           <div
@@ -519,7 +336,7 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
           ) : (
             <span className="hidden sm:block" />
           )}
-          {step < 2 ? (
+          {step < lastStep ? (
             <Button
               key="next"
               type="button"
@@ -530,7 +347,7 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
               }}
               className="w-full sm:w-auto"
             >
-              {step === 0 ? "Lanjut ke cerita" : "Pilih cara dihubungi"}
+              {nextLabel[groups[step + 1]]}
               <Icon.arrowRight className="h-4 w-4" />
             </Button>
           ) : (
@@ -545,7 +362,7 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
                 </>
               ) : (
                 <>
-                  Kirim ceritaku
+                  {submitLabel}
                   <Icon.arrowRight className="h-4 w-4" />
                 </>
               )}
@@ -554,8 +371,8 @@ export function HelpForm({ initialCategory }: { initialCategory?: HelpCategory }
         </div>
         <p role="status" className="text-center text-xs leading-relaxed text-sand-700">
           {pending
-            ? "Tunggu sebentar, ya. Ceritamu sedang dikirim."
-            : "Ceritamu baru dikirim setelah kamu menekan “Kirim ceritaku”."}
+            ? "Tunggu sebentar, ya. Sedang dikirim."
+            : `${prayer ? "Pokok doamu" : "Ceritamu"} baru dikirim setelah kamu menekan “${submitLabel}”.`}
         </p>
       </form>
     </div>

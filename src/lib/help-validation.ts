@@ -95,7 +95,7 @@ export function validateHelp(values: HelpValues, group?: HelpGroup) {
     if (!includes(CONTACT_PREFERENCES, values.contactPreference))
       errors.contact_preference = "Pilih cara yang paling nyaman untuk dihubungi.";
     if (["whatsapp", "telepon"].includes(values.contactPreference) && !isValidPhone(values.phone))
-      errors.phone = "Cek kembali nomornya, ya. Gunakan 8\u201315 angka, misalnya 081234567890.";
+      errors.phone = "Cek kembali nomornya, ya. Gunakan 8–15 angka, misalnya 081234567890.";
     if (values.contactPreference === "email" && !isValidEmail(values.email))
       errors.email = "Cek kembali alamat emailnya, misalnya nama@email.com.";
     if (values.city.length > 120) errors.city = "Cukup nama kota atau wilayahmu, maksimal 120 karakter.";
