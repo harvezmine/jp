@@ -7,7 +7,7 @@ import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/icons";
 import { ButtonLink, Container } from "@/components/ui";
 import { photos } from "@/lib/photos";
-import { weekDays, weeklyPrograms } from "@/lib/ruang";
+import { ruangHref, weekDays, weeklyPrograms } from "@/lib/ruang";
 import { site, socialHandle, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -108,7 +108,7 @@ export default function KontakPage() {
                   <ul className="mt-4 divide-y divide-sand-300/70">
                     {weekly.map((w) => (
                       <li key={w.title}>
-                        <Link href={`/layanan#${w.ruang.slug}`} className="group flex items-baseline justify-between gap-4 py-4">
+                        <Link href={ruangHref(w.ruang.slug)} className="group flex items-baseline justify-between gap-4 py-4">
                           <span className="min-w-0">
                             <span className="block font-semibold text-ink transition-colors group-hover:text-maroon-700">
                               {w.title}

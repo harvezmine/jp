@@ -43,7 +43,9 @@ export function SiteHeader() {
   }, [open]);
 
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+    href === "/"
+      ? pathname === "/"
+      : pathname.startsWith(href) || (href === "/layanan" && pathname.startsWith("/ruang-"));
 
   /*
     Setiap halaman diawali hero maroon gelap. Selama header masih transparan di

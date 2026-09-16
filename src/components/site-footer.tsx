@@ -4,7 +4,7 @@ import { CrisisLine } from "@/components/crisis-line";
 import { Logo } from "@/components/logo";
 import { Icon } from "@/components/icons";
 import { ArrowLink, ButtonLink, Container } from "@/components/ui";
-import { ruang } from "@/lib/ruang";
+import { ruang, ruangHref } from "@/lib/ruang";
 import { navigation, site, socialLinks, waLink } from "@/lib/site";
 
 export function SiteFooter() {
@@ -83,7 +83,7 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-3.5">
               {ruang.map((r) => (
                 <li key={r.slug} className="text-sm">
-                  <Link href={`/layanan#${r.slug}`} className="group">
+                  <Link href={ruangHref(r.slug)} className="group">
                     <span className="font-medium text-sand-100 transition-colors group-hover:text-gold-400">
                       Ruang {r.name}
                     </span>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import { CrisisLine } from "@/components/crisis-line";
 import { HelpForm } from "@/components/help-form";
@@ -25,6 +26,9 @@ const assurances = [
 
 export default async function PertolonganPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const { category } = await searchParams;
+  // Tautan lama ke kategori ini sekarang punya formulir sendiri di halaman ruangnya.
+  if (category === "doa") redirect("/ruang-doa#kirim-doa");
+  if (category === "konseling") redirect("/ruang-cerita#ceritakan");
   const initialCategory = (HELP_CATEGORIES as readonly string[]).includes(category ?? "")
     ? (category as HelpCategory)
     : undefined;

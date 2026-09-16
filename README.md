@@ -15,7 +15,11 @@ untuk mengelola konten, dan formulir permohonan pertolongan.
 |---|---|---|
 | Beranda | `/` | Supabase |
 | Siapa Kami | `/tentang-kami` | statis (`src/lib/site.ts`) |
-| Pelayanan (4 ruang) | `/layanan` | statis (`src/lib/ruang.ts`) |
+| Pelayanan (ringkasan 4 ruang) | `/layanan` | statis (`src/lib/ruang.ts`) |
+| Ruang Pengharapan | `/ruang-pengharapan` | tulisan Renungan + video sosmed + kutipan |
+| Ruang Doa | `/ruang-doa` | statis + formulir doa (`source=doa`) |
+| Ruang Cerita | `/ruang-cerita` | statis + formulir cerita (`source=cerita`) |
+| Ruang Belajar | `/ruang-belajar` | komunitas + ProCon (statis) |
 | Konten (tulisan · kutipan · sosmed) | `/konten` | Supabase |
 | Detail tulisan | `/konten/[slug]` | Supabase |
 | Event | `/event`, `/event/[slug]` | Supabase |
@@ -117,6 +121,8 @@ Isinya hanya bisa dibaca di admin panel yang terlindungi login.
 | Gambar share (WA/IG) | `public/brand/og-image.jpg`, 1200×630 |
 | Nama, alamat, telepon, sosmed | `src/lib/site.ts` |
 | Ruang pelayanan & jadwal rutin | `src/lib/ruang.ts` |
+| Komunitas belajar (masih contoh) | `src/lib/komunitas.ts` |
+| ProCon (masih contoh) | `src/lib/procon.ts` |
 | Foto (sementara dari Unsplash) | `src/lib/photos.ts` |
 | Rekening support (section terakhir beranda) | `src/lib/site.ts` → `support` |
 | Warna | `src/app/globals.css` → blok `@theme` |
