@@ -347,7 +347,7 @@ export function HelpForm({
               }}
               className="w-full sm:w-auto"
             >
-              {nextLabel[groups[step + 1]]}
+              {prayer && groups[step + 1] === "kontak" ? "Lanjut" : nextLabel[groups[step + 1]]}
               <Icon.arrowRight className="h-4 w-4" />
             </Button>
           ) : (

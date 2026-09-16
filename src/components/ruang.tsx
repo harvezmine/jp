@@ -208,10 +208,11 @@ export function RuangSection({
       )}
 
       {/* Nama ruang raksasa di latar, bergeser pelan saat digulir */}
+      {/* Di HP nama sepanjang "Pengharapan" terpotong di tepi layar, jadi hanya tampil dari sm ke atas. */}
       <Parallax
         translateX={flip ? [5, -5] : [-5, 5]}
         className={cn(
-          "pointer-events-none absolute inset-x-0 top-4 -z-10 sm:top-6",
+          "pointer-events-none absolute inset-x-0 top-4 -z-10 hidden sm:top-6 sm:block",
           flip ? "text-right" : "text-left",
         )}
       >
@@ -227,7 +228,7 @@ export function RuangSection({
       </Parallax>
 
       <Container size="wide" className="relative">
-        <div className="grid items-center gap-12 pt-20 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
+        <div className="grid items-center gap-12 pt-6 sm:gap-14 sm:pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-40">
           {/* Foto berbentuk lengkung pintu */}
           <div
             className={cn(
