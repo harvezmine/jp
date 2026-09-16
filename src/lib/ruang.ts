@@ -99,7 +99,7 @@ export const ruang: Ruang[] = [
         format: "Formulir atau WhatsApp",
       },
     ],
-    cta: { label: "Saya ingin didoakan", href: "/pertolongan?category=doa" },
+    cta: { label: "Saya ingin didoakan", href: "/ruang-doa#kirim-doa" },
     secondary: {
       label: "Minta link doa online",
       href: waLink("Halo, saya mau ikut Doa Kesembuhan hari Rabu. Boleh minta link Zoom-nya?"),
@@ -139,7 +139,7 @@ export const ruang: Ruang[] = [
         weekly: { day: 4, time: "19.30" },
       },
     ],
-    cta: { label: "Saya ingin ditemani", href: "/pertolongan?category=konseling" },
+    cta: { label: "Saya ingin ditemani", href: "/ruang-cerita#ceritakan" },
     secondary: {
       label: site.whatsapp ? "Tanya lewat WhatsApp" : "Tanya kepada tim JP",
       href: waLink("Halo, saya mau tanya soal konseling dan support group."),
@@ -171,21 +171,30 @@ export const ruang: Ruang[] = [
         format: "Tatap muka",
       },
       {
-        title: "Kursus Pengembangan Diri",
-        summary: "Kelas praktis seperti AI untuk kerja, bahasa Inggris, dan public speaking.",
+        title: "Komunitas belajar bersama",
+        summary: "Kelompok kecil yang belajar hal praktis bareng, seperti AI untuk kerja dan bahasa Inggris.",
         when: "Sabtu, 10.00 WIB",
         format: "Online dan tatap muka",
         weekly: { day: 5, time: "10.00" },
       },
     ],
-    cta: { label: "Daftar kelas", href: waLink("Halo, saya mau daftar kelas di Ruang Belajar.") },
-    secondary: { label: "Lihat jadwal kelas", href: "/event" },
+    cta: { label: "Lihat komunitas", href: "/ruang-belajar#komunitas" },
+    secondary: { label: "Jadwal ProCon", href: "/ruang-belajar#procon" },
     image: photos.ruangLearn,
     imageAlt: "Beberapa orang tertawa sambil belajar bersama di perpustakaan",
     detailImage: photos.ruangLearnDetail,
     tone: "ink",
   },
 ];
+
+/** Alamat halaman sebuah ruang, mis. "/ruang-doa". */
+export const ruangHref = (slug: string) => `/${slug}`;
+
+export function getRuang(slug: string): Ruang {
+  const found = ruang.find((r) => r.slug === slug);
+  if (!found) throw new Error(`Ruang tidak dikenal: ${slug}`);
+  return found;
+}
 
 export const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"] as const;
 
