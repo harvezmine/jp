@@ -14,25 +14,33 @@ export function SupportSection({ className = "bg-paper" }: { className?: string 
     <section id="support" aria-labelledby="support-heading" className={cn("scroll-mt-20 py-14 sm:py-16", className)}>
       <Container size="wide">
         <Reveal>
-          <div className="grid gap-7 rounded-2xl border border-sand-300/70 bg-cream p-6 sm:p-10 lg:grid-cols-2 lg:items-center lg:gap-12">
-            <div>
-              <h2 id="support-heading" className="max-w-md font-display text-2xl font-semibold leading-snug text-ink sm:text-3xl">
-                Untuk mendukung pelayanan <span className="text-maroon-700">Janji Pengharapan</span>
+          <div className="grid overflow-hidden rounded-3xl border border-sand-300/70 bg-cream shadow-warm md:grid-cols-2">
+            <div className="flex flex-col items-start bg-maroon-900 p-7 sm:p-10 lg:p-12">
+              <div className="mb-7 flex items-center gap-3 text-sand-200">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-sand-200/25" aria-hidden="true">
+                  <Icon.hands className="h-5 w-5" />
+                </span>
+                <p className="text-xs font-medium tracking-[0.14em] uppercase">Dukungan pelayanan</p>
+              </div>
+              <h2 id="support-heading" className="max-w-sm font-display text-[1.75rem] font-semibold leading-snug text-cream sm:text-3xl lg:text-4xl">
+                Untuk mendukung pelayanan <span className="text-gold-400">Janji Pengharapan</span>
               </h2>
+              <p className="mt-5 text-sm leading-relaxed text-sand-200">Terima kasih sudah mengambil bagian.</p>
             </div>
 
-            <div className="min-w-0 border-t border-sand-300/70 pt-7 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12">
+            <div className="flex min-w-0 flex-col justify-center p-7 sm:p-10 lg:p-12">
               {hasAccount ? (
-                <div>
-                  <p className="text-sm font-medium text-sand-700">Bank {support.bank}</p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-3">
-                    <p className="text-2xl font-semibold tabular-nums tracking-wide text-ink sm:text-3xl">
-                      <span className="sr-only">Nomor rekening: </span>
+                <div className="w-full">
+                  <p className="border-b border-sand-300/70 pb-5 text-sm font-semibold leading-relaxed text-maroon-800">Bank {support.bank}</p>
+                  <dl className="py-5">
+                    <dt className="text-xs text-sand-700">Nomor rekening</dt>
+                    <dd className="mt-1.5 text-[1.75rem] font-semibold tabular-nums tracking-[0.04em] text-ink sm:text-3xl lg:text-4xl">
                       {support.accountNumber}
-                    </p>
-                    <CopyButton value={support.accountNumber} label="Salin nomor" />
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-sand-700">a.n. {support.accountName}</p>
+                    </dd>
+                    <dt className="sr-only">Atas nama</dt>
+                    <dd className="mt-2 text-sm leading-relaxed text-sand-700">a.n. {support.accountName}</dd>
+                  </dl>
+                  <CopyButton value={support.accountNumber} label="Salin nomor rekening" className="w-full justify-center" />
                 </div>
               ) : (
                 <div className="flex flex-wrap items-center gap-3 lg:justify-end">

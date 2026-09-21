@@ -35,7 +35,7 @@ export function CopyButton({
         }
       }}
       className={cn(
-        "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-sand-300 px-4 text-sm font-semibold text-maroon-700 transition-colors duration-300 hover:border-maroon-400 hover:bg-maroon-50 active:scale-[0.98]",
+        "inline-flex min-h-12 shrink-0 items-center gap-2 rounded-xl border border-maroon-200 bg-maroon-50 px-4 text-sm font-semibold text-maroon-800 transition-colors duration-300 hover:border-maroon-400 hover:bg-maroon-100 active:scale-[0.98]",
         className,
       )}
     >
