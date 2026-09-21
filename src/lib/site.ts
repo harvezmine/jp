@@ -40,11 +40,11 @@ export const site = {
     name: "Every Nation Kelapa Gading",
     url: "https://everynationkg.com",
   },
-  /** Rekening untuk support. Masih contoh, ganti dengan rekening yang sebenarnya. */
+  /** Rekening dukungan pelayanan Janji Pengharapan. */
   support: {
-    bank: "BCA",
-    accountNumber: "0000000000",
-    accountName: "Janji Pengharapan",
+    bank: "BCA KCP Puri Botanical",
+    accountNumber: "8870861738",
+    accountName: "Pengharapan Bagi Bangsa",
   },
 } as const;
 

@@ -35,11 +35,11 @@ export function CopyButton({
         }
       }}
       className={cn(
-        "inline-flex min-h-10 items-center gap-2 rounded-full border border-sand-50/25 px-4 text-sm font-semibold text-sand-50 transition-colors duration-300 hover:border-sand-50/60 hover:bg-sand-50/10 active:scale-[0.98]",
+        "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-sand-300 px-4 text-sm font-semibold text-maroon-700 transition-colors duration-300 hover:border-maroon-400 hover:bg-maroon-50 active:scale-[0.98]",
         className,
       )}
     >
-      {copied ? <Icon.check className="h-4 w-4 text-gold-400" /> : <Icon.copy className="h-4 w-4" />}
+      {copied ? <Icon.check className="h-4 w-4" /> : <Icon.copy className="h-4 w-4" />}
       <span aria-live="polite">{copied ? "Tersalin" : label}</span>
     </button>
   );
