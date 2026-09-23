@@ -175,19 +175,15 @@ export function StoryFields({
           role="note"
           className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm leading-relaxed text-amber-950"
         >
-          <strong>Utamakan keselamatanmu.</strong> Formulir ini tidak dipantau setiap saat. Kalau nyawamu atau orang
-          lain sedang terancam, telepon{" "}
-          <a href={crisis.emergency.href} className="font-semibold underline underline-offset-4">
-            {crisis.emergency.label}
-          </a>{" "}
-          sekarang. Kalau butuh bicara, telepon {crisis.counseling.label} atau buka{" "}
+          <strong>Utamakan keselamatanmu.</strong> Formulir ini tidak dipantau setiap saat, jadi jangan
+          menunggu balasannya. Kalau kamu butuh pertolongan sekarang, langsung hubungi tim kami di{" "}
           <a
-            href={crisis.online.href}
+            href={crisis.contact.href}
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold underline underline-offset-4"
           >
-            {crisis.online.label}
+            {crisis.contact.label}
           </a>
           .
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { FaqSection, type Faq } from "@/components/faq";
+import { crisis } from "@/lib/crisis";
 import { HelpSteps } from "@/components/help-steps";
 import { Icon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
@@ -28,7 +29,7 @@ const faqs: Faq[] = [
   },
   {
     q: "Kalau keadaanku darurat?",
-    a: "Formulir ini tidak dipantau setiap saat. Kalau nyawamu atau orang lain terancam, telepon 119. Kalau butuh bicara sekarang, telepon 119 lalu tekan 8, atau buka healing119.id.",
+    a: crisis.formNote,
   },
   {
     q: "Berapa lama sampai dihubungi?",
