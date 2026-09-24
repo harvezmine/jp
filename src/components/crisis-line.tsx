@@ -50,9 +50,6 @@ export function CrisisLine({
           {crisis.contact.label}
         </ButtonLink>
       </div>
-      <p className={cn("mt-4 text-xs leading-relaxed", dark ? "text-sand-300/65" : "text-sand-700")}>
-        Dijawab orang sungguhan, bukan robot. Tim kami tidak berjaga 24 jam, jadi balasan bisa perlu waktu.
-      </p>
     </div>
   );
 }
